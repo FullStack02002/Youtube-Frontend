@@ -1,22 +1,51 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { Input } from "./Input";
 import { Button } from "./Button";
 import { Logo } from "./Logo";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { userLogin,getCurrentUser } from "../store/Slices/authSlice.js";
+import { LoginSkeleton } from "../skeletons/";
 
 export const Login = () => {
+  const[load,setLoad]=useState(true)
+  useEffect(()=>{
+    setTimeout(()=>{
+      setLoad(false)
+      },1000)
+  })
   const {
     handleSubmit,
     register,
     formState: { errors },
   } = useForm();
+  const navigate=useNavigate();
+  const dispatch=useDispatch();
+  const loading=useSelector((state)=>state.auth?.loading);
 
-  const submit = (data) => {
-    console.log(data);
+  const submit = async (data) => {
+    const isEmail = data.username.includes("@");
+    const loginData = isEmail
+      ? { email: data.username, password: data.password }
+      : { username: data.username, password: data.password };
+      const response=await dispatch(userLogin(loginData));
+      const user=await dispatch(getCurrentUser());
+      
+      if(response?.type==="login/fulfilled" && user){
+        navigate("/")
+      }
+      
   };
+  if(load || loading){
+    return <LoginSkeleton/>
+  }
+  
+ 
   return (
-    <div
+    <div className='w-full  text-white p-3 flex justify-center items-start sm:mt-8'>
+      <div
       id="container"
       className=" flex max-w-5xl flex-col space-y-5 justify-center items-center border border-slate-600 p-3 mt-20"
     >
@@ -33,7 +62,6 @@ export const Login = () => {
           className="h-8"
           {...register("username", {
             required: "Username or email is required",
-           
           })}
         />
         {errors.username && (
@@ -73,12 +101,13 @@ export const Login = () => {
           <p className="font-medium">Don't have an account?</p>
           <Link
             to={"/signup"}
-            className="text-purple-600 cursor-pointer hover:opacity-70"
+            className="text-purple-600 cursor-pointer hover:opacity-70 ml-2"
           >
             SignUp
           </Link>
         </div>
       </form>
+    </div>
     </div>
   );
 };

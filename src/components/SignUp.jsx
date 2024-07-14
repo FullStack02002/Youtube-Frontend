@@ -1,25 +1,55 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Logo } from "./Logo.jsx";
 import { useForm } from "react-hook-form";
 import { GetImagePreview } from "./GetImagePreview.jsx";
 import { Input } from "./Input.jsx";
 import { Button } from "./Button.jsx";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useSelector,useDispatch } from "react-redux";
+import { createAccount,userLogin } from "../store/Slices/authSlice.js";
+import {SignupSkeleton} from '../skeletons'
+
 export const SignUp = () => {
+  const[load,setLoad]=useState(true);
+  
+  useEffect(()=>{
+    setTimeout(()=>{
+      setLoad(false)
+      },1000)
+  })
+  
   const {
     register,
     handleSubmit,
     formState: { errors },
     control,
   } = useForm();
+  const dispatch=useDispatch();
+  const navigate=useNavigate();
+  const loading=useSelector((state)=>state.auth?.loading);
 
-  const submit = (data) => {
-    console.log(data);
+  const submit = async (data) => {
+    const response=await dispatch(createAccount(data));
+    if(response?.payload?.success){
+      const username=data?.username;
+      const password=data?.password;
+      const loginResult= await dispatch(userLogin({username,password}))
+      if(loginResult?.type==="login/fulfilled"){
+        navigate('/');
+      }
+      else{
+        navigate('/login');
+      }
+    }
   };
+  if(loading || load){
+    return <SignupSkeleton/>
+  }
   return (
-    <div
+    <div className="className='w-full  text-white p-3 flex justify-center items-start'">
+      <div
       id="container"
-      className=" border border-slate-600 p-3 flex flex-col  items-center space-y-2"
+      className=" border border-slate-600 p-3 flex flex-col  items-center space-y-2 lg:mt-5"
     >
       <div className="flex items-center gap-2">
         <Logo />
@@ -153,12 +183,13 @@ export const SignUp = () => {
           <p className="font-medium">Already have an account?</p>
           <Link
             to={"/login"}
-            className="text-purple-600 cursor-pointer hover:opacity-70"
+            className="text-purple-600 cursor-pointer hover:opacity-70 ml-2"
           >
             Login
           </Link>
         </div>
       </form>
+    </div>
     </div>
   );
 };

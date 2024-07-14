@@ -1,5 +1,5 @@
 import React from "react";
-import { BASE_URL } from "./constant.js";
+import { Toaster } from "react-hot-toast";
 import { Route, Routes } from "react-router-dom";
 import { SignupPage, LoginPage } from "./pages";
 
@@ -14,6 +14,44 @@ const App = () => {
         ></Route>
         <Route path="/login" element={<LoginPage/>}></Route>
       </Routes>
+
+<Toaster
+  position="top-right"
+  reverseOrder={false}
+  toastOptions={{
+    duration: 3000,
+    style: {
+      borderRadius: '12px',
+      background: 'linear-gradient(135deg, #1e3a8a, #3b82f6)',
+      color: '#ffffff',
+      boxShadow: '0 4px 14px rgba(0, 0, 0, 0.15)',
+      padding: '16px',
+      fontFamily: 'Roboto, sans-serif',
+      fontSize: '16px',
+      display: 'flex',
+      alignItems: 'center',
+    },
+    success: {
+      icon: '✅',
+      style: {
+        borderRadius: '12px',
+        background: 'linear-gradient(135deg, #22c55e, #4ade80)',
+        color: '#ffffff',
+        borderLeft: '5px solid #16a34a',
+      },
+    },
+    error: {
+      icon: '❌',
+      style: {
+        borderRadius: '12px',
+        background: 'linear-gradient(135deg, #ef4444, #f87171)',
+        color: '#ffffff',
+        borderLeft: '5px solid #dc2626',
+      },
+    },
+  }}
+/>
+
     </>
   );
 };
