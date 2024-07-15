@@ -1,16 +1,28 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Toaster } from "react-hot-toast";
 import { Route, Routes } from "react-router-dom";
 import { SignupPage, LoginPage,HomePage} from "./pages";
+import { AuthLayot } from "./components";
+import { useDispatch } from "react-redux";
+import { getCurrentUser } from "./store/Slices/authSlice";
 
 const App = () => {
+  const dispatch=useDispatch();
+  useEffect(()=>{
+    dispatch(getCurrentUser());
+
+  },[dispatch])
   return (
     <>
       <Routes>
         <Route path="/signup" element={<SignupPage />}></Route>
         <Route
           path="/"
-          element={<HomePage/>}
+          element={
+            <AuthLayot authentication={false}>
+              <HomePage />
+            </AuthLayot>
+          }
         ></Route>
         <Route path="/login" element={<LoginPage/>}></Route>
       </Routes>

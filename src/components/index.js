@@ -7,4 +7,5 @@ import { Button } from "./Button";
 import { Input } from "./Input";
 import { LoginPopUp } from "./LoginPopUp";
 import {Logo} from "./Logo"
-export {SignUp,Login,Navbar,Search,Sidebar,Button,Input,LoginPopUp,Logo}
+import { AuthLayot } from "./AuthLayot";
+export {SignUp,Login,Navbar,Search,Sidebar,Button,Input,LoginPopUp,Logo,AuthLayot}
