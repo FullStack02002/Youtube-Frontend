@@ -12,11 +12,13 @@ import {SignupSkeleton} from '../skeletons'
 export const SignUp = () => {
   const[load,setLoad]=useState(true);
   
-  useEffect(()=>{
-    setTimeout(()=>{
-      setLoad(false)
-      },1000)
-  })
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      setLoad(false);
+    }, 1000);
+  
+    return () => clearTimeout(timeoutId);
+  }, []);
   
   const {
     register,
@@ -175,7 +177,7 @@ export const SignUp = () => {
         <Button
           type="submit"
           bgColor="bg-purple-700"
-          className="w-full hover:scale-110 duration-100 ease-in"
+          className="w-full hover:scale-110 duration-100 ease-in font-medium p-3 text-xl"
         >
           Signup
         </Button>

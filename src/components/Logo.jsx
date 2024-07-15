@@ -1,6 +1,6 @@
 import React from "react";
-import { IoLogoYoutube } from "react-icons/io";
 import { Link } from "react-router-dom";
+import { IoLogoYoutube } from "./icons";
 
 export const Logo = ({ size = "30" }) => {
   return (

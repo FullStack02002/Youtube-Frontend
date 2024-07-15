@@ -1,7 +1,7 @@
 import React from 'react'
 
 export const Button = ({
-    type="submit",
+    type="button",
     children,
     className="",
     bgColor="blue",
@@ -11,7 +11,7 @@ export const Button = ({
 
 }) => {
   return (
-    <button type={type} className={`${className} ${bgColor} ${textColor} font-medium p-3 text-xl`}>
+    <button type={type} className={`${className} ${bgColor} ${textColor} {...props}`}>
         {children}
     </button>
     
