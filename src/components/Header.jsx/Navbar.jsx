@@ -1,16 +1,33 @@
-import React from "react";
+import React, { useState } from "react";
 import { Logo } from "../Logo";
 import { Button } from "../Button";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { Search } from "./Search";
 import { useSelector, useDispatch } from "react-redux";
-import { CiSearch, SlMenu } from "../icons"
-
+import { userLogout } from "../../store/Slices/authSlice";
+import {
+  CiSearch,
+  SlMenu,
+  IoCloseCircleOutline,
+  BiLike,
+  HiOutlineVideoCamera,
+  IoMdLogOut,
+} from "../icons";
 
 export const Navbar = () => {
   const dispatch = useDispatch();
   const authStatus = useSelector((state) => state.auth?.status);
   const userAvatar = useSelector((state) => state.auth?.userData?.avatar);
+  const [ToggleMenu, setToggleMenu] = useState(false);
+
+  const handleClick = (e) => {
+    e.stopPropagation();
+    setToggleMenu((prev) => !prev);
+  };
+  const handleLogout=(e)=>{
+    e.stopPropagation();
+    dispatch(userLogout())
+  }
   return (
     <>
       <nav
@@ -21,63 +38,132 @@ export const Navbar = () => {
           <Logo />
         </div>
 
-        {/* search for small screen  */}
-        <div id="search-bar" className="w-[35%] border border-slate-600 hidden sm:block">
+        {/* search for large screen  */}
+        <div
+          id="search-bar"
+          className="w-[35%] border border-slate-600 hidden sm:block"
+        >
           {/* <input type='text' placeholder='Search' className='w-full px-2 py-2 bg-[#0E0F0F] outline-none focus:bg-[#222222] text-white' /> */}
           <Search />
         </div>
 
-
         {/* login and signup butons for larger screens */}
-        {authStatus?(
+        {authStatus ? (
           <div className="rounded-full sm:block hidden">
-          <img
-            src={userAvatar}
-            alt="Avatar"
-            className="rounded-full h-10 w-10 object-cover"
-          />
-        </div>
-        ):(
-          <div
-          id="button-containers"
-          className="text-white  hidden sm:block "
-        >
-          <div className="w-full flex flex-row gap-2 ">
-          <Link to="/login">
-            <Button
-              className="h-[50px] border border-slate-500 w-[100px]  p-2 hover:scale-110 duration-100 ease-in hover:bg-[#0F0F0F]"
-              bgColor="bg-[#222222]"
-            >
-              Log in
-            </Button>
-          </Link>
-          <Link to="/signup">
-            <Button
-              className="h-[50px] border border-slate-500 w-[100px]  p-2 hover:scale-110 duration-100 ease-in hover:bg-[#222222]"
-              bgColor="bg-[#0F0F0F]"
-            >
-              Sign Up
-            </Button>
-          </Link>
+            <img
+              src={userAvatar}
+              alt="Avatar"
+              className="rounded-full h-10 w-10 object-cover"
+            />
           </div>
-        </div>
+        ) : (
+          <div id="button-containers" className="text-white  hidden sm:block ">
+            <div className="w-full flex flex-row gap-2 ">
+              <Link to="/login">
+                <Button
+                  className="h-[50px] border border-slate-500 w-[100px]  p-2 hover:scale-110 duration-100 ease-in hover:bg-[#0F0F0F]"
+                  bgColor="bg-[#222222]"
+                >
+                  Log in
+                </Button>
+              </Link>
+              <Link to="/signup">
+                <Button
+                  className="h-[50px] border border-slate-500 w-[100px]  p-2 hover:scale-110 duration-100 ease-in hover:bg-[#222222]"
+                  bgColor="bg-[#0F0F0F]"
+                >
+                  Sign Up
+                </Button>
+              </Link>
+            </div>
+          </div>
         )}
 
-{/* hamburger and search icon for small screen */}
+        {/* hamburger and search icon for small screen */}
         <div className="block sm:hidden">
           <div className="text-white font-bold cursor-pointer flex gap-4 items-center">
-          <CiSearch size={30}
-            fontWeight={"bold"}
-          />
-          <SlMenu size={24}
-            fontWeight={"bold"}
-          />
-
+            <CiSearch size={30} fontWeight={"bold"} />
+            <SlMenu size={24} fontWeight={"bold"} onClick={handleClick} />
           </div>
         </div>
-        
-  
       </nav>
+
+      {/* navbar for smaller screen */}
+      <div
+        className={` fixed top-0 right-0 h-screen w-[70%] sm:hidden bg-[#0F0F0F] border-l rounded-lg  transition-all duration-300 ${
+          ToggleMenu ? "translate-x-0" : "translate-x-full"
+        } `}
+      >
+        <nav className="text-white border-b w-full pt-6 pb-6 flex items-center justify-between p-2">
+          <div id="nav-logo">
+            <Logo />
+          </div>
+          <IoCloseCircleOutline
+            size={35}
+            className="cursor-pointer"
+            onClick={handleClick}
+          />
+        </nav>
+
+        <div className=" h-[65%] pt-5 pb-5 p-3 flex flex-col  justify-between">
+          {/* header of toggle bar */}
+          <div className="  text-white  flex flex-col space-y-7">
+            <NavLink
+              to="/*"
+              className={({ isActive }) =>
+                `${
+                  isActive ? "text-purple-500" : ""
+                } flex flex-row items-center border border-slate-600 p-3`
+              }
+            >
+              <BiLike size={25} />
+              <span className="text-[16px] ml-4">Liked Videos</span>
+            </NavLink>
+            <NavLink
+              to="/*"
+              className={({ isActive }) =>
+                `${
+                  isActive ? "text-purple-500" : ""
+                } flex flex-row items-center border border-slate-600 p-3`
+              }
+            >
+              <HiOutlineVideoCamera size={25} />
+              <span className="text-[16px] ml-4">Liked Videos</span>
+            </NavLink>
+          </div>
+
+          {/* body of toggle bar */}
+          {!authStatus ? (
+            <div className="  text-white  flex flex-col space-y-7  ">
+              <NavLink
+                to="/login"
+                className={({ isActive }) =>
+                  `${
+                    isActive ? "text-purple-500" : ""
+                  }  border border-slate-600 flex flex-row justify-center p-3 bg-[#222222]`
+                }
+              >
+                <span className="text-[16px] ">Login</span>
+              </NavLink>
+              <NavLink
+                to="/signup"
+                className={({ isActive }) =>
+                  `${
+                    isActive ? "text-purple-500" : ""
+                  }  border border-slate-600 flex flex-row justify-center p-3`
+                }
+              >
+                <span className="text-[16px] ">Sign Up</span>
+              </NavLink>
+            </div>
+          ) : (
+            <div className="border border-slate-600 flex flex-row justify-center p-3 text-white cursor-pointer" onClick={handleLogout}>
+              <IoMdLogOut size={25} />
+              <span >Logout</span>
+            </div>
+          )}
+        </div>
+      </div>
     </>
   );
 };

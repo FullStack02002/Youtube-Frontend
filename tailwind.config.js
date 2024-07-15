@@ -7,5 +7,14 @@ export default {
   theme: {
     extend: {},
   },
-  plugins: [],
+  plugins: [
+    function({ addUtilities }) {
+      addUtilities({
+        '.transition-right': {
+          transition: 'right 0.3s ease-in-out',
+        },
+        
+      });
+    },
+  ],
 }
