@@ -19,20 +19,21 @@ export const Navbar = () => {
   const authStatus = useSelector((state) => state.auth?.status);
   const userAvatar = useSelector((state) => state.auth?.userData?.avatar);
   const [ToggleMenu, setToggleMenu] = useState(false);
+  const [ToggleSearch, SetToggleSearch] = useState(false);
 
   const handleClick = (e) => {
     e.stopPropagation();
     setToggleMenu((prev) => !prev);
   };
-  const handleLogout=(e)=>{
+  const handleLogout = (e) => {
     e.stopPropagation();
-    dispatch(userLogout())
-  }
+    dispatch(userLogout());
+  };
   return (
     <>
       <nav
         id="nav-container"
-        className="border-b-2 border-gray-500 flex justify-between h-20 items-center pl-3 pr-3 mx-auto max-w-screen-2xl sticky"
+        className="border-b-2 border-gray-500 flex justify-between h-20 items-center pl-3 pr-3 mx-auto max-w-screen-2xl sticky "
       >
         <div id="nav-logo">
           <Logo />
@@ -82,7 +83,8 @@ export const Navbar = () => {
         {/* hamburger and search icon for small screen */}
         <div className="block sm:hidden">
           <div className="text-white font-bold cursor-pointer flex gap-4 items-center">
-            <CiSearch size={30} fontWeight={"bold"} />
+            <CiSearch size={30} fontWeight={"bold"} onClick={(e)=>{e.stopPropagation()
+            SetToggleSearch((prev)=>!prev)}}/>
             <SlMenu size={24} fontWeight={"bold"} onClick={handleClick} />
           </div>
         </div>
@@ -157,13 +159,31 @@ export const Navbar = () => {
               </NavLink>
             </div>
           ) : (
-            <div className="border border-slate-600 flex flex-row justify-center p-3 text-white cursor-pointer" onClick={handleLogout}>
+            <div
+              className="border border-slate-600 flex flex-row justify-center p-3 text-white cursor-pointer"
+              onClick={handleLogout}
+            >
               <IoMdLogOut size={25} />
-              <span >Logout</span>
+              <span>Logout</span>
             </div>
           )}
         </div>
       </div>
+
+      {/* search bar for smaller screen */}
+     
+      <div className={`fixed top-0 w-full h-screen  sm:hidden backdrop-blur-sm pt-12 pl-3 transition-all duration-300 ${
+      ToggleSearch?"-translate-y-0":"-translate-y-full"}`}>
+        <div className=" w-[70%]  h-[46px]">
+          <Search button="true"></Search>
+        </div>
+        <div className="text-white fixed top-3 right-10 cursor-pointer" onClick={(e)=>{e.stopPropagation() 
+        SetToggleSearch((prev)=>!prev)}}>
+          <IoCloseCircleOutline size={25}/>
+        </div>
+       
+      </div>
+     
     </>
   );
 };
