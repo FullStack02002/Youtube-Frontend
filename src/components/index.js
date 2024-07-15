@@ -5,4 +5,6 @@ import {Search} from './Header.jsx/Search'
 import { Sidebar } from "./Header.jsx/Sidebar";
 import { Button } from "./Button";
 import { Input } from "./Input";
-export {SignUp,Login,Navbar,Search,Sidebar,Button,Input}
+import { LoginPopUp } from "./LoginPopUp";
+import {Logo} from "./Logo"
+export {SignUp,Login,Navbar,Search,Sidebar,Button,Input,LoginPopUp,Logo}

@@ -1,13 +1,14 @@
 import React from 'react'
-import { Navbar } from '../components'
-import { Sidebar } from '../components'
+import { Navbar,Sidebar,LoginPopUp } from '../components'
+
 
 
 export const HomePage = () => {
   return (
     <>
-        <Navbar/>
-        <Sidebar/>
+        {/* <Navbar/>
+        <Sidebar/> */}
+        <LoginPopUp/>
     </>
   )
 }

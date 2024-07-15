@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Logo } from "../Logo";
 import { Button } from "../Button";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink,useNavigate} from "react-router-dom";
 import { Search } from "./Search";
 import { useSelector, useDispatch } from "react-redux";
 import { userLogout } from "../../store/Slices/authSlice";
@@ -16,6 +16,7 @@ import {
 
 export const Navbar = () => {
   const dispatch = useDispatch();
+  const navigate=useNavigate();
   const authStatus = useSelector((state) => state.auth?.status);
   const userAvatar = useSelector((state) => state.auth?.userData?.avatar);
   const [ToggleMenu, setToggleMenu] = useState(false);
@@ -25,9 +26,12 @@ export const Navbar = () => {
     e.stopPropagation();
     setToggleMenu((prev) => !prev);
   };
-  const handleLogout = (e) => {
+  const handleLogout = async(e) => {
     e.stopPropagation();
-    dispatch(userLogout());
+   const response = await dispatch(userLogout());
+   if(response.type==="logout/fulfilled"){
+    navigate("/")
+   }
   };
   return (
     <>
