@@ -37,7 +37,7 @@ export const Navbar = () => {
     <>
       <nav
         id="nav-container"
-        className="border-b-2 border-gray-500 flex justify-between h-20 items-center pl-3 pr-3 mx-auto max-w-screen-2xl sticky "
+        className="border-b-2 border-gray-500 flex justify-between h-20 items-center pl-3 pr-3 mx-auto max-w-screen-2xl sticky top-0 bg-[#0F0F0F] z-10"
       >
         <div id="nav-logo">
           <Logo />
@@ -96,7 +96,7 @@ export const Navbar = () => {
 
       {/* navbar for smaller screen */}
       <div
-        className={` fixed top-0 right-0 h-screen w-[70%] sm:hidden bg-[#0F0F0F] border-l rounded-lg  transition-all duration-300 ${
+        className={` fixed top-0 right-0 h-screen w-[70%] sm:hidden bg-[#0F0F0F] border-l rounded-lg  transition-all duration-300 z-20 ${
           ToggleMenu ? "translate-x-0" : "translate-x-full"
         } `}
       >
@@ -176,7 +176,7 @@ export const Navbar = () => {
 
       {/* search bar for smaller screen */}
      
-      <div className={`fixed top-0 w-full h-screen  sm:hidden backdrop-blur-sm pt-12 pl-3 transition-all duration-300 ${
+      <div className={`fixed top-0 w-full h-screen  sm:hidden backdrop-blur-sm pt-12 pl-3 transition-all duration-300 z-20 ${
       ToggleSearch?"-translate-y-0":"-translate-y-full"}`}>
         <div className=" w-[70%]  h-[46px]">
           <Search button="true"></Search>
