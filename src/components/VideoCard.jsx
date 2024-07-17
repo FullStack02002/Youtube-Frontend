@@ -14,7 +14,7 @@ export const VideoCard = ({
 }) => {
   return (
     <>
-      <div className=" h-[340px] cursor-pointer basis-[95%] sm:basis-[90%] md:basis-[45%] lg:basis-[30%]">
+      <div className=" h-[340px] cursor-pointer basis-[95%] sm:basis-[90%] md:basis-[45%] lg:basis-[32%]">
         <div id="thumbnail-container" className="relative">
           <img
             src={thumbnail}
