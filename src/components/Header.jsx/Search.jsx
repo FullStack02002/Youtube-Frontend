@@ -1,12 +1,23 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Input,Button } from '../'
+import { useForm } from 'react-hook-form'
+import { useNavigate } from 'react-router-dom'
 
 export const Search = ({button}) => {
+
+  const {register,handleSubmit}=useForm();
+  const navigate=useNavigate();
+
+  const search=(data)=>{
+    const query=data?.query;
+    navigate(`search/${query}`)
+  }
   return (
     <>
-        <form>
+        <form onSubmit={handleSubmit(search)} >
         <Input
             placeholder="Search"
+            {...register("query",{required:true})}
         />
         {
           button && (
@@ -17,3 +28,4 @@ export const Search = ({button}) => {
     </>
   )
 }
+

@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import { Toaster } from "react-hot-toast";
 import { Route, Routes } from "react-router-dom";
-import { SignupPage, LoginPage, HomePage } from "./pages";
-import { AuthLayot } from "./components";
+import { SignupPage, LoginPage, HomePage, SearchPage } from "./pages";
+import { AuthLayot, Layout } from "./components";
 import { useDispatch, useSelector } from "react-redux";
 import { getCurrentUser } from "./store/Slices/authSlice";
 
@@ -15,16 +15,26 @@ const App = () => {
   return (
     <>
       <Routes>
-        <Route path="/signup" element={<SignupPage />}></Route>
-        <Route
-          path="/"
-          element={
-            <AuthLayot authentication={false}>
-              <HomePage />
-            </AuthLayot>
-          }
-        ></Route>
-        <Route path="/login" element={<LoginPage />}></Route>
+        <Route path="/" element={<Layout />}>
+          <Route
+            path=""
+            element={
+              <AuthLayot authentication={false}>
+                <HomePage />
+              </AuthLayot>
+            }
+          />
+          <Route
+            path="/search/:query"
+            element={
+              <AuthLayot authentication={false}>
+                <SearchPage />
+              </AuthLayot>
+            }
+          />
+        </Route>
+        <Route path="/signup" element={<SignupPage />} />
+        <Route path="/login" element={<LoginPage />} />
       </Routes>
 
       <Toaster

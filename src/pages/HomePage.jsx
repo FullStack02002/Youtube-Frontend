@@ -6,6 +6,7 @@ import { VideoCard } from "../components";
 import { HomePageSkeleton } from "../skeletons";
 
 export const HomePage = () => {
+  console.log("rendered");
   const [load, setLoad] = useState(true);
   const [page, setPage] = useState(1);
   const [isFetching, setisFetching] = useState(true);
@@ -18,9 +19,9 @@ export const HomePage = () => {
     const timeoutId = setTimeout(() => {
       setLoad(false);
     }, 1000);
-    if (!videos || videos.length === 0) {
-      dispatch(getAllVideos({}));
-    }
+
+    dispatch(getAllVideos({}));
+
     return () => {
       clearTimeout(timeoutId);
       dispatch(makeVideosNull());
@@ -30,7 +31,7 @@ export const HomePage = () => {
   useEffect(() => {
     const handleInfiniteScroll = () => {
       if (
-        window.innerHeight + document.documentElement.scrollTop + 100 >=
+        window.innerHeight + document.documentElement.scrollTop + 1 >=
           document.documentElement.scrollHeight &&
         !loading &&
         hasNextPage
@@ -50,7 +51,7 @@ export const HomePage = () => {
     if (!loading && isFetching) {
       const timeoutId = setTimeout(() => {
         setisFetching(false);
-      }, 4000); // Ensuring the loader hides after 1 second
+      }, 4000);
 
       return () => clearTimeout(timeoutId);
     }
@@ -58,33 +59,29 @@ export const HomePage = () => {
 
   return (
     <>
-      <div className="max-w-screen-2xl mx-auto">
-        <Navbar />
-        <Sidebar />
-        <div
-          id="video-container"
-          className="  w-full sm:w-[85%]  sm:ml-[123px] xl:ml-[226px] sm:p-[16px] flex flex-col gap-2  sm:flex sm:flex-row  flex-wrap  sm:gap-5 lg:pl-[40px] lg:gap-19 xl:gap-4 xl:pt-[16px] xl:p-[0] xl:pl-[15px]"
-        >
-          {load || loading
-            ? videos.map((_, index) => <HomePageSkeleton key={index} />)
-            : videos.map((video) => (
-                <VideoCard
-                  key={video._id}
-                  title={video.title}
-                  avatar={video.owner?.avatar}
-                  thumbnail={video.thumbnail}
-                  createdAt={video.createdAt}
-                  views={video.views}
-                  channel={video.owner?.username}
-                  videoId={video._id}
-                  duration={video.duration}
-                />
-              ))}
-          {isFetching &&
-            Array.from({ length: 6 }, (_, index) => (
-              <HomePageSkeleton key={`loading-skeleton-${index}`} />
+      <div
+        id="video-container"
+        className="   flex flex-col gap-2  sm:flex sm:flex-row  flex-wrap  sm:gap-5  lg:gap-4 xl:gap-4 "
+      >
+        {load || loading
+          ? videos.map((_, index) => <HomePageSkeleton key={index} />)
+          : videos.map((video) => (
+              <VideoCard
+                key={video._id}
+                title={video.title}
+                avatar={video.owner?.avatar}
+                thumbnail={video.thumbnail}
+                createdAt={video.createdAt}
+                views={video.views}
+                channel={video.owner?.username}
+                videoId={video._id}
+                duration={video.duration}
+              />
             ))}
-        </div>
+        {isFetching &&
+          Array.from({ length: 6 }, (_, index) => (
+            <HomePageSkeleton key={`loading-skeleton-${index}`} />
+          ))}
       </div>
     </>
   );

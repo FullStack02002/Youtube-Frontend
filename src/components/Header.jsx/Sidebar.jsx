@@ -145,6 +145,7 @@ export const Sidebar = () => {
           </NavLink>
         ))}
       </div>
+      
     </>
   );
 };

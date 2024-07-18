@@ -9,4 +9,6 @@ import { LoginPopUp } from "./LoginPopUp";
 import {Logo} from "./Logo"
 import { AuthLayot } from "./AuthLayot";
 import { VideoCard } from "./VideoCard";
-export {SignUp,Login,Navbar,Search,Sidebar,Button,Input,LoginPopUp,Logo,AuthLayot,VideoCard}
+import { SearchVideoCard } from "./SearchVideoCard";
+import { Layout } from "./Layout";
+export {Layout,SignUp,Login,Navbar,Search,Sidebar,Button,Input,LoginPopUp,Logo,AuthLayot,VideoCard,SearchVideoCard}
