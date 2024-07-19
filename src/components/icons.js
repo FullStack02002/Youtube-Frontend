@@ -21,6 +21,7 @@ import { FaRegEye, FaRegHeart } from "react-icons/fa";
 import { MdOutlineCloudUpload } from "react-icons/md";
 import { IoLogoYoutube } from "react-icons/io";
 import { IoMdLogOut } from "react-icons/io";
+import { FaFilter } from "react-icons/fa";
 
 
 export {
@@ -47,5 +48,6 @@ export {
     RxAvatar,
     FaRegEye,
     FaRegHeart,
-    MdOutlineCloudUpload
+    MdOutlineCloudUpload,
+    FaFilter
 }

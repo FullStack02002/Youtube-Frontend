@@ -51,7 +51,7 @@ export const HomePage = () => {
     if (!loading && isFetching) {
       const timeoutId = setTimeout(() => {
         setisFetching(false);
-      }, 4000);
+      }, 5000);
 
       return () => clearTimeout(timeoutId);
     }
