@@ -1,6 +1,7 @@
 import React from "react";
 import { formatDuration } from "../helpers/formatDuration";
 import { timeAgo } from "../helpers/timeAgo";
+import { useNavigate } from "react-router-dom";
 
 export const VideoCard = ({
   title,
@@ -11,10 +12,16 @@ export const VideoCard = ({
   channel,
   views,
   createdAt,
+  ownerId,
 }) => {
+  const navigate=useNavigate();
   return (
     <>
-      <div className=" h-[340px] cursor-pointer basis-[95%] sm:basis-[90%] md:basis-[48%] lg:basis-[32%]">
+      <div onClick={(e)=>{
+        e.stopPropagation();
+        navigate(`/watch/${videoId}/${ownerId}`)
+
+      }} className=" h-[340px] cursor-pointer basis-[95%] sm:basis-[90%] md:basis-[48%] lg:basis-[32%]">
         <div id="thumbnail-container" className="relative">
           <img
             src={thumbnail}

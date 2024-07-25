@@ -115,6 +115,7 @@ export const SearchPage = () => {
             title={items.title}
             videoId={items._id}
             views={items.views}
+            ownerId={items.owner._id}
           />
         ))}
       </div>

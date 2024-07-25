@@ -6,7 +6,6 @@ import { VideoCard } from "../components";
 import { HomePageSkeleton } from "../skeletons";
 
 export const HomePage = () => {
-  console.log("rendered");
   const [load, setLoad] = useState(true);
   const [page, setPage] = useState(1);
   const [isFetching, setisFetching] = useState(true);
@@ -76,6 +75,7 @@ export const HomePage = () => {
                 channel={video.owner?.username}
                 videoId={video._id}
                 duration={video.duration}
+                ownerId={video.owner._id}
               />
             ))}
         {isFetching &&

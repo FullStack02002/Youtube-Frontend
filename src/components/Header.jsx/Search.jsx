@@ -10,7 +10,7 @@ export const Search = ({button}) => {
 
   const search=(data)=>{
     const query=data?.query;
-    navigate(`search/${query}`)
+    navigate(`/search/${query}`)
   }
   return (
     <>

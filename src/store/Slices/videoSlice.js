@@ -37,6 +37,20 @@ export const getAllVideos = createAsyncThunk(
   }
 );
 
+export const getVideoById=createAsyncThunk(
+  "getVideoById",
+  async({videoId})=>{
+    try {
+      const response=await axiosInstance.get(`/video/v/${videoId}`);
+      return response.data.data;
+      
+    } catch (error) {
+      toast.error(error?.response?.data?.error);
+      throw error;
+    }
+  }
+)
+
 
 
 const videoSlice = createSlice({
@@ -45,7 +59,11 @@ const videoSlice = createSlice({
   reducers: {
     makeVideosNull:(state)=>{
         state.videos.docs=[];
+    },
+    makeVideoNull:(state)=>{
+      state.video=null;
     }
+
   },
   extraReducers:(builder)=>{
    builder.addCase(getAllVideos.pending,(state)=>{
@@ -56,12 +74,19 @@ const videoSlice = createSlice({
     state.videos.docs=[...state.videos.docs,...action.payload.docs];
     state.videos.hasNextPage=action.payload.hasNextPage;
    })
+   builder.addCase(getVideoById.pending,(state)=>{
+    state.loading=true;
+   })
+   builder.addCase(getVideoById.fulfilled,(state,action)=>{
+    state.loading=false;
+    state.video=action.payload;
+   })
   }
 });
 
 
 
-export const {makeVideosNull}=videoSlice.actions;
+export const {makeVideosNull,makeVideoNull}=videoSlice.actions;
 
 
 

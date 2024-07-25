@@ -1,11 +1,16 @@
 import React from "react";
 import { formatDuration } from "../helpers/formatDuration";
 import { timeAgo } from "../helpers/timeAgo";
+import { useNavigate } from "react-router-dom";
 
 
-export const SearchVideoCard = ({thumbnail,duration,createdAt,avatar,username,videoId,title,views,description}) => {
+export const SearchVideoCard = ({thumbnail,duration,createdAt,avatar,username,videoId,title,views,description,ownerId}) => {
+  const navigate=useNavigate();
   return (
-    <div className="w-full  md:h-[280.55px] sm:flex sm:flex-col  md:flex md:flex-row  md:gap-3 cursor-pointer ">
+    <div onClick={(e)=>{
+      e.stopPropagation();
+      navigate(`/watch/${videoId}/${ownerId}`)
+    }} className="w-full  md:h-[280.55px] sm:flex sm:flex-col  md:flex md:flex-row  md:gap-3 cursor-pointer ">
       <div className="h-[200px] sm:h-[350px] md:basis-[60%] lg:basis-[40%] md:h-full  relative">
         <img src={thumbnail} className="w-full h-full sm:rounded-xl" />
         <span className="text-sm rounded-lg text-white py-1 px-2 bg-black absolute bottom-2 right-2">
