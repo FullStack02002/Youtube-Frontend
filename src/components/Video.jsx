@@ -5,7 +5,7 @@ export const Video = ({src,thumbnail}) => {
     <video
                 src={src}
                 poster={thumbnail}
-                autoPlay
+                
                 controls
                 playsInline
                 className="  h-[460px] w-full object-cover rounded-xl"
