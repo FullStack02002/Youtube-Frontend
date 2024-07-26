@@ -55,7 +55,7 @@ export const VideoDetail = () => {
                   <h2 className="text-white font-bold">
                     {video?.owner?.username}
                   </h2>
-                  <p className="text-[#AAAAAA] text-[14px]">{`${video?.owner?.subscibersCount} subscribers`}</p>
+                  <p className="text-[#AAAAAA] text-[14px]">{`${video?.owner?.subscribersCount} subscribers`}</p>
                 </div>
                 <div className="mt-[6px]">
                   <Button className="text-white font-bold text-[14px] bg-purple-500 border-none outline-none h-[36px]  w-[95px] rounded-full">
