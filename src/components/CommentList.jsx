@@ -7,6 +7,7 @@ import { BsEmojiGrin } from "./icons";
 import { Button } from "./Button";
 import data from '@emoji-mart/data'
 import Picker from '@emoji-mart/react'
+import { Likes } from "../components";
 
 export const CommentList = ({
   avatar,
@@ -16,6 +17,8 @@ export const CommentList = ({
   ownersId,
   commentId,
   videoOwner,
+  isLiked,
+  likesCount
 }) => {
   const user = useSelector((state) => state.auth?.userData);
   const [text, setText] = useState(content);
@@ -73,7 +76,16 @@ export const CommentList = ({
             </span>
           </div>
           <p className="text-white font-semibold mt-[5px]">{content}</p>
+          <div>
+          <div className="flex flex-row  w-[10%] mt-[10px]  justify-center ">
+          <Likes commentId={commentId} size={20} isLiked={isLiked} likesCount={likesCount}/>
+
+          </div>
+
+          </div>
         </div>
+
+        {/* three dots for edit and delete comment */}
         <div
           className={`cursor-pointer ${
             isOwner || isvideoOwner ? "block" : "hidden"

@@ -107,6 +107,8 @@ export const VideoDetail = () => {
                     ownersId={comment?.owner?._id}
                     commentId={comment?._id}
                     videoOwner={video?.owner?._id}
+                    isLiked={comment?.isLiked}
+                    likesCount={comment?.likesCount}
                   />
                 ))}
               </div>
