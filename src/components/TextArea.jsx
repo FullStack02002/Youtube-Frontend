@@ -14,6 +14,7 @@ export const TextArea = ({
   videoId,
   avatarHeight,
   avatarWidth,
+  placeholder
 }) => {
   const user = useSelector((state) => state.auth.userData);
   const dispatch=useDispatch();
@@ -42,6 +43,8 @@ export const TextArea = ({
       };
     }
   }, [text]);
+
+
   
   const handleChange=(e)=>{
     setText(e.target.value);
@@ -53,8 +56,14 @@ export const TextArea = ({
     if(comment){
       dispatch(createAComment({content:text,videoId:videoId,avatar:user.avatar,username:user.username,_id:user._id}));
       // reason for sending avatar is written in comment slice
+      setOpen(false)
     }
     setText("");
+   
+   
+    if(openPicker){
+      setopenPicker(false);
+    }
 
   }
 
@@ -70,7 +79,7 @@ export const TextArea = ({
         <form onSubmit={handleSubmit}>
           <textarea
             className="text-no-resize w-full text-white outline-none  bg-[#0F0F0F] min-h-[50px] border-b border-b-[#AAAAAA] placeholder-gray-400"
-            placeholder="Add a comment..."
+            placeholder={placeholder}
             ref={textareaRef}
             onClick={(e)=>{
               e.stopPropagation();
@@ -93,7 +102,7 @@ export const TextArea = ({
               <div className={`z-10 absolute ${openPicker?"block":"hidden"} `}>
                 <Picker data={data} onEmojiSelect={(e)=>{
                   setText((prev)=>prev+e.native);
-                  setopenPicker((prev)=>!prev);
+                  // setopenPicker((prev)=>!prev);
                 }}/>
               </div>
             </div>
@@ -104,6 +113,7 @@ export const TextArea = ({
                 e.stopPropagation();
                 setOpen(false);
                 setText("")
+                
               }}>
               <Button className="font-semibold  p-[10px] w-[75px] rounded-full  text-[14px] hover:bg-[#222222]">Cancel</Button>
               </div>

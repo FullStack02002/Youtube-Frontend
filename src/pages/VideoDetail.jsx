@@ -92,6 +92,7 @@ export const VideoDetail = () => {
                 videoId={video?._id}
                 avatarHeight={"40px"}
                 avatarWidth={"40px"}
+                placeholder="Add a comment..."
               />
 
               {/* comment list */}
@@ -105,6 +106,7 @@ export const VideoDetail = () => {
                     createdAt={comment?.createdAt}
                     ownersId={comment?.owner?._id}
                     commentId={comment?._id}
+                    videoOwner={video?.owner?._id}
                   />
                 ))}
               </div>

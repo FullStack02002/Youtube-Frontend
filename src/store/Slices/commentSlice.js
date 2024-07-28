@@ -33,14 +33,14 @@ export const createAComment=createAsyncThunk(
 
 export const editAComment=createAsyncThunk(
     "editAComment",
-    async({commentId,content})=>{
+    async({commentId,content,avatar,username,_id,createdAt})=>{
         try {
             const response=await axiosInstance.patch(`/comment/c/${commentId}`,{
                 content
             })
             toast.success(response.data?.message)
         
-            return response.data.data;
+            return {commentId,content,owner:{username,avatar,_id},createdAt};
             
         } catch (error) {
             toast.error(error?.response?.data?.error);
@@ -94,6 +94,12 @@ const commentSlice=createSlice({
         builder.addCase(deleteAComment.fulfilled,(state,action)=>{
             state.comments=state.comments.filter((comment)=>comment._id!==action.payload.commentId)
             state.totalComments--;
+        }),
+        builder.addCase(editAComment.fulfilled,(state,action)=>{
+            const {commentId}=action.payload;
+            const index=state.comments.findIndex((comment)=>comment._id===commentId);
+            state.comments.splice(index,1,action.payload);
+            console.log(action.payload)
         })
         builder.addCase(getVideoComments.pending,(state)=>{
             state.loading=true;
