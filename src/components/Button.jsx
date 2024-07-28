@@ -6,12 +6,13 @@ export const Button = ({
     className="",
     bgColor="blue",
     textColor="text-white",
+    isActive=false,
     ...props
 
 
 }) => {
   return (
-    <button type={type} className={`${className} ${bgColor} ${textColor} {...props}`}>
+    <button type={type} className={`${className} ${bgColor} ${textColor} {...props}`} disabled={isActive}>
         {children}
     </button>
     

@@ -12,6 +12,10 @@ import { VideoCard } from "./VideoCard";
 import { SearchVideoCard } from "./SearchVideoCard";
 import { Layout } from "./Layout";
 import { Video } from "./Video";
+import { Description } from "./Description";
+import { Likes } from "./Likes";
+import {TextArea} from "./TextArea"
+import { CommentList } from "./CommentList";
 export {
   Layout,
   SignUp,
@@ -26,5 +30,9 @@ export {
   AuthLayot,
   VideoCard,
   SearchVideoCard,
-  Video
+  Video,
+  Description,
+  Likes,
+  TextArea,
+  CommentList
 };

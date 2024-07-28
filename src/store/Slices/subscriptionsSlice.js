@@ -11,7 +11,7 @@ const initialState={
 
 export const toggleSubscriptions=createAsyncThunk(
     "toggleSubscriptions",
-    async(channelId)=>{
+    async({channelId})=>{
         try{
             const response=await axiosInstance.post(`subscriptions/c/${channelId}`)
             return response.data.data.subscribed;
@@ -75,7 +75,7 @@ const subscriptionSlice=createSlice({
         builder.addCase(getSubscribedChannels.pending,(state)=>{
             state.loading=true;
         })
-        builder.addCase(getSubscribedChannels,(state,action)=>{
+        builder.addCase(getSubscribedChannels.fulfilled,(state,action)=>{
             state.loading=false;
             state.subscribedChannels=action.payload;
         })

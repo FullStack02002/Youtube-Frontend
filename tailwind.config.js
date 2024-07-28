@@ -13,6 +13,9 @@ export default {
         '.transition-right': {
           transition: 'right 0.3s ease-in-out',
         },
+        '.text-no-resize':{
+          resize: 'none'
+        }
         
       });
     },

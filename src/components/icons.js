@@ -22,6 +22,12 @@ import { MdOutlineCloudUpload } from "react-icons/md";
 import { IoLogoYoutube } from "react-icons/io";
 import { IoMdLogOut } from "react-icons/io";
 import { FaFilter } from "react-icons/fa";
+import { BsEmojiGrin } from "react-icons/bs";
+import { BsThreeDotsVertical } from "react-icons/bs";
+import { MdEdit } from "react-icons/md";
+import { MdDelete } from "react-icons/md";
+
+
 
 
 export {
@@ -49,5 +55,9 @@ export {
     FaRegEye,
     FaRegHeart,
     MdOutlineCloudUpload,
-    FaFilter
+    FaFilter,
+    BsEmojiGrin,
+    BsThreeDotsVertical,
+    MdEdit,
+    MdDelete
 }

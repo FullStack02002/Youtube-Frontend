@@ -5,17 +5,22 @@ import toast from "react-hot-toast";
 const initialState={
     loading:false,
     comments:[],
-    totalComments:null
+    totalComments:0
 }
 
 export const createAComment=createAsyncThunk(
     "createAComment",
-    async({videoId,content})=>{
+    async({videoId,content,avatar,username,_id})=>{
         try{
             const response=await axiosInstance.post(`/comment/${videoId}`,{
                 content,
             })
-            return response.data.data;
+            toast.success(response.data?.message);
+            const data=response.data.data;
+            return {...data,owner:{avatar,username,_id}};
+            // sending avatar because when comment is created we have to show it on frontend instanly but in response avatar was not present
+            // same reason for username and _id
+            
 
         }
         catch(error){
@@ -45,7 +50,7 @@ export const editAComment=createAsyncThunk(
 )
 export const deleteAComment=createAsyncThunk(
     "deleteAComment",
-    async(commentId)=>{
+    async({commentId})=>{
         try{
             const response=await axiosInstance.delete(`/comment/c/${commentId}`);
             toast.success(response.data?.message);
@@ -75,10 +80,15 @@ export const getVideoComments=createAsyncThunk(
 const commentSlice=createSlice({
     name:"comment",
     initialState,
-    reducers:{},
+    reducers:{
+        makeCommentsEmpty:(state)=>{
+            state.comments=[];
+        }
+    },
     extraReducers:(builder)=>{
         builder.addCase(createAComment.fulfilled,(state,action)=>{
             state.comments.unshift(action.payload)
+            console.log(state.comments);
             state.totalComments++;
         }),
         builder.addCase(deleteAComment.fulfilled,(state,action)=>{
@@ -95,6 +105,6 @@ const commentSlice=createSlice({
         })
     }
 })
-
+export const {makeCommentsEmpty} =commentSlice.actions;
 
 export default commentSlice.reducer;

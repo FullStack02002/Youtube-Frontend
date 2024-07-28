@@ -1,10 +1,19 @@
-import React, { useEffect } from "react";
-import { Navbar, Video, Button } from "../components";
+import React, { useEffect, useRef } from "react";
+import {
+  Navbar,
+  Video,
+  Description,
+  TextArea,
+  CommentList,
+} from "../components";
 import { useParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { timeAgo } from "../helpers/timeAgo";
 import { formatDuration } from "../helpers/formatDuration";
-import { BiSolidLike, BiSolidDislike } from "../components/icons";
+import {
+  getVideoComments,
+  makeCommentsEmpty,
+} from "../store/Slices/commentSlice";
 import {
   getVideoById,
   makeVideoNull,
@@ -20,13 +29,19 @@ export const VideoDetail = () => {
 
   const video = useSelector((state) => state.video?.video);
   const videos = useSelector((state) => state.video?.videos.docs);
+  const totalComments = useSelector((state) => state.comment?.totalComments);
+  const comments = useSelector((state) => state.comment?.comments);
+
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     dispatch(getVideoById({ videoId }));
+    dispatch(getVideoComments({ videoId }));
     dispatch(getAllVideos({ userId }));
     return () => {
       dispatch(makeVideoNull());
       dispatch(makeVideosNull());
+      dispatch(makeCommentsEmpty());
     };
   }, [dispatch, videoId, userId]);
 
@@ -36,35 +51,67 @@ export const VideoDetail = () => {
       <div className="max-w-screen-2xl mx-auto">
         <div
           id="container"
-          className="  h-[1000px] mt-[20px] ml-[60px] mr-[60px] flex flex-row gap-[1%]"
+          className="   mt-[20px] ml-[60px] mr-[60px] flex flex-row gap-[1%]"
         >
-          <div id="video-comment-container" className=" h-[1000px] basis-[70%]">
+          <div id="video-comment-container" className="  basis-[70%]">
+            {/* video player */}
             <Video src={video?.videoFile} thumbnail={video?.thumbnail} />
+
+            {/* video title */}
             <h1 className="text-white font-bold text-xl mt-2">
               {video?.title}
             </h1>
-            <div className=" w-full flex flex-row justify-between pt-[10px] pb-[10px] border">
-              <div className="flex flex-row gap-4">
-                <div>
-                  <img
-                    src={video?.owner?.avatar}
-                    className="w-[40px] h-[40px] rounded-full"
+
+            {/* description */}
+            <Description
+              channelId={video?.owner?._id}
+              avatar={video?.owner?.avatar}
+              username={video?.owner?.username}
+              subscribersCount={video?.owner?.subscribersCount}
+              isSubscribed={video?.owner?.isSubscribed}
+              isLiked={video?.isLiked}
+              likesCount={video?.likesCount}
+              videoId={video?._id}
+              views={video?.views}
+              createdAt={video?.createdAt}
+              Description={video?.description}
+            />
+
+            {/* comment section */}
+            <div className="w-full  mt-[40px] ">
+              <div>
+                <p className="text-white text-xl font-semibold">
+                  {totalComments} Comments
+                </p>
+              </div>
+
+              {/* Add a Comment Text Area */}
+
+              <TextArea
+                comment={true}
+                videoId={video?._id}
+                avatarHeight={"40px"}
+                avatarWidth={"40px"}
+              />
+
+              {/* comment list */}
+              <div className="w-full  mt-[20px]  flex flex-col gap-2">
+                {comments.map((comment) => (
+                  <CommentList
+                    key={comment?._id}
+                    avatar={comment?.owner?.avatar}
+                    username={comment?.owner?.username}
+                    content={comment?.content}
+                    createdAt={comment?.createdAt}
+                    ownersId={comment?.owner?._id}
+                    commentId={comment?._id}
                   />
-                </div>
-                <div className="flex flex-col ">
-                  <h2 className="text-white font-bold">
-                    {video?.owner?.username}
-                  </h2>
-                  <p className="text-[#AAAAAA] text-[14px]">{`${video?.owner?.subscribersCount} subscribers`}</p>
-                </div>
-                <div className="mt-[6px]">
-                  <Button className="text-white font-bold text-[14px] bg-purple-500 border-none outline-none h-[36px]  w-[95px] rounded-full">
-                    Subscribe
-                  </Button>
-                </div>
+                ))}
               </div>
             </div>
           </div>
+
+          {/* more videos container */}
           <div className=" basis-[29%] ">
             <h1 className="text-white text-center font-bold text-xl">{`More From ${video?.owner?.username}`}</h1>
             <div
