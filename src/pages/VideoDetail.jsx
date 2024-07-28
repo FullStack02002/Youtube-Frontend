@@ -93,6 +93,7 @@ export const VideoDetail = () => {
                 avatarHeight={"40px"}
                 avatarWidth={"40px"}
                 placeholder="Add a comment..."
+                ButtonText="Comment"
               />
 
               {/* comment list */}

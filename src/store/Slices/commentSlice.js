@@ -33,14 +33,14 @@ export const createAComment=createAsyncThunk(
 
 export const editAComment=createAsyncThunk(
     "editAComment",
-    async({commentId,content,avatar,username,_id,createdAt})=>{
+    async({commentId,content,avatar,username,_id,createdAt,likesCount,isLiked})=>{
         try {
             const response=await axiosInstance.patch(`/comment/c/${commentId}`,{
                 content
             })
             toast.success(response.data?.message)
         
-            return {commentId,content,owner:{username,avatar,_id},createdAt};
+            return {commentId,content,owner:{username,avatar,_id},createdAt,likesCount,isLiked};
             
         } catch (error) {
             toast.error(error?.response?.data?.error);

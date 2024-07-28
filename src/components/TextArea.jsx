@@ -14,7 +14,9 @@ export const TextArea = ({
   videoId,
   avatarHeight,
   avatarWidth,
-  placeholder
+  placeholder,
+  ButtonText,
+  setopenReply
 }) => {
   const user = useSelector((state) => state.auth.userData);
   const dispatch=useDispatch();
@@ -70,9 +72,10 @@ export const TextArea = ({
   return (
     <div className="w-full  flex flex-row mt-[20px] gap-4">
       <div>
-        <img
+      <img
           src={user?.avatar}
-          className={`w-[${avatarWidth}] h-[${avatarHeight}] rounded-full`}
+          style={{ width: avatarWidth, height: avatarHeight }}
+          className="rounded-full"
         />
       </div>
       <div className="basis-[94%] ">
@@ -113,12 +116,15 @@ export const TextArea = ({
                 e.stopPropagation();
                 setOpen(false);
                 setText("")
+                if(setopenReply){
+                  setopenReply(false)
+                }
                 
               }}>
               <Button className="font-semibold  p-[10px] w-[75px] rounded-full  text-[14px] hover:bg-[#222222]">Cancel</Button>
               </div>
               <div>
-              <Button className={`font-semibold  p-[10px] w-[85px] rounded-full  text-[14px]${isCommentButtonActive?" text-white bg-purple-500" :" text-gray-500 bg-[#272727]"}  `} type="submit" isActive={!isCommentButtonActive}>Comment</Button>
+              <Button className={`font-semibold  p-[10px] w-[85px] rounded-full  text-[14px]${isCommentButtonActive?" text-white bg-purple-500" :" text-gray-500 bg-[#272727]"}  `} type="submit" isActive={!isCommentButtonActive}>{ButtonText}</Button>
             
               </div>
             </div>

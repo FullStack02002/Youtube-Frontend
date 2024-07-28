@@ -51,7 +51,7 @@ export const Likes = ({
   return (
     <>
       <div
-        className={`flex flex-row  ${(commentId || replyId || tweetId) ? "h-[25px]" :""} ${videoId?"border-r":""} gap-2 px-1 basis-[60%] ` }
+        className={`flex flex-row  cursor-pointer ${(commentId || replyId || tweetId) ? "h-[25px]" :""} ${videoId?"border-r":""} gap-2 px-1 basis-[60%] ` }
         onClick={handleLike}
       >
         <BiSolidLike

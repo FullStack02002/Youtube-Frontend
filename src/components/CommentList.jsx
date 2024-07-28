@@ -5,9 +5,9 @@ import { useSelector, useDispatch } from "react-redux";
 import { deleteAComment, editAComment } from "../store/Slices/commentSlice";
 import { BsEmojiGrin } from "./icons";
 import { Button } from "./Button";
-import data from '@emoji-mart/data'
-import Picker from '@emoji-mart/react'
-import { Likes } from "../components";
+import data from "@emoji-mart/data";
+import Picker from "@emoji-mart/react";
+import { Likes,TextArea} from "../components";
 
 export const CommentList = ({
   avatar,
@@ -18,20 +18,21 @@ export const CommentList = ({
   commentId,
   videoOwner,
   isLiked,
-  likesCount
+  likesCount,
 }) => {
   const user = useSelector((state) => state.auth?.userData);
   const [text, setText] = useState(content);
   const [openPicker, setopenPicker] = useState(false);
   const [open, setopen] = useState(false);
-  const[openEdit,setopenEdit]=useState(false);
-  const[textAreaOpen,setTextAreaOpen]=useState(false);
+  const [openEdit, setopenEdit] = useState(false);
+  const [textAreaOpen, setTextAreaOpen] = useState(false);
+  const [openReply,setopenReply]=useState(false);
   const dispatch = useDispatch();
   const isOwner = user?._id === ownersId;
   const isvideoOwner = videoOwner === user?._id;
   const textareaRef = useRef(null);
-  const isCommentButtonActive = text.trim().length > 0;
-
+  const isCommentButtonActive =
+    text.trim().length > 0 && text.trim() !== content;
 
   useEffect(() => {
     const textarea = textareaRef.current;
@@ -52,36 +53,70 @@ export const CommentList = ({
       };
     }
   }, [text]);
-  const handleChange=(e)=>{
+  const handleChange = (e) => {
     setText(e.target.value);
-  }
-  const handleSubmit=(e)=>{
+  };
+  const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(editAComment({content:text,commentId,avatar,username,_id:ownersId,createdAt}))
-
-  }
+    dispatch(
+      editAComment({
+        content: text,
+        commentId,
+        avatar,
+        username,
+        _id: ownersId,
+        createdAt,
+        likesCount,
+        isLiked,
+      })
+    );
+  };
 
   return (
     <>
-    {/* comment*/}
-      <div className={`${openEdit?"hidden":"block"} flex flex-row w-full  gap-4 p-[10px]`}>
+      {/* comment*/}
+      <div
+        className={`${
+          openEdit ? "hidden" : "block"
+        } flex flex-row w-full  gap-4 p-[10px]`}
+      >
         <div>
           <img src={avatar} className="w-[40px] h-[40px] rounded-full" />
         </div>
         <div className="basis-[94%]">
+
+        {/* heading time */}
           <div className="flex flex-row gap-1">
             <h3 className="text-white font-bold text-[14px]">@{username}</h3>
             <span className="text-[#AAAAAA] text-[14px]">
               {timeAgo(createdAt)}
             </span>
           </div>
-          <p className="text-white font-semibold mt-[5px]">{content}</p>
-          <div>
-          <div className="flex flex-row  w-[10%] mt-[10px]  justify-center ">
-          <Likes commentId={commentId} size={20} isLiked={isLiked} likesCount={likesCount}/>
 
+          {/* content */}
+          <p className="text-white font-semibold mt-[5px]">{content}</p>
+
+          {/* likes and reply button */}
+          <div className="flex flex-row items-center gap-5">
+            <div className="flex flex-row  w-[10%] mt-[10px]  justify-center ">
+              <Likes
+                commentId={commentId}
+                size={20}
+                isLiked={isLiked}
+                likesCount={likesCount}
+              />
+            </div>
+            <div className="mt-1 hover:bg-[#272727] p-2 rounded-full cursor-pointer" onClick={(e)=>{
+              e.stopPropagation();
+              setopenReply((prev)=>!prev);
+            }}>
+              <Button>Reply</Button>
+            </div>
           </div>
 
+          {/* text area opens when reply button is clicked */}
+          <div className={`${openReply?"block":"hidden"}`}>
+            <TextArea setopenReply={setopenReply} placeholder="Add a reply..." avatarWidth="30px" avatarHeight="30px" tweet={true} ButtonText="Reply"/>
           </div>
         </div>
 
@@ -107,9 +142,9 @@ export const CommentList = ({
               className={`${
                 isOwner ? "block" : "hidden"
               } flex items-center gap-2  text-white hover:text-purple-500`}
-              onClick={(e)=>{
+              onClick={(e) => {
                 e.stopPropagation();
-                setopenEdit((prev)=>!prev);
+                setopenEdit((prev) => !prev);
               }}
             >
               <MdEdit className="w-[24px] h-[24px]" />
@@ -129,14 +164,14 @@ export const CommentList = ({
         </div>
       </div>
 
-
       {/* textarea when edit button is clicked */}
-      <div className={`w-full  flex flex-row mt-[20px] gap-4 ${openEdit?"block":"hidden"}`}>
+      <div
+        className={`w-full  flex flex-row mt-[20px] gap-4 ${
+          openEdit ? "block" : "hidden"
+        }`}
+      >
         <div>
-          <img
-            src={avatar}
-            className={`w-[40px] h-[40px] rounded-full`}
-          />
+          <img src={avatar} className={`w-[40px] h-[40px] rounded-full`} />
         </div>
         <div className="basis-[94%] ">
           <form onSubmit={handleSubmit}>
@@ -153,7 +188,7 @@ export const CommentList = ({
             />
             <div
               className={`${
-                textAreaOpen ?"block":"hidden"
+                textAreaOpen ? "block" : "hidden"
               } w-full  flex flex-row justify-between p-[10px] items-center`}
             >
               {/* emoji picker */}
@@ -188,7 +223,6 @@ export const CommentList = ({
                     e.stopPropagation();
                     setTextAreaOpen(false);
                     setopenEdit(false);
-
                   }}
                 >
                   <Button className="font-semibold  p-[10px] w-[75px] rounded-full  text-[14px] hover:bg-[#222222]">
