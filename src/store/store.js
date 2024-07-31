@@ -4,6 +4,7 @@ import videoSliceReducer from './Slices/videoSlice.js'
 import likeSliceReducer from "./Slices/likeSlice.js";
 import commentSliceReducer from "./Slices/commentSlice.js";
 import subscriptionsSliceReducer from "./Slices/subscriptionsSlice.js";
+import replySliceReducer from "./Slices/replySlice.js";
 
 const store=configureStore({
     reducer:{
@@ -11,7 +12,8 @@ const store=configureStore({
         video:videoSliceReducer,
         like:likeSliceReducer,
         comment:commentSliceReducer,
-        subscription:subscriptionsSliceReducer
+        subscription:subscriptionsSliceReducer,
+        reply:replySliceReducer,
 
     }
 })

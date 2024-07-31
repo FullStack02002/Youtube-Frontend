@@ -14,8 +14,9 @@ import { Layout } from "./Layout";
 import { Video } from "./Video";
 import { Description } from "./Description";
 import { Likes } from "./Likes";
-import {TextArea} from "./TextArea"
-import { CommentList } from "./CommentList";
+import { TextArea } from "./TextAreas";
+import { CommentAndReply } from "./CommentAndReply";
+import { Reply } from "./Reply";
 export {
   Layout,
   SignUp,
@@ -34,5 +35,6 @@ export {
   Description,
   Likes,
   TextArea,
-  CommentList
+  CommentAndReply,
+  Reply
 };

@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import { useSelector,useDispatch } from "react-redux";
 import { createAComment } from "../store/Slices/commentSlice";
+import { createAReply } from "../store/Slices/replySlice";
 import { BsEmojiGrin } from "./icons";
 import { Button } from "./Button";
 import data from '@emoji-mart/data'
@@ -16,7 +17,8 @@ export const TextArea = ({
   avatarWidth,
   placeholder,
   ButtonText,
-  setopenReply
+  setopenReply,
+  commentId
 }) => {
   const user = useSelector((state) => state.auth.userData);
   const dispatch=useDispatch();
@@ -60,6 +62,11 @@ export const TextArea = ({
       // reason for sending avatar is written in comment slice
       setOpen(false)
     }
+    if(reply){
+      dispatch(createAReply({content:text,commentId,avatar:user.avatar,username:user.username,_id:user._id}))
+      setopenReply(false);
+    }
+
     setText("");
    
    

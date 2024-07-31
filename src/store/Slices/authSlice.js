@@ -29,7 +29,7 @@ export const createAccount = createAsyncThunk("register", async (data) => {
 export const userLogin = createAsyncThunk("login", async (data) => {
   try {
     const response = await axiosInstance.post("/users/login", data);
-    toast.success(response.data?.message)
+    // toast.success(response.data?.message)
     return response.data.data.user;
   } catch (error) {
     console.log(error)
@@ -41,7 +41,7 @@ export const userLogin = createAsyncThunk("login", async (data) => {
 export const userLogout = createAsyncThunk("logout", async () => {
   try {
     const response = await axiosInstance.post("/users/logout");
-    toast.success(response.data?.message);
+    // toast.success(response.data?.message);
     return response.data;
   } catch (error) {
     toast.error(error?.response?.data?.error);

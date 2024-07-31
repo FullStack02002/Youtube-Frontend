@@ -50,8 +50,9 @@ export const Likes = ({
 
   return (
     <>
+      <div className={`${(commentId || replyId || tweetId)?"gap-6":"gap-3"} flex flex-row`}>
       <div
-        className={`flex flex-row  cursor-pointer ${(commentId || replyId || tweetId) ? "h-[25px]" :""} ${videoId?"border-r":""} gap-2 px-1 basis-[60%] ` }
+        className={`flex flex-row  cursor-pointer   ${(commentId || replyId || tweetId) ? "h-[25px]" :""} ${videoId?"border-r":""} gap-2 px-1 basis-[60%] ` }
         onClick={handleLike}
       >
         <BiSolidLike
@@ -66,12 +67,16 @@ export const Likes = ({
           }`}
         >
           {localLikesCount > 0 ? localLikesCount : ""}
+          
         </span>
       </div>
-      <div className="">
+      <div className="mt-[1px]">
       <BiSolidDislike className="text-white basis-[40%]" size={size} />
 
       </div>
+      </div>
+
+
     </>
   );
 };

@@ -1,15 +1,17 @@
 import React, { useState, useEffect, useRef } from "react";
 import { timeAgo } from "../helpers/timeAgo";
-import { BsThreeDotsVertical, MdDelete, MdEdit } from "./icons";
+import { BsThreeDotsVertical, MdDelete, MdEdit,MdKeyboardArrowDown,MdKeyboardArrowUp } from "./icons";
 import { useSelector, useDispatch } from "react-redux";
-import { deleteAComment, editAComment } from "../store/Slices/commentSlice";
+import { deleteAComment,editAComment } from "../store/Slices/commentSlice";
 import { BsEmojiGrin } from "./icons";
-import { Button } from "./Button";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
-import { Likes,TextArea} from "../components";
+import { Likes, TextArea, Button, Reply } from "../components";
+import {
+  getAllRepliesOfComment,
+} from "../store/Slices/replySlice";
 
-export const CommentList = ({
+export const CommentAndReply = ({
   avatar,
   username,
   createdAt,
@@ -19,20 +21,34 @@ export const CommentList = ({
   videoOwner,
   isLiked,
   likesCount,
+  videoOwneravatar
 }) => {
   const user = useSelector((state) => state.auth?.userData);
+  const replies = useSelector((state) => state.reply?.replies);
+  const specificComment = replies.find(
+    (comment) => comment.commentId === commentId
+  );
+  const commentReplies = specificComment?.replies;
+
+ const isReplyEmpty = commentReplies && commentReplies.length===0;
+
   const [text, setText] = useState(content);
   const [openPicker, setopenPicker] = useState(false);
   const [open, setopen] = useState(false);
   const [openEdit, setopenEdit] = useState(false);
   const [textAreaOpen, setTextAreaOpen] = useState(false);
-  const [openReply,setopenReply]=useState(false);
+  const [openReply, setopenReply] = useState(false);
+  const [openReplies,setopenReplies]=useState(false);
+
   const dispatch = useDispatch();
   const isOwner = user?._id === ownersId;
   const isvideoOwner = videoOwner === user?._id;
   const textareaRef = useRef(null);
+
   const isCommentButtonActive =
     text.trim().length > 0 && text.trim() !== content;
+
+   const isVideoOwnerReplied= commentReplies && commentReplies.some((reply)=>reply.owner._id === videoOwner);
 
   useEffect(() => {
     const textarea = textareaRef.current;
@@ -53,6 +69,11 @@ export const CommentList = ({
       };
     }
   }, [text]);
+
+  useEffect(() => {
+    dispatch(getAllRepliesOfComment({ commentId }));
+  }, [dispatch, commentId]);
+
   const handleChange = (e) => {
     setText(e.target.value);
   };
@@ -70,22 +91,21 @@ export const CommentList = ({
         isLiked,
       })
     );
+    setopenEdit(false)
   };
-
   return (
     <>
       {/* comment*/}
       <div
         className={`${
           openEdit ? "hidden" : "block"
-        } flex flex-row w-full  gap-4 p-[10px]`}
+        }  flex flex-row w-full  gap-4 p-[10px]`}
       >
         <div>
           <img src={avatar} className="w-[40px] h-[40px] rounded-full" />
         </div>
         <div className="basis-[94%]">
-
-        {/* heading time */}
+          {/* heading time */}
           <div className="flex flex-row gap-1">
             <h3 className="text-white font-bold text-[14px]">@{username}</h3>
             <span className="text-[#AAAAAA] text-[14px]">
@@ -97,8 +117,8 @@ export const CommentList = ({
           <p className="text-white font-semibold mt-[5px]">{content}</p>
 
           {/* likes and reply button */}
-          <div className="flex flex-row items-center gap-5">
-            <div className="flex flex-row  w-[10%] mt-[10px]  justify-center ">
+          <div className="flex flex-row  gap-5  items-center h-[50px]">
+            <div className="flex flex-row  w-[10%]  justify-center ">
               <Likes
                 commentId={commentId}
                 size={20}
@@ -106,18 +126,43 @@ export const CommentList = ({
                 likesCount={likesCount}
               />
             </div>
-            <div className="mt-1 hover:bg-[#272727] p-2 rounded-full cursor-pointer" onClick={(e)=>{
-              e.stopPropagation();
-              setopenReply((prev)=>!prev);
-            }}>
-              <Button>Reply</Button>
+            <div
+              className=" hover:bg-[#272727] p-2 rounded-full cursor-pointer flex items-center"
+              onClick={(e) => {
+                e.stopPropagation();
+                setopenReply((prev) => !prev);
+              }}
+            >
+              <Button className="text-[14px]">Reply</Button>
             </div>
           </div>
 
           {/* text area opens when reply button is clicked */}
-          <div className={`${openReply?"block":"hidden"}`}>
-            <TextArea setopenReply={setopenReply} placeholder="Add a reply..." avatarWidth="30px" avatarHeight="30px" tweet={true} ButtonText="Reply"/>
+          <div className={`${openReply ? "block" : "hidden"}`}>
+            <TextArea
+              setopenReply={setopenReply}
+              placeholder="Add a reply..."
+              avatarWidth="30px"
+              avatarHeight="30px"
+              reply={true}
+              ButtonText="Reply"
+              commentId={commentId}
+            />
           </div>
+
+          {/* view reply div */}
+          {!isReplyEmpty && (
+            <div onClick={(e)=>{
+            e.stopPropagation();
+            setopenReplies((prev)=>!prev);
+          }} className={`font-bold cursor-pointer items-center flex flex-row gap-2 ${isVideoOwnerReplied?"w-[17%]":"w-[14%]"} rounded-full py-[6px] px-[10px] text-[#3ea6ff] hover:bg-blue-200`}>
+            <MdKeyboardArrowDown size={24} className={`${openReplies?"hidden":"block"}`}/>
+            <MdKeyboardArrowUp size={24} className={`${openReplies?"block":"hidden"}`}/>
+            <img src={videoOwneravatar} className={`${isVideoOwnerReplied?"block":"hidden"} w-[24px] h-[24px] rounded-full`}/>
+            <span>{commentReplies && commentReplies.length} {commentReplies && commentReplies.length > 1 ? "replies" : "reply"}</span>
+          </div>
+          )}
+          
         </div>
 
         {/* three dots for edit and delete comment */}
@@ -246,6 +291,28 @@ export const CommentList = ({
             </div>
           </form>
         </div>
+      </div>
+
+      {/* replies  opens when view reply is clicked*/}
+      <div className={`${openReplies?"block":"hidden"}`}>
+      {commentReplies &&
+        commentReplies.map((reply) => (
+          <div className="  ml-[60px]" key={reply.content}
+>
+            <Reply
+              avatar={reply?.owner?.avatar}
+              username={reply?.owner.username}
+              ownersId={reply?.owner?._id}
+              videoOwner={videoOwner}
+              content={reply?.content}
+              isLiked={reply?.isLiked}
+              likesCount={reply?.likesCount}
+              replyId={reply?._id}
+              createdAt={reply?.createdAt}
+              commentId={commentId}
+            />
+          </div>
+        ))}
       </div>
     </>
   );

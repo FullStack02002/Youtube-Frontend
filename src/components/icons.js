@@ -26,6 +26,12 @@ import { BsEmojiGrin } from "react-icons/bs";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { MdEdit } from "react-icons/md";
 import { MdDelete } from "react-icons/md";
+import { MdKeyboardArrowDown } from "react-icons/md";
+import { MdKeyboardArrowUp } from "react-icons/md";
+import { MdOutlineSort } from "react-icons/md";
+
+
+
 
 
 
@@ -59,5 +65,8 @@ export {
     BsEmojiGrin,
     BsThreeDotsVertical,
     MdEdit,
-    MdDelete
+    MdDelete,
+    MdKeyboardArrowDown,
+    MdKeyboardArrowUp,
+    MdOutlineSort
 }
