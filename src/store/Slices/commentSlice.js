@@ -7,6 +7,7 @@ const initialState = {
   loading: false,
   comments: [],
   totalComments: 0,
+  hasNextPage: false,
 };
 
 export const createAComment = createAsyncThunk(
@@ -81,15 +82,19 @@ export const deleteAComment = createAsyncThunk(
 
 export const getVideoComments = createAsyncThunk(
   "getVideoComments",
-  async ({ videoId, sortBy, sortType }) => {
+  async ({ videoId, sortBy, sortType, page = 1 }) => {
     try {
       const url = new URL(`${BASE_URL}/comment/${videoId}`);
-      if(sortBy && sortType){
-        url.searchParams.set("sortBy",sortBy);
-        url.searchParams.set("sortType",sortType);
+      
+      if (page) {
+        url.searchParams.set("page", page);
+      }
+      if (sortBy && sortType) {
+        url.searchParams.set("sortBy", sortBy);
+        url.searchParams.set("sortType", sortType);
       }
       const response = await axiosInstance.get(url);
-      return {...response.data.data,sortBy};
+      return response.data.data;
     } catch (error) {
       toast.error(error?.response?.data?.error);
       throw error;
@@ -129,14 +134,9 @@ const commentSlice = createSlice({
     });
     builder.addCase(getVideoComments.fulfilled, (state, action) => {
       state.loading = false;
-      const {sortBy}=action.payload;
-      if(!sortBy){
-        state.comments = [...state.comments, ...action.payload.docs];
-      }
-      else{
-        state.comments=action.payload.docs
-      }
+     state.comments=[...state.comments,...action.payload.docs];
       state.totalComments = action.payload.totalDocs;
+      state.hasNextPage = action.payload.hasNextPage;
     });
   },
 });

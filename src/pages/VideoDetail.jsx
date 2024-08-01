@@ -5,6 +5,7 @@ import {
   Description,
   TextArea,
   CommentAndReply,
+  Loader,
 } from "../components";
 import { useParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -24,7 +25,12 @@ import { makeRepliesEmpty } from "../store/Slices/replySlice";
 import { MdOutlineSort } from "../components/icons";
 
 export const VideoDetail = () => {
-  const [openSort,setopenSort]=useState(false);
+  const [openSort, setopenSort] = useState(false);
+  const [page, setPage] = useState(1);
+  const [isFetching, setisFetching] = useState(true);
+  const [sortType, setsortType] = useState("");
+  const [sortBy, setsortBy] = useState("");
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { videoId, ownerId } = useParams();
@@ -34,6 +40,8 @@ export const VideoDetail = () => {
   const videos = useSelector((state) => state.video?.videos.docs);
   const totalComments = useSelector((state) => state.comment?.totalComments);
   const comments = useSelector((state) => state.comment?.comments);
+  const hasNextPage = useSelector((state) => state.comment?.hasNextPage);
+  const loading = useSelector((state) => state.comment?.loading);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -47,6 +55,53 @@ export const VideoDetail = () => {
       dispatch(makeRepliesEmpty());
     };
   }, [dispatch, videoId, userId]);
+
+  // infinit scrolling
+  useEffect(() => {
+    const handleInfiniteCommentScroll = () => {
+      if (
+        window.innerHeight + document.documentElement.scrollTop + 1 >=
+          document.documentElement.scrollHeight &&
+        hasNextPage &&
+        !loading
+      ) {
+        setisFetching(true);
+        dispatch(
+          getVideoComments({ videoId, page: page + 1, sortBy, sortType })
+        ).then(() => {
+          setisFetching(false);
+          setPage((prev) => prev + 1);
+        });
+      }
+    };
+
+    window.addEventListener("scroll", handleInfiniteCommentScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleInfiniteCommentScroll);
+    };
+  }, [dispatch, hasNextPage, page, sortBy, sortType]);
+
+  //custom loading
+  useEffect(() => {
+    if (!loading && isFetching) {
+      const timeoutId = setTimeout(() => {
+        setisFetching(false);
+      }, 5000);
+
+      return () => clearTimeout(timeoutId);
+    }
+  }, [loading, isFetching]);
+
+  useEffect(() => {
+    if (sortBy && sortType) {
+
+      dispatch(makeCommentsEmpty());
+      setPage(1); // Reset page to 1 when sorting
+      dispatch(getVideoComments({ videoId, sortBy, sortType, page: 1 }));
+      setopenSort(false);
+    }
+  }, [sortBy, sortType, dispatch, videoId]);
 
   return (
     <>
@@ -83,32 +138,45 @@ export const VideoDetail = () => {
             {/* comment section */}
             <div className="w-full  mt-[40px] ">
               <div className="flex flex-row gap-4">
-                <p className="text-white text-xl font-semibold w-[12%]">
+                <p className="text-white text-xl font-semibold w-[15%]">
                   {totalComments} {totalComments > 1 ? "Comments" : "Comment"}
                 </p>
-                <div className=" flex flex-row gap-1 relative cursor-pointer" onClick={(e)=>{
-                  e.stopPropagation();
-                  setopenSort((prev)=>!prev)
-                }}>
+                <div
+                  className=" flex flex-row gap-1 relative cursor-pointer"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setopenSort((prev) => !prev);
+                  }}
+                >
                   <MdOutlineSort className="text-white" size={24} />
                   <span className="text-white font-semibold ">Sort by</span>
 
                   {/* div opens when sort by is clicked */}
-                  <div className={`z-10 w-[130px]  bg-[#272727] absolute rounded-xl top-10 flex flex-col p-2 ${openSort?"block":"hidden"}`}>
-                    <div className="text-white font-semibold mb-2  hover:text-purple-500" onClick={(e)=>{
+                  <div
+                    className={`z-10 w-[130px]  bg-[#272727] absolute rounded-xl top-10 flex flex-col p-2 ${
+                      openSort ? "block" : "hidden"
+                    }`}
+                  >
+                    <div className="text-white font-semibold mb-2  hover:text-purple-500"
+                    onClick={(e)=>{
                       e.stopPropagation();
-                      dispatch(getVideoComments({sortBy:"likesCount",sortType:"desc",videoId}))
+                      setsortBy("likesCount");
+                      setsortType("desc");
                       setopenSort(false);
                     }}>
                       <span>Top comments</span>
                     </div>
 
                     <div className="flex flex-col text-white">
-                      <div className="flex items-center gap-2 py-1 font-semibold  cursor-pointer hover:text-purple-500" onClick={(e)=>{
-                        e.stopPropagation();
-                        dispatch(getVideoComments({sortBy:"createdAt",sortType:"desc",videoId}))
-                        setopenSort(false);
-                      }}>
+                      <div
+                        className="flex items-center gap-2 py-1 font-semibold  cursor-pointer hover:text-purple-500"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setsortBy("createdAt");
+                          setsortType("desc");
+                          setopenSort(false);
+                        }}
+                      >
                         <span>Newest First</span>
                       </div>
                     </div>
@@ -144,6 +212,7 @@ export const VideoDetail = () => {
                     likesCount={comment?.likesCount}
                   />
                 ))}
+                {(loading || isFetching) && <Loader />}
               </div>
             </div>
           </div>

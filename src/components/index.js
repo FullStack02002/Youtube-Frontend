@@ -17,6 +17,7 @@ import { Likes } from "./Likes";
 import { TextArea } from "./TextAreas";
 import { CommentAndReply } from "./CommentAndReply";
 import { Reply } from "./Reply";
+import { Loader } from "./Loader";
 export {
   Layout,
   SignUp,
@@ -36,5 +37,6 @@ export {
   Likes,
   TextArea,
   CommentAndReply,
-  Reply
+  Reply,
+  Loader
 };
