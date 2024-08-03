@@ -3,15 +3,17 @@ import { Toaster } from "react-hot-toast";
 import { Route, Routes } from "react-router-dom";
 import { SignupPage, LoginPage, HomePage, SearchPage,VideoDetail } from "./pages";
 import { AuthLayot, Layout } from "./components";
-import { useDispatch } from "react-redux";
+import { useDispatch,useSelector } from "react-redux";
 import { getCurrentUser } from "./store/Slices/authSlice";
 
 const App = () => {
+  const userData=useSelector((state)=>state.auth.userData);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getCurrentUser());
   }, [dispatch]);
+  console.log(userData);
   return (
     <>
       <Routes>

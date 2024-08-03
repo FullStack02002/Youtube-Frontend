@@ -50,7 +50,7 @@ export const Likes = ({
 
   return (
     <>
-      <div className={`${(commentId || replyId || tweetId)?"gap-6":"gap-3"} flex flex-row`}>
+      <div className={`${(commentId || replyId || tweetId)?" sm:gap-3 md:gap-6":"gap-3"} flex flex-row`}>
       <div
         className={`flex flex-row  cursor-pointer   ${(commentId || replyId || tweetId) ? "h-[25px]" :""} ${videoId?"border-r":""} gap-2 px-1 basis-[60%] ` }
         onClick={handleLike}

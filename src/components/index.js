@@ -18,6 +18,8 @@ import { TextArea } from "./TextAreas";
 import { CommentAndReply } from "./CommentAndReply";
 import { Reply } from "./Reply";
 import { Loader } from "./Loader";
+import { BigLoader } from "./BigLoader";
+import { InfinitScroll } from "./InfinitScroll";
 export {
   Layout,
   SignUp,
@@ -38,5 +40,7 @@ export {
   TextArea,
   CommentAndReply,
   Reply,
-  Loader
+  Loader,
+  BigLoader,
+  InfinitScroll
 };

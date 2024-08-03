@@ -28,9 +28,11 @@ export const CommentAndReply = ({
   const specificComment = replies.find(
     (comment) => comment.commentId === commentId
   );
-  const commentReplies = specificComment?.replies;
+  const commentReplies = specificComment?.replies || [];
+  const isReplyEmpty = commentReplies.length === 0;
 
- const isReplyEmpty = commentReplies && commentReplies.length===0;
+  
+
 
   const [text, setText] = useState(content);
   const [openPicker, setopenPicker] = useState(false);
@@ -73,6 +75,8 @@ export const CommentAndReply = ({
   useEffect(() => {
     dispatch(getAllRepliesOfComment({ commentId }));
   }, [dispatch, commentId]);
+
+
 
   const handleChange = (e) => {
     setText(e.target.value);
@@ -117,8 +121,8 @@ export const CommentAndReply = ({
           <p className="text-white font-semibold mt-[5px]">{content}</p>
 
           {/* likes and reply button */}
-          <div className="flex flex-row  gap-5  items-center h-[50px]">
-            <div className="flex flex-row  w-[10%]  justify-center ">
+          <div className="flex flex-row  gap-5  items-center h-[50px] ">
+            <div className="flex flex-row  w-[10%]  justify-center  ">
               <Likes
                 commentId={commentId}
                 size={20}
@@ -155,11 +159,11 @@ export const CommentAndReply = ({
             <div onClick={(e)=>{
             e.stopPropagation();
             setopenReplies((prev)=>!prev);
-          }} className={`font-bold cursor-pointer items-center flex flex-row gap-2 ${isVideoOwnerReplied?"w-[17%]":"w-[14%]"} rounded-full py-[6px] px-[10px] text-[#3ea6ff] hover:bg-blue-200`}>
+          }} className={`font-bold cursor-pointer items-center flex flex-row gap-2 ${isVideoOwnerReplied?"sm:w-[26%] md:w-[21%] lg:w-[17%]":"md:w-[17%] lg:w-[14%]"} rounded-full py-[6px] px-[10px] text-[#3ea6ff] hover:bg-blue-200`}>
             <MdKeyboardArrowDown size={24} className={`${openReplies?"hidden":"block"}`}/>
             <MdKeyboardArrowUp size={24} className={`${openReplies?"block":"hidden"}`}/>
             <img src={videoOwneravatar} className={`${isVideoOwnerReplied?"block":"hidden"} w-[24px] h-[24px] rounded-full`}/>
-            <span>{commentReplies && commentReplies.length} {commentReplies && commentReplies.length > 1 ? "replies" : "reply"}</span>
+            <span>{commentReplies.length} { commentReplies.length > 1 ? "replies" : "reply"}</span>
           </div>
           )}
           
@@ -178,10 +182,11 @@ export const CommentAndReply = ({
               setopen((prev) => !prev);
             }}
           />
+          {/* div opens when three dots gets clicked */}
           <div
             className={`${
               open ? "block" : "hidden"
-            } z-10 w-[130px] border bg-[#272727] absolute rounded-xl top-5 flex flex-col gap-2 p-2`}
+            } z-10 w-[130px] border bg-[#272727] absolute rounded-xl top-5 -left-[111px]   lg:left-0 flex flex-col gap-2 p-2`}
           >
             <div
               className={`${

@@ -33,10 +33,10 @@ export const Login = () => {
     const loginData = isEmail
       ? { email: data.username, password: data.password }
       : { username: data.username, password: data.password };
-      const response=await dispatch(userLogin(loginData));
-      const user=await dispatch(getCurrentUser());
+      const response= await dispatch(userLogin(loginData));
+      const user= await dispatch(getCurrentUser());
       
-      if(response?.type==="login/fulfilled" && user){
+      if(response?.payload && user){
         navigate("/")
       }
       

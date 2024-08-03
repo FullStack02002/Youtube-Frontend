@@ -5,6 +5,7 @@ import { BASE_URL } from "../../constant";
 
 const initialState = {
   loading: false,
+  commentAddedLoading:false,
   comments: [],
   totalComments: 0,
   hasNextPage: false,
@@ -72,7 +73,7 @@ export const deleteAComment = createAsyncThunk(
   async ({ commentId }) => {
     try {
       const response = await axiosInstance.delete(`/comment/c/${commentId}`);
-      // toast.success(response.data?.message);
+      toast.success(response.data?.message);
       return response.data.data;
     } catch (error) {
       toast.error(error?.response?.data?.error);
@@ -111,7 +112,11 @@ const commentSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
+    builder.addCase(createAComment.pending,(state,action)=>{
+      state.commentAddedLoading = true;
+    })
     builder.addCase(createAComment.fulfilled, (state, action) => {
+      state.commentAddedLoading=false;
       state.comments.unshift(action.payload);
       state.totalComments++;
     }),
@@ -130,13 +135,13 @@ const commentSlice = createSlice({
         console.log(action.payload);
       });
     builder.addCase(getVideoComments.pending, (state) => {
-      state.loading = true;
+      state.loading=true;
     });
     builder.addCase(getVideoComments.fulfilled, (state, action) => {
       state.loading = false;
-     state.comments=[...state.comments,...action.payload.docs];
       state.totalComments = action.payload.totalDocs;
       state.hasNextPage = action.payload.hasNextPage;
+      state.comments=[...state.comments,...action.payload.docs];
     });
   },
 });

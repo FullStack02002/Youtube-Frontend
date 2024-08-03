@@ -8,10 +8,14 @@ export default defineConfig({
   plugins: [react()],
   server:{
     proxy:{
-      '/api': 'http://localhost:8000/api/v1'
+      '/api': 'https://youtube-backend-ibez.onrender.com/api/v1'
+      // '/api': 'http://localhost:8000/api/v1'
     },
     port:3000,
     host: '0.0.0.0'
+  },
+  build: {
+    sourcemap: true
   }
 
 })
