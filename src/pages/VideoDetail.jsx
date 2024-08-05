@@ -42,6 +42,7 @@ export const VideoDetail = () => {
 
   const video = useSelector((state) => state.video?.video);
   const videos = useSelector((state) => state.video?.videos.docs);
+  const isCommentSectionOn=useSelector((state)=>state.video?.video?.commentSection);
   const totalComments = useSelector((state) => state.comment?.totalComments);
   const comments = useSelector((state) => state.comment?.comments) || [];
   const hasNextPage = useSelector((state) => state.comment?.hasNextPage);
@@ -155,7 +156,9 @@ export const VideoDetail = () => {
               />
 
               {/* comment section */}
-              <div
+              {isCommentSectionOn?(
+                <>
+                <div
                  className={`fixed bottom-0  left-0 w-full bg-[#0F0F0F] z-10 transition-transform duration-300 md:p-4  lg:p-0 ${
                   openMobileComments
                     ? "translate-y-0 h-screen overflow-auto"
@@ -282,6 +285,10 @@ export const VideoDetail = () => {
 
                 </div>}
               </div>
+                </>
+              ):(<p className="text-purple-500 text-center mt-6 font-semibold">Comments are turned off</p>)}
+
+              
             </div>
 
             {/* more videos container */}

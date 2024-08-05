@@ -26,6 +26,7 @@ export const CommentAndReply = ({
   const user = useSelector((state) => state.auth?.userData);
   const replies = useSelector((state) => state.reply?.replies);
   const loading=useSelector((state)=>state.comment.commentDeleteandEditLoading[commentId])
+  const item=useSelector((state)=>state.comment.commentDeleteandEditLoading);
   const specificComment = replies.find(
     (comment) => comment.commentId === commentId
   );
