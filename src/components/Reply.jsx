@@ -1,14 +1,16 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, lazy, Suspense } from "react";
 import { deleteReply,editReply } from "../store/Slices/replySlice";
 import { timeAgo } from "../helpers/timeAgo";
 import { BsThreeDotsVertical, MdDelete, MdEdit } from "./icons";
 import { useSelector, useDispatch } from "react-redux";
-import { Likes, Button } from "../components";
+import {  Button } from "../components";
 import { BsEmojiGrin } from "./icons";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 
-export const Reply = ({
+const Likes=lazy(()=>import("../components/Likes"));
+
+ const Reply = ({
   avatar,
   username,
   createdAt,
@@ -91,12 +93,14 @@ export const Reply = ({
           {/* likes and reply button */}
           <div className="flex flex-row items-center gap-5">
             <div className="flex flex-row  w-[10%] mt-[10px]  justify-center ">
-              <Likes
+             <Suspense>
+             <Likes
                 replyId={replyId}
                 size={20}
                 isLiked={isLiked}
                 likesCount={likesCount}
               />
+             </Suspense>
             </div>
           </div>
         </div>
@@ -230,3 +234,5 @@ export const Reply = ({
     </>
   );
 };
+
+export default Reply;

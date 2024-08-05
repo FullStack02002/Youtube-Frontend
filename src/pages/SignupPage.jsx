@@ -1,13 +1,16 @@
-import React from 'react'
-import { SignUp } from '../components'
+import React, { lazy, Suspense } from 'react'
+
+const SignUp=lazy(()=>import("../components/SignUp"))
 
 const SignupPage = () => {
   return (
    
-    <SignUp></SignUp>
+    <Suspense>
+      <SignUp></SignUp>
+    </Suspense>
     
   
   )
 }
 
-export {SignupPage}
+export default SignupPage;

@@ -98,7 +98,6 @@ const authSlice = createSlice({
       state.loading=true;
     })
     builder.addCase(getCurrentUser.fulfilled,(state,action)=>{
-      console.log("fullfilled")
       state.loading=false;
       state.status=true;
       state.userData=action.payload;

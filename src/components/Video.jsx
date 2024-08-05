@@ -1,6 +1,6 @@
 import React from 'react'
 
-export const Video = ({src,thumbnail}) => {
+ const Video = ({src,thumbnail}) => {
   return (
     <video
                 src={src}
@@ -12,3 +12,4 @@ export const Video = ({src,thumbnail}) => {
             ></video>
   )
 }
+export default Video;

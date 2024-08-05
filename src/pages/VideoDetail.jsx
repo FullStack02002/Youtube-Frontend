@@ -1,14 +1,24 @@
-import React, { useEffect, useRef, useState, useId, useCallback } from "react";
+import React, {
+  useEffect,
+  useRef,
+  useState,
+  useId,
+  useCallback,
+  lazy,
+  Suspense,
+} from "react";
 import {
   Navbar,
-  Video,
-  Description,
   TextArea,
-  CommentAndReply,
   Loader,
   BigLoader,
   InfinitScroll,
 } from "../components";
+
+const Video = lazy(() => import("../components/Video"));
+const Description = lazy(() => import("../components/Description"));
+const CommentAndReply = lazy(() => import("../components/CommentAndReply"));
+
 import { useParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { timeAgo } from "../helpers/timeAgo";
@@ -26,7 +36,7 @@ import {
 import { makeRepliesEmpty } from "../store/Slices/replySlice";
 import { MdOutlineSort, IoCloseCircleOutline } from "../components/icons";
 
-export const VideoDetail = () => {
+const VideoDetail = () => {
   const [openSort, setopenSort] = useState(false);
   const [page, setPage] = useState(1);
   const [isFetching, setisFetching] = useState(false);
@@ -42,7 +52,9 @@ export const VideoDetail = () => {
 
   const video = useSelector((state) => state.video?.video);
   const videos = useSelector((state) => state.video?.videos.docs);
-  const isCommentSectionOn=useSelector((state)=>state.video?.video?.commentSection);
+  const isCommentSectionOn = useSelector(
+    (state) => state.video?.video?.commentSection
+  );
   const totalComments = useSelector((state) => state.comment?.totalComments);
   const comments = useSelector((state) => state.comment?.comments) || [];
   const hasNextPage = useSelector((state) => state.comment?.hasNextPage);
@@ -51,12 +63,12 @@ export const VideoDetail = () => {
     (state) => state.comment?.commentAddedLoading
   );
 
-  const isCommentPresent=totalComments>0;
+  const isCommentPresent = totalComments > 0;
 
-  //initial 
+  //initial
   useEffect(() => {
     setloader(true);
-    const timeoutId=setTimeout(() => {
+    const timeoutId = setTimeout(() => {
       setloader(false);
     }, 2000);
     window.scrollTo(0, 0);
@@ -72,19 +84,16 @@ export const VideoDetail = () => {
     };
   }, [dispatch, videoId, userId]);
 
-
   // infinite scroll
-  const fetchMoreComments=useCallback(()=>{
-    if(hasNextPage && !loading && !isFetching){
+  const fetchMoreComments = useCallback(() => {
+    if (hasNextPage && !loading && !isFetching) {
       setisFetching(true);
-      dispatch(getVideoComments({videoId,page:page+1,sortBy,sortType}));
-      setisFetching(false)
-      setPage((prev)=>prev+1);
+      dispatch(getVideoComments({ videoId, page: page + 1, sortBy, sortType }));
+      setisFetching(false);
+      setPage((prev) => prev + 1);
     }
-  },[dispatch,hasNextPage,page,sortBy,sortType
+  }, [dispatch, hasNextPage, page, sortBy, sortType]);
 
-  ])
-  
   //custom loading
   useEffect(() => {
     if (!loading && isFetching) {
@@ -105,7 +114,6 @@ export const VideoDetail = () => {
       setopenSort(false);
     }
   }, [sortBy, sortType, dispatch, videoId]);
-
 
   // Disable scroll when mobile comments are open
   useEffect(() => {
@@ -141,7 +149,8 @@ export const VideoDetail = () => {
               </h1>
 
               {/* description */}
-              <Description
+             <Suspense>
+             <Description
                 channelId={video?.owner?._id}
                 avatar={video?.owner?.avatar}
                 username={video?.owner?.username}
@@ -153,142 +162,157 @@ export const VideoDetail = () => {
                 views={video?.views}
                 createdAt={video?.createdAt}
                 Description={video?.description}
+                key={video?._id}
               />
+             </Suspense>
 
               {/* comment section */}
-              {isCommentSectionOn?(
+              {isCommentSectionOn ? (
                 <>
-                <div
-                 className={`fixed bottom-0  left-0 w-full bg-[#0F0F0F] z-10 transition-transform duration-300 md:p-4  lg:p-0 ${
-                  openMobileComments
-                    ? "translate-y-0 h-screen overflow-auto"
-                    : "translate-y-full h-0"
-                } lg:static lg:translate-y-0 lg:h-auto`}
-              >
-                <div className="flex flex-row gap-4 mt-8 md:mt-4 items-center">
-                  <p className="text-white text-xl font-semibold w-auto ">
-                    {totalComments} {totalComments > 1 ? "Comments" : "Comment"}
-                  </p>
                   <div
-                    className=" flex flex-row gap-1 relative cursor-pointer"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setopenSort((prev) => !prev);
-                    }}
+                    className={`fixed bottom-0  left-0 w-full bg-[#0F0F0F] z-10 transition-transform duration-300 md:p-4  lg:p-0 ${
+                      openMobileComments
+                        ? "translate-y-0 h-screen overflow-auto"
+                        : "translate-y-full h-0"
+                    } lg:static lg:translate-y-0 lg:h-auto`}
                   >
-                    <MdOutlineSort className="text-white" size={24} />
-                    <span className="text-white font-semibold ">Sort by</span>
-
-                    {/* div opens when sort by is clicked */}
-                    <div
-                      className={`z-10 w-[130px]  bg-[#272727] absolute rounded-xl top-10 flex flex-col p-2 ${
-                        openSort ? "block" : "hidden"
-                      }`}
-                    >
+                    <div className="flex flex-row gap-4 mt-8 md:mt-4 items-center">
+                      <p className="text-white text-xl font-semibold w-auto ">
+                        {totalComments}{" "}
+                        {totalComments > 1 ? "Comments" : "Comment"}
+                      </p>
                       <div
-                        className="text-white font-semibold mb-2  hover:text-purple-500"
+                        className=" flex flex-row gap-1 relative cursor-pointer"
                         onClick={(e) => {
                           e.stopPropagation();
-                          setsortBy("likesCount");
-                          setsortType("desc");
-                          setopenSort(false);
+                          setopenSort((prev) => !prev);
                         }}
                       >
-                        <span>Top comments</span>
-                      </div>
+                        <MdOutlineSort className="text-white" size={24} />
+                        <span className="text-white font-semibold ">
+                          Sort by
+                        </span>
 
-                      <div className="flex flex-col text-white">
+                        {/* div opens when sort by is clicked */}
                         <div
-                          className="flex items-center gap-2 py-1 font-semibold  cursor-pointer hover:text-purple-500"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setsortBy("createdAt");
-                            setsortType("desc");
-                            setopenSort(false);
-                          }}
+                          className={`z-10 w-[130px]  bg-[#272727] absolute rounded-xl top-10 flex flex-col p-2 ${
+                            openSort ? "block" : "hidden"
+                          }`}
                         >
-                          <span>Newest First</span>
+                          <div
+                            className="text-white font-semibold mb-2  hover:text-purple-500"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setsortBy("likesCount");
+                              setsortType("desc");
+                              setopenSort(false);
+                            }}
+                          >
+                            <span>Top comments</span>
+                          </div>
+
+                          <div className="flex flex-col text-white">
+                            <div
+                              className="flex items-center gap-2 py-1 font-semibold  cursor-pointer hover:text-purple-500"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setsortBy("createdAt");
+                                setsortType("desc");
+                                setopenSort(false);
+                              }}
+                            >
+                              <span>Newest First</span>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                </div>
 
-                {/* Add a Comment Text Area */}
+                    {/* Add a Comment Text Area */}
 
-                <TextArea
-                  comment={true}
-                  videoId={video?._id}
-                  avatarHeight={"40px"}
-                  avatarWidth={"40px"}
-                  placeholder="Add a comment..."
-                  ButtonText="Comment"
-                />
-
-                {/* comment list */}
-                <InfinitScroll fetchMore={fetchMoreComments} hasNextPage={hasNextPage}>
-                <div className="w-full  mt-[20px]  flex flex-col gap-2 ">
-                  {commentAddedLoading && <Loader />}
-                  {comments.map((comment) => (
-                    <CommentAndReply
-                      key={comment?._id}
-                      avatar={comment?.owner?.avatar}
-                      username={comment?.owner?.username}
-                      content={comment?.content}
-                      createdAt={comment?.createdAt}
-                      ownersId={comment?.owner?._id}
-                      commentId={comment?._id}
-                      videoOwner={video?.owner?._id}
-                      videoOwneravatar={video?.owner?.avatar}
-                      isLiked={comment?.isLiked}
-                      likesCount={comment?.likesCount}
+                    <TextArea
+                      comment={true}
+                      videoId={video?._id}
+                      avatarHeight={"40px"}
+                      avatarWidth={"40px"}
+                      placeholder="Add a comment..."
+                      ButtonText="Comment"
                     />
-                  ))}
-                  {(loading || isFetching) && <Loader />}
-                </div>
-                </InfinitScroll>
 
-                {/* close button for mobile comment section */}
-                <div
-                  className="cursor-pointer text-white  absolute z-10 top-8 right-4 block lg:hidden "
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setopenMobileComments(false);
-                  }}
-                >
-                  <IoCloseCircleOutline className="text-white font-bold w-[30px] h-[30px] " />
-                </div>
-              </div>
+                    {/* comment list */}
+                    <InfinitScroll
+                      fetchMore={fetchMoreComments}
+                      hasNextPage={hasNextPage}
+                    >
+                      <div className="w-full  mt-[20px]  flex flex-col gap-2 ">
+                        {commentAddedLoading && <Loader />}
+                        {comments.map((comment) => (
+                          <Suspense key={comment?._id}>
+                          <CommentAndReply
+                            key={comment?._id}
+                            avatar={comment?.owner?.avatar}
+                            username={comment?.owner?.username}
+                            content={comment?.content}
+                            createdAt={comment?.createdAt}
+                            ownersId={comment?.owner?._id}
+                            commentId={comment?._id}
+                            videoOwner={video?.owner?._id}
+                            videoOwneravatar={video?.owner?.avatar}
+                            isLiked={comment?.isLiked}
+                            likesCount={comment?.likesCount}
+                          />
+                          </Suspense>
+                        ))}
+                        {(loading || isFetching) && <Loader />}
+                      </div>
+                    </InfinitScroll>
 
-              {/* open mobile comment section */}
-              <div
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setopenMobileComments(true);
-                }}
-                className=" w-full  mt-3 mb-3 p-4 cursor-pointer bg-[#272727] block lg:hidden"
-              >
-                <span className="text-white font-bold text-[18px]">
-                  Comments
-                </span>
-                <span className="text-white font-bold ml-1">
-                  {totalComments}
-                </span>
-                {isCommentPresent?<div className="flex flex-row gap-4 mt-3 items-center">
-                  <img
-                    src={comments[0]?.owner?.avatar}
-                    className="w-[40px] h-[40px] rounded-full"
-                  />
-                  <p className="text-white">{comments[0]?.content}</p>
-                </div>:<div className=" p-4 rounded-xl bg-purple-400 mt-2">
-                <p className="text-white font-bold">Add a Comment...</p>
+                    {/* close button for mobile comment section */}
+                    <div
+                      className="cursor-pointer text-white  absolute z-10 top-8 right-4 block lg:hidden "
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setopenMobileComments(false);
+                      }}
+                    >
+                      <IoCloseCircleOutline className="text-white font-bold w-[30px] h-[30px] " />
+                    </div>
+                  </div>
 
-                </div>}
-              </div>
+                  {/* open mobile comment section */}
+                  <div
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setopenMobileComments(true);
+                    }}
+                    className=" w-full  mt-3 mb-3 p-4 cursor-pointer bg-[#272727] block lg:hidden"
+                  >
+                    <span className="text-white font-bold text-[18px]">
+                      Comments
+                    </span>
+                    <span className="text-white font-bold ml-1">
+                      {totalComments}
+                    </span>
+                    {isCommentPresent ? (
+                      <div className="flex flex-row gap-4 mt-3 items-center">
+                        <img
+                          src={comments[0]?.owner?.avatar}
+                          className="w-[40px] h-[40px] rounded-full"
+                        />
+                        <p className="text-white">{comments[0]?.content}</p>
+                      </div>
+                    ) : (
+                      <div className=" p-4 rounded-xl bg-purple-400 mt-2">
+                        <p className="text-white font-bold">Add a Comment...</p>
+                      </div>
+                    )}
+                  </div>
                 </>
-              ):(<p className="text-purple-500 text-center mt-6 font-semibold">Comments are turned off</p>)}
-
-              
+              ) : (
+                <p className="text-purple-500 text-center mt-6 mb-6 font-semibold">
+                  Comments are turned off
+                </p>
+              )}
             </div>
 
             {/* more videos container */}
@@ -307,7 +331,7 @@ export const VideoDetail = () => {
                       const ownerId = item?.owner?._id;
                       navigate(`/watch/${videoId}/${ownerId}`);
                     }}
-                    key={item._id}
+                    key={item?._id}
                   >
                     <div className=" h-[200px] w-full md:basis-[30%] lg:basis-[45%] md:h-full object-cover  relative">
                       <img
@@ -337,3 +361,5 @@ export const VideoDetail = () => {
     </>
   );
 };
+
+export default VideoDetail;

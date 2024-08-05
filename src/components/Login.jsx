@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { userLogin,getCurrentUser } from "../store/Slices/authSlice.js";
 import { LoginSkeleton } from "../skeletons/";
 
-export const Login = () => {
+ const Login = () => {
   const[load,setLoad]=useState(true)
   useEffect(() => {
     const timeoutId = setTimeout(() => {
@@ -114,3 +114,5 @@ export const Login = () => {
     </div>
   );
 };
+
+export default Login;

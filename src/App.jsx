@@ -1,13 +1,23 @@
-import React, { useEffect } from "react";
+import React, { lazy, Suspense, useEffect } from "react";
 import { Toaster } from "react-hot-toast";
 import { Route, Routes } from "react-router-dom";
-import { SignupPage, LoginPage, HomePage, SearchPage,VideoDetail } from "./pages";
-import { AuthLayot, Layout } from "./components";
-import { useDispatch,useSelector } from "react-redux";
+import { HomePage } from "./pages/HomePage.jsx";
+import { useDispatch } from "react-redux";
 import { getCurrentUser } from "./store/Slices/authSlice";
 
+// lazy load pages
+
+const VideoDetail = lazy(() => import("./pages/VideoDetail.jsx"));
+const SearchPage = lazy(() => import("./pages/SearchPage.jsx"));
+const SignupPage = lazy(() => import("./pages/SignupPage.jsx"));
+const LikedVideos=lazy(()=>import("./pages/LikedVideos.jsx"));
+const LoginPage=lazy(()=>import("./pages/LoginPage.jsx"));
+
+// lazy load components
+const AuthLayot = lazy(() => import("./components/AuthLayot"));
+const Layout = lazy(() => import("./components/Layout.jsx"));
+
 const App = () => {
-  const userData=useSelector((state)=>state.auth.userData);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -16,7 +26,14 @@ const App = () => {
   return (
     <>
       <Routes>
-        <Route path="/" element={<Layout/>}>
+        <Route
+          path="/"
+          element={
+            <Suspense>
+              <Layout />
+            </Suspense>
+          }
+        >
           <Route
             path=""
             element={
@@ -28,17 +45,50 @@ const App = () => {
           <Route
             path="/search/:query"
             element={
-              <AuthLayot authentication={false}>
-                <SearchPage />
-              </AuthLayot>
+              <Suspense>
+                <AuthLayot authentication={false}>
+                  <SearchPage />
+                </AuthLayot>
+              </Suspense>
             }
           />
         </Route>
-        <Route path="/watch/:videoId/:ownerId" element={<AuthLayot authentication={true}>
-          <VideoDetail/>
-        </AuthLayot>} />
-        <Route path="/signup" element={<SignupPage />} />
-        <Route path="/login" element={<LoginPage />} />
+        <Route
+          path="/watch/:videoId/:ownerId"
+          element={
+            <Suspense >
+              <AuthLayot authentication={true}>
+                <VideoDetail />
+              </AuthLayot>
+            </Suspense>
+          }
+        />
+        <Route
+          path="/liked-videos"
+          element={
+           <Suspense>
+             <AuthLayot authentication={true}>
+              <LikedVideos />
+            </AuthLayot>
+           </Suspense>
+          }
+        />
+        <Route
+          path="/signup"
+          element={
+            <Suspense>
+              <SignupPage />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/login"
+          element={
+            <Suspense>
+              <LoginPage />
+            </Suspense>
+          }
+        />
       </Routes>
 
       <Toaster

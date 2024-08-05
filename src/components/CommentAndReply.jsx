@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, lazy, Suspense } from "react";
 import { timeAgo } from "../helpers/timeAgo";
 import { BsThreeDotsVertical, MdDelete, MdEdit,MdKeyboardArrowDown,MdKeyboardArrowUp } from "./icons";
 import { useSelector, useDispatch } from "react-redux";
@@ -6,12 +6,15 @@ import { deleteAComment,editAComment } from "../store/Slices/commentSlice";
 import { BsEmojiGrin } from "./icons";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
-import { Likes, TextArea, Button, Reply,Loader } from "../components";
+import {  TextArea, Button,Loader } from "../components";
 import {
   getAllRepliesOfComment,
 } from "../store/Slices/replySlice";
 
-export const CommentAndReply = ({
+const Likes=lazy(()=>import("../components/Likes.jsx"));
+const Reply=lazy(()=>import("../components/Reply.jsx"));
+
+ const CommentAndReply = ({
   avatar,
   username,
   createdAt,
@@ -26,7 +29,6 @@ export const CommentAndReply = ({
   const user = useSelector((state) => state.auth?.userData);
   const replies = useSelector((state) => state.reply?.replies);
   const loading=useSelector((state)=>state.comment.commentDeleteandEditLoading[commentId])
-  const item=useSelector((state)=>state.comment.commentDeleteandEditLoading);
   const specificComment = replies.find(
     (comment) => comment.commentId === commentId
   );
@@ -131,12 +133,14 @@ export const CommentAndReply = ({
           {/* likes and reply button */}
           <div className="flex flex-row  gap-5  items-center h-[50px] ">
             <div className="flex flex-row  w-[10%]  justify-center  ">
-              <Likes
+            <Suspense>
+            <Likes
                 commentId={commentId}
                 size={20}
                 isLiked={isLiked}
                 likesCount={likesCount}
               />
+            </Suspense>
             </div>
             <div
               className=" hover:bg-[#272727] p-2 rounded-full cursor-pointer flex items-center"
@@ -311,6 +315,7 @@ export const CommentAndReply = ({
       <div className={`${openReplies?"block":"hidden"}`}>
       {commentReplies &&
         commentReplies.map((reply) => (
+            <Suspense>
           <div className="  ml-[60px]" key={reply.content}
 >
             <Reply
@@ -326,9 +331,12 @@ export const CommentAndReply = ({
               commentId={commentId}
             />
           </div>
+            </Suspense>
         ))}
       </div>
     </>
   )
 
 };
+
+export default CommentAndReply;

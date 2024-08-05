@@ -9,7 +9,7 @@ import { useSelector,useDispatch } from "react-redux";
 import { createAccount,userLogin } from "../store/Slices/authSlice.js";
 import {SignupSkeleton} from '../skeletons'
 
-export const SignUp = () => {
+ const SignUp = () => {
   const[load,setLoad]=useState(true);
   
   useEffect(() => {
@@ -195,3 +195,5 @@ export const SignUp = () => {
     </div>
   );
 };
+
+export default SignUp;

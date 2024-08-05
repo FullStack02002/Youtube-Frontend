@@ -37,7 +37,7 @@ export const Sidebar = () => {
     {
       icon: <BiLike size={25} />,
       title: "Liked Videos",
-      url: "/*",
+      url: "/liked-videos",
     },
     {
       icon: <BiHistory size={25} />,

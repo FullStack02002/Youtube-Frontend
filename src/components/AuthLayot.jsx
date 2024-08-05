@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import {LoginPopUp} from '../components'
 import { useNavigate } from 'react-router-dom'
 
-export const AuthLayot = ({children,authentication=true}) => {
+ const AuthLayot = ({children,authentication=true}) => {
     const navigate=useNavigate();
     const authStatus=useSelector((state)=>state.auth.status)
 
@@ -19,3 +19,5 @@ export const AuthLayot = ({children,authentication=true}) => {
 
     return children;
 }
+
+export default AuthLayot;

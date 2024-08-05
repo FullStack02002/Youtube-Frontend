@@ -1,12 +1,16 @@
-import React from 'react'
-import { Login } from '../components'
+import React, { lazy, Suspense } from 'react'
 
-export const LoginPage = () => {
+const Login=lazy(()=>import("../components/Login"));
+ const LoginPage = () => {
   return (
     
     
-    <Login/>
+    <Suspense>
+      <Login></Login>
+    </Suspense>
    
 
   )
 }
+
+export default LoginPage;

@@ -5,7 +5,7 @@ import { useSearchParams,useParams } from "react-router-dom";
 import { getAllVideos, makeVideosNull } from "../store/Slices/videoSlice";
 import { FaFilter, IoCloseCircleOutline } from "../components/icons";
 
-export const SearchPage = () => {
+ const SearchPage = () => {
   const [filterOpen,setFilterOpen] = useState(false);
   const { query } = useParams();
   const dispatch = useDispatch();
@@ -122,3 +122,4 @@ export const SearchPage = () => {
     </>
   );
 };
+export default SearchPage

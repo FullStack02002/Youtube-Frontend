@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { Button, Likes } from "../components";
+import React, { useState, useEffect, lazy, Suspense } from "react";
+import { Button } from "../components";
 import { useDispatch } from "react-redux";
 import { toggleSubscriptions } from "../store/Slices/subscriptionsSlice";
 import { timeAgo } from "../helpers/timeAgo";
 
-export const Description = ({
+const Likes=lazy(()=>import("../components/Likes.jsx"));
+
+ const Description = ({
   avatar,
   username,
   subscribersCount,
@@ -64,7 +66,9 @@ export const Description = ({
         </div>
       </div>
       <div className="rounded-full w-[110px] flex justify-between bg-[#222222] px-2 py-1 items-center mr-[20px] ">
-        <Likes size={25} isLiked={isLiked} likesCount={likesCount} videoId={videoId} />
+      <Suspense>
+      <Likes size={25} isLiked={isLiked} likesCount={likesCount} videoId={videoId} />
+      </Suspense>
       </div>
     </div>
     <div className="w-full mt-2 bg-[#272727] text-white p-3 rounded-xl">
@@ -77,3 +81,5 @@ export const Description = ({
     
   );
 };
+
+export default Description

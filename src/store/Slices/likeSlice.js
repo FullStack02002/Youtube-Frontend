@@ -75,7 +75,11 @@ export const getLikedVideos=createAsyncThunk(
 const likeSlice = createSlice({
   name: "like",
   initialState,
-  reducers: {},
+  reducers: {
+    makeLikedVideosEmpty:(state)=>{
+      state.likedVideos=[];
+    }
+  },
   extraReducers: (builder) => {
     builder.addCase(getLikedVideos.pending,(state)=>{
         state.loading=true;
@@ -86,5 +90,7 @@ const likeSlice = createSlice({
     })
   },
 });
+
+export const {makeLikedVideosEmpty}=likeSlice.actions;
 
 export default likeSlice.reducer;

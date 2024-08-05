@@ -7,8 +7,7 @@ import {
   toggleReplyLike,
 } from "../store/Slices/likeSlice";
 import { useDispatch } from "react-redux";
-
-export const Likes = ({
+ const Likes = ({
   videoId,
   tweetId,
   commentId,
@@ -80,3 +79,5 @@ export const Likes = ({
     </>
   );
 };
+
+export default Likes

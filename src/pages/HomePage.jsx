@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAllVideos, makeVideosNull } from "../store/Slices/videoSlice";
 import { VideoCard } from "../components";
 import { HomePageSkeleton } from "../skeletons";
-
 export const HomePage = () => {
   const [page, setPage] = useState(1);
   const [isFetching, setisFetching] = useState(true);
