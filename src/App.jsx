@@ -13,7 +13,6 @@ const App = () => {
   useEffect(() => {
     dispatch(getCurrentUser());
   }, [dispatch]);
-  console.log(userData);
   return (
     <>
       <Routes>

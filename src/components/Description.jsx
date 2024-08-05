@@ -42,9 +42,9 @@ export const Description = ({
 
   return (
     <>
-    <div className="w-full flex flex-col gap-4 md:gap-0 md:flex-row justify-between pt-[10px] pb-[10px] ">
-      <div className="flex flex-row gap-4     justify-between">
-        <div className="flex flex-row">
+    <div className="w-full flex flex-col gap-4 md:gap-0 md:flex-row justify-between pt-[10px] pb-[10px]  ">
+      <div className="flex flex-row gap-4   justify-between">
+        <div className="flex flex-row  gap-4">
         <div>
           <img
             src={avatar}

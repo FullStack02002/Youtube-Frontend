@@ -6,6 +6,7 @@ import { BASE_URL } from "../../constant";
 const initialState = {
   loading: false,
   commentAddedLoading:false,
+  commentDeleteandEditLoading:{},
   comments: [],
   totalComments: 0,
   hasNextPage: false,
@@ -51,7 +52,7 @@ export const editAComment = createAsyncThunk(
       const response = await axiosInstance.patch(`/comment/c/${commentId}`, {
         content,
       });
-      // toast.success(response.data?.message)
+      toast.success(response.data?.message)
 
       return {
         _id: commentId,
@@ -70,8 +71,9 @@ export const editAComment = createAsyncThunk(
 );
 export const deleteAComment = createAsyncThunk(
   "deleteAComment",
-  async ({ commentId }) => {
+  async ({ commentId}) => {
     try {
+      console.log("runs");
       const response = await axiosInstance.delete(`/comment/c/${commentId}`);
       toast.success(response.data?.message);
       return response.data.data;
@@ -120,14 +122,26 @@ const commentSlice = createSlice({
       state.comments.unshift(action.payload);
       state.totalComments++;
     }),
+    builder.addCase(deleteAComment.pending,(state,action)=>{
+      const {commentId}=action.meta.arg;
+      state.commentDeleteandEditLoading[commentId]=true;
+    })
       builder.addCase(deleteAComment.fulfilled, (state, action) => {
+        const {commentId}=action.payload;
+        state.commentDeleteandEditLoading[commentId]=false;
         state.comments = state.comments.filter(
           (comment) => comment._id !== action.payload.commentId
         );
         state.totalComments--;
       }),
+      builder.addCase(editAComment.pending,(state,action)=>{
+        const {commentId}=action.meta.arg;
+        state.commentDeleteandEditLoading[commentId]=true;
+
+      })
       builder.addCase(editAComment.fulfilled, (state, action) => {
         const { _id } = action.payload;
+        state.commentDeleteandEditLoading[_id]=false;
         const index = state.comments.findIndex(
           (comment) => comment._id === _id
         );

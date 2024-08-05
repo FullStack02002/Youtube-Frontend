@@ -54,6 +54,10 @@ export const VideoDetail = () => {
 
   //initial 
   useEffect(() => {
+    setloader(true);
+    const timeoutId=setTimeout(() => {
+      setloader(false);
+    }, 2000);
     window.scrollTo(0, 0);
     dispatch(getVideoById({ videoId }));
     dispatch(getVideoComments({ videoId }));
@@ -63,6 +67,7 @@ export const VideoDetail = () => {
       dispatch(makeVideosNull());
       dispatch(makeCommentsEmpty());
       dispatch(makeRepliesEmpty());
+      clearTimeout(timeoutId);
     };
   }, [dispatch, videoId, userId]);
 
@@ -100,17 +105,9 @@ export const VideoDetail = () => {
     }
   }, [sortBy, sortType, dispatch, videoId]);
 
-  //page loader
+
+  // Disable scroll when mobile comments are open
   useEffect(() => {
-    setTimeout(() => {
-      setloader(false);
-    }, 2000);
-  }, []);
-
-
-
-  useEffect(() => {
-    // Disable scroll when mobile comments are open
     if (openMobileComments) {
       document.body.classList.add("no-scroll");
     } else {
@@ -121,6 +118,7 @@ export const VideoDetail = () => {
       document.body.classList.remove("no-scroll");
     };
   }, [openMobileComments]);
+
   return (
     <>
       <Navbar />
@@ -158,14 +156,14 @@ export const VideoDetail = () => {
 
               {/* comment section */}
               <div
-                 className={`fixed bottom-0 left-0 w-full bg-[#0F0F0F] z-10 transition-transform duration-300 md:p-4  lg:p-0 ${
+                 className={`fixed bottom-0  left-0 w-full bg-[#0F0F0F] z-10 transition-transform duration-300 md:p-4  lg:p-0 ${
                   openMobileComments
                     ? "translate-y-0 h-screen overflow-auto"
                     : "translate-y-full h-0"
                 } lg:static lg:translate-y-0 lg:h-auto`}
               >
                 <div className="flex flex-row gap-4 mt-8 md:mt-4 items-center">
-                  <p className="text-white text-xl font-semibold w-[30%] sm:w-[20%]">
+                  <p className="text-white text-xl font-semibold w-auto ">
                     {totalComments} {totalComments > 1 ? "Comments" : "Comment"}
                   </p>
                   <div

@@ -6,7 +6,7 @@ import { deleteAComment,editAComment } from "../store/Slices/commentSlice";
 import { BsEmojiGrin } from "./icons";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
-import { Likes, TextArea, Button, Reply } from "../components";
+import { Likes, TextArea, Button, Reply,Loader } from "../components";
 import {
   getAllRepliesOfComment,
 } from "../store/Slices/replySlice";
@@ -25,11 +25,14 @@ export const CommentAndReply = ({
 }) => {
   const user = useSelector((state) => state.auth?.userData);
   const replies = useSelector((state) => state.reply?.replies);
+  const loading=useSelector((state)=>state.comment.commentDeleteandEditLoading[commentId])
   const specificComment = replies.find(
     (comment) => comment.commentId === commentId
   );
   const commentReplies = specificComment?.replies || [];
   const isReplyEmpty = commentReplies.length === 0;
+
+  
 
   
 
@@ -97,6 +100,10 @@ export const CommentAndReply = ({
     );
     setopenEdit(false)
   };
+
+  if(loading){
+    return(<Loader></Loader>)
+  }
   return (
     <>
       {/* comment*/}
@@ -159,7 +166,7 @@ export const CommentAndReply = ({
             <div onClick={(e)=>{
             e.stopPropagation();
             setopenReplies((prev)=>!prev);
-          }} className={`font-bold cursor-pointer items-center flex flex-row gap-2 ${isVideoOwnerReplied?"sm:w-[26%] md:w-[21%] lg:w-[17%]":"md:w-[17%] lg:w-[14%]"} rounded-full py-[6px] px-[10px] text-[#3ea6ff] hover:bg-blue-200`}>
+          }} className={`font-bold cursor-pointer items-center flex flex-row gap-2 w-auto ${isVideoOwnerReplied?"  sm:w-[26%] md:w-[21%] lg:w-[17%]":" sm:w-[20%] md:w-[17%] lg:w-[14%]"} rounded-full py-[6px] px-[10px] text-[#3ea6ff] sm:hover:bg-blue-200`}>
             <MdKeyboardArrowDown size={24} className={`${openReplies?"hidden":"block"}`}/>
             <MdKeyboardArrowUp size={24} className={`${openReplies?"block":"hidden"}`}/>
             <img src={videoOwneravatar} className={`${isVideoOwnerReplied?"block":"hidden"} w-[24px] h-[24px] rounded-full`}/>
@@ -204,7 +211,8 @@ export const CommentAndReply = ({
               className="flex items-center gap-2 text-white hover:text-purple-500"
               onClick={(e) => {
                 e.stopPropagation();
-                dispatch(deleteAComment({ commentId }));
+                console.log("Clicked")
+                dispatch(deleteAComment({commentId}))
               }}
             >
               <MdDelete className="w-[24px] h-[24px]" />
@@ -320,5 +328,6 @@ export const CommentAndReply = ({
         ))}
       </div>
     </>
-  );
+  )
+
 };
