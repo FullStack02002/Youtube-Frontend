@@ -8,11 +8,11 @@ import { Input } from "./Input";
 import { LoginPopUp } from "./LoginPopUp";
 import { Logo } from "./Logo";
 import { VideoCard } from "./VideoCard";
-import { SearchVideoCard } from "./SearchVideoCard";
 import { TextArea } from "./TextAreas";
 import { Loader } from "./Loader";
 import { BigLoader } from "./BigLoader";
 import { InfinitScroll } from "./InfinitScroll";
+import { SearchVideoCard } from "./SearchVideoCard";
 export {
   Navbar,
   Search,
@@ -22,9 +22,9 @@ export {
   LoginPopUp,
   Logo,
   VideoCard,
-  SearchVideoCard,
   TextArea,
   Loader,
   BigLoader,
-  InfinitScroll
+  InfinitScroll,
+  SearchVideoCard
 };

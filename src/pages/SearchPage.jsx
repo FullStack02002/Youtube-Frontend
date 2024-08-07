@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
-import {  SearchVideoCard } from "../components";
+import React, {  useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useSearchParams,useParams } from "react-router-dom";
 import { getAllVideos, makeVideosNull } from "../store/Slices/videoSlice";
 import { FaFilter, IoCloseCircleOutline } from "../components/icons";
+import { SearchVideoCard } from "../components";
+
 
  const SearchPage = () => {
   const [filterOpen,setFilterOpen] = useState(false);
@@ -104,7 +105,7 @@ import { FaFilter, IoCloseCircleOutline } from "../components/icons";
         className="flex flex-col gap-1 sm:gap-3 mt-[20px]"
       >
         {videos.map((items) => (
-          <SearchVideoCard
+         <SearchVideoCard
             duration={items.duration}
             thumbnail={items.thumbnail}
             username={items.owner.username}

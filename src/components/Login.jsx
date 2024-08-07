@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { lazy, Suspense, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { Input } from "./Input";
@@ -7,7 +7,8 @@ import { Logo } from "./Logo";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { userLogin,getCurrentUser } from "../store/Slices/authSlice.js";
-import { LoginSkeleton } from "../skeletons/";
+import { LoginSkeleton } from "../skeletons";
+
 
  const Login = () => {
   const[load,setLoad]=useState(true)

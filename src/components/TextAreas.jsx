@@ -103,7 +103,7 @@ export const TextArea = ({
             <div className="cursor-pointer">
               <BsEmojiGrin
                 color="white"
-                className="font-bold h-[20px] w-[20px] relative"
+                className="font-bold h-[20px] w-[20px] relative hidden md:block"
                 onClick={(e)=>{
                   e.stopPropagation();
                   setopenPicker((prev)=>!prev);

@@ -1,21 +1,20 @@
 import React, { lazy, Suspense, useEffect } from "react";
 import { Toaster } from "react-hot-toast";
 import { Route, Routes } from "react-router-dom";
-import { HomePage } from "./pages/HomePage.jsx";
 import { useDispatch } from "react-redux";
 import { getCurrentUser } from "./store/Slices/authSlice";
-
+import HomePage from "./pages/HomePage.jsx";
+import Layout from "./components/Layout.jsx";
 // lazy load pages
 
 const VideoDetail = lazy(() => import("./pages/VideoDetail.jsx"));
 const SearchPage = lazy(() => import("./pages/SearchPage.jsx"));
 const SignupPage = lazy(() => import("./pages/SignupPage.jsx"));
-const LikedVideos=lazy(()=>import("./pages/LikedVideos.jsx"));
-const LoginPage=lazy(()=>import("./pages/LoginPage.jsx"));
+const LikedVideos = lazy(() => import("./pages/LikedVideos.jsx"));
+const LoginPage = lazy(() => import("./pages/LoginPage.jsx"));
 
 // lazy load components
 const AuthLayot = lazy(() => import("./components/AuthLayot"));
-const Layout = lazy(() => import("./components/Layout.jsx"));
 
 const App = () => {
   const dispatch = useDispatch();
@@ -29,17 +28,15 @@ const App = () => {
         <Route
           path="/"
           element={
-            <Suspense>
               <Layout />
-            </Suspense>
           }
         >
           <Route
             path=""
             element={
-              <AuthLayot authentication={false}>
-                <HomePage />
-              </AuthLayot>
+                <AuthLayot authentication={false}>
+                  <HomePage />
+                </AuthLayot>
             }
           />
           <Route
@@ -52,27 +49,28 @@ const App = () => {
               </Suspense>
             }
           />
+          <Route
+            path="/liked-videos"
+            element={
+              <Suspense>
+                <AuthLayot>
+                  <LikedVideos />
+                </AuthLayot>
+              </Suspense>
+            }
+          />
         </Route>
         <Route
           path="/watch/:videoId/:ownerId"
           element={
-            <Suspense >
+            <Suspense>
               <AuthLayot authentication={true}>
                 <VideoDetail />
               </AuthLayot>
             </Suspense>
           }
         />
-        <Route
-          path="/liked-videos"
-          element={
-           <Suspense>
-             <AuthLayot authentication={true}>
-              <LikedVideos />
-            </AuthLayot>
-           </Suspense>
-          }
-        />
+
         <Route
           path="/signup"
           element={

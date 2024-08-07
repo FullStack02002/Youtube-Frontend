@@ -115,7 +115,7 @@ export const Navbar = () => {
           {/* header of toggle bar */}
           <div className="  text-white  flex flex-col space-y-7">
             <NavLink
-              to="/*"
+              to="/liked-videos"
               className={({ isActive }) =>
                 `${
                   isActive ? "text-purple-500" : ""
@@ -134,7 +134,7 @@ export const Navbar = () => {
               }
             >
               <HiOutlineVideoCamera size={25} />
-              <span className="text-[16px] ml-4">Liked Videos</span>
+              <span className="text-[16px] ml-4">My Content</span>
             </NavLink>
           </div>
 

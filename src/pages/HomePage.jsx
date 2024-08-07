@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { InfinitScroll, Navbar, Sidebar } from "../components";
+import { InfinitScroll } from "../components";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllVideos, makeVideosNull } from "../store/Slices/videoSlice";
 import { VideoCard } from "../components";
-import { HomePageSkeleton } from "../skeletons";
-export const HomePage = () => {
+import { HomePageSkeleton } from "../skeletons/HomePageSkeleton"
+ const HomePage = () => {
   const [page, setPage] = useState(1);
   const [isFetching, setisFetching] = useState(true);
   const dispatch = useDispatch();
@@ -43,6 +43,8 @@ export const HomePage = () => {
     }
   }, [loading, isFetching]);
 
+
+
   return (
     <>
       <InfinitScroll fetchMore={fetchMoreVideos} hasNextPage={hasNextPage}>
@@ -50,7 +52,7 @@ export const HomePage = () => {
           id="video-container"
           className="   flex flex-col gap-2  sm:flex sm:flex-row  flex-wrap  sm:gap-5  lg:gap-4 xl:gap-4 "
         >
-          {loading
+          {loading 
             ? videos.map((_, index) => <HomePageSkeleton key={index} />)
             : videos.map((video) => (
                 <VideoCard
@@ -75,3 +77,5 @@ export const HomePage = () => {
     </>
   );
 };
+
+export default HomePage;

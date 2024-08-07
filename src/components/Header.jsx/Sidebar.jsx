@@ -108,7 +108,7 @@ export const Sidebar = () => {
             </NavLink>
           ))}
         </div>
-        <div className="space-y-4 w-full text-white mt-[190px]">
+        <div className="space-y-4  w-full text-white xl:mt-[190px] mt-[10px]">
           <div className=" flex flex-col items-center  xl:flex xl:flex-row xl:items-center gap-2  xl:hover:bg-purple-500 cursor-pointer py-1 px-2 xl:border xl:border-slate-600">
             <CiSettings size={25} />
             <span className="text-[10px] xl:text-base font-bold ">

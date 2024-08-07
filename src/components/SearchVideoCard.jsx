@@ -48,3 +48,5 @@ export const SearchVideoCard = ({thumbnail,duration,createdAt,avatar,username,vi
     </div>
   );
 };
+
+

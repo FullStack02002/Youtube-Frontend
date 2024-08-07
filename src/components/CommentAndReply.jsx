@@ -255,10 +255,10 @@ const Reply=lazy(()=>import("../components/Reply.jsx"));
               } w-full  flex flex-row justify-between p-[10px] items-center`}
             >
               {/* emoji picker */}
-              <div className="cursor-pointer">
+              <div className="cursor-pointer ">
                 <BsEmojiGrin
                   color="white"
-                  className="font-bold h-[20px] w-[20px] relative"
+                  className="font-bold h-[20px] w-[20px] relative "
                   onClick={(e) => {
                     e.stopPropagation();
                     setopenPicker((prev) => !prev);
