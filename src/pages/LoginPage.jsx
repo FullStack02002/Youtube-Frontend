@@ -1,13 +1,11 @@
-import React, { lazy, Suspense } from 'react'
+import React from 'react'
 
-const Login=lazy(()=>import("../components/Login"));
+import Login from '../components/Login';
  const LoginPage = () => {
   return (
     
     
-    <Suspense>
       <Login></Login>
-    </Suspense>
    
 
   )

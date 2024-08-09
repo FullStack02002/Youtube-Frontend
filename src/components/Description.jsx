@@ -1,12 +1,13 @@
-import React, { useState, useEffect, lazy, Suspense } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "../components";
 import { useDispatch } from "react-redux";
 import { toggleSubscriptions } from "../store/Slices/subscriptionsSlice";
 import { timeAgo } from "../helpers/timeAgo";
+import { BsThreeDotsVertical } from "../components/icons";
 
-const Likes=lazy(()=>import("../components/Likes.jsx"));
+import Likes from "../components/Likes.jsx";
 
- const Description = ({
+const Description = ({
   avatar,
   username,
   subscribersCount,
@@ -17,7 +18,7 @@ const Likes=lazy(()=>import("../components/Likes.jsx"));
   videoId,
   views,
   createdAt,
-  Description
+  Description,
 }) => {
   const [localisSubscribed, setLocalIsSubscribed] = useState(isSubscribed);
   const [localSubscribersCount, setLocalSubscribersCount] =
@@ -39,47 +40,51 @@ const Likes=lazy(()=>import("../components/Likes.jsx"));
     }
     setLocalIsSubscribed(!localisSubscribed);
   };
-  
-
 
   return (
     <>
-    <div className="w-full flex flex-col gap-4 md:gap-0 md:flex-row justify-between pt-[10px] pb-[10px]  ">
-      <div className="flex flex-row gap-4   justify-between">
-        <div className="flex flex-row  gap-4">
-        <div>
-          <img
-            src={avatar}
-            className="w-[40px] h-[40px] rounded-full"
-            alt="avatar"
-          />
+      <div className="w-full flex flex-col gap-4 md:gap-0 md:flex-row justify-between pt-[10px] pb-[10px]  ">
+        <div className="flex flex-row gap-4   justify-between">
+          <div className="flex flex-row  gap-4">
+            <div>
+              <img
+                src={avatar}
+                className="w-[40px] h-[40px] rounded-full"
+                alt="avatar"
+              />
+            </div>
+            <div className="flex flex-col">
+              <h2 className="text-white font-bold">{username}</h2>
+              <p className="text-[#AAAAAA] text-[14px]">{`${localSubscribersCount} subscribers`}</p>
+            </div>
+          </div>
+          <div className="mt-[6px]" onClick={handleSubscription}>
+            <Button className="text-white font-bold text-[14px] bg-purple-500 border-none outline-none h-[36px] w-[95px] rounded-full">
+              {localisSubscribed ? "Subscribed" : "Subscribe"}
+            </Button>
+          </div>
         </div>
-        <div className="flex flex-col">
-          <h2 className="text-white font-bold">{username}</h2>
-          <p className="text-[#AAAAAA] text-[14px]">{`${localSubscribersCount} subscribers`}</p>
-        </div>
-        </div>
-        <div className="mt-[6px]" onClick={handleSubscription}>
-          <Button className="text-white font-bold text-[14px] bg-purple-500 border-none outline-none h-[36px] w-[95px] rounded-full">
-            {localisSubscribed ? "Subscribed" : "Subscribe"}
-          </Button>
+        <div className="flex flex-row items-center cursor-pointer">
+          <div className="rounded-full w-[110px] flex justify-between bg-[#222222] px-2 py-1 items-center mr-[20px] ">
+            <Likes
+              size={25}
+              isLiked={isLiked}
+              likesCount={likesCount}
+              videoId={videoId}
+            />
+          </div>
+          <BsThreeDotsVertical className="text-white" />
         </div>
       </div>
-      <div className="rounded-full w-[110px] flex justify-between bg-[#222222] px-2 py-1 items-center mr-[20px] ">
-      <Suspense>
-      <Likes size={25} isLiked={isLiked} likesCount={likesCount} videoId={videoId} />
-      </Suspense>
+      <div className="w-full mt-2 bg-[#272727] text-white p-3 rounded-xl">
+        <span className="text-[14px] font-semibold">{views}views</span>
+        <span className="ml-2 text-[14px] font-semibold">
+          {timeAgo(createdAt)}
+        </span>
+        <p className="text-[14px] md:text-[16px]">{Description}</p>
       </div>
-    </div>
-    <div className="w-full mt-2 bg-[#272727] text-white p-3 rounded-xl">
-    <span className="text-[14px] font-semibold">{views}views</span>
-    <span className="ml-2 text-[14px] font-semibold">{timeAgo(createdAt)}</span>
-    <p className="text-[14px] md:text-[16px]">{Description}</p>
-
-    </div>
     </>
-    
   );
 };
 
-export default Description
+export default Description;

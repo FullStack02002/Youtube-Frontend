@@ -2,6 +2,7 @@ import React from "react";
 import { formatDuration } from "../helpers/formatDuration";
 import { timeAgo } from "../helpers/timeAgo";
 import { useNavigate } from "react-router-dom";
+import { BsThreeDotsVertical } from "../components/icons"
 
 export const VideoCard = ({
   title,
@@ -21,7 +22,7 @@ export const VideoCard = ({
         e.stopPropagation();
         navigate(`/watch/${videoId}/${ownerId}`)
 
-      }} className=" h-[340px] cursor-pointer basis-[95%] sm:basis-[90%] md:basis-[48%] lg:basis-[32%]">
+      }} className=" relative h-[340px] cursor-pointer basis-[95%] sm:basis-[90%] md:basis-[48%] lg:basis-[32%] ">
         <div id="thumbnail-container" className="relative">
           <img
             src={thumbnail}
@@ -34,7 +35,7 @@ export const VideoCard = ({
         </div>
         <div
           id="content-container"
-          className="mt-3 flex flex-row gap-5 items-center"
+          className="mt-3 flex flex-row gap-4 items-center"
         >
           <div id="avatar">
             <img
@@ -42,7 +43,7 @@ export const VideoCard = ({
               className="w-[50px] h-[50px] rounded-full mb-7 sm:mb-0"
             />
           </div>
-          <div id="content" className="w-[83%]">
+          <div id="content" className="w-[80%] ">
             <h2 className="text-white font-bold text-[15px] lg:text-[16px] line-clamp-2">
               {title}
             </h2>
@@ -54,6 +55,7 @@ export const VideoCard = ({
             </div>
           </div>
         </div>
+     <BsThreeDotsVertical className="text-white absolute bottom-[80px] right-0 cursor-pointer "/>
       </div>
     </>
   );

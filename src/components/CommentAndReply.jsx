@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, lazy, Suspense } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { timeAgo } from "../helpers/timeAgo";
 import { BsThreeDotsVertical, MdDelete, MdEdit,MdKeyboardArrowDown,MdKeyboardArrowUp } from "./icons";
 import { useSelector, useDispatch } from "react-redux";
@@ -11,8 +11,8 @@ import {
   getAllRepliesOfComment,
 } from "../store/Slices/replySlice";
 
-const Likes=lazy(()=>import("../components/Likes.jsx"));
-const Reply=lazy(()=>import("../components/Reply.jsx"));
+import Likes from "../components/Likes.jsx";
+import Reply from "../components/Reply.jsx";
 
  const CommentAndReply = ({
   avatar,
@@ -133,14 +133,12 @@ const Reply=lazy(()=>import("../components/Reply.jsx"));
           {/* likes and reply button */}
           <div className="flex flex-row  gap-5  items-center h-[50px] ">
             <div className="flex flex-row  w-[10%]  justify-center  ">
-            <Suspense>
             <Likes
                 commentId={commentId}
                 size={20}
                 isLiked={isLiked}
                 likesCount={likesCount}
               />
-            </Suspense>
             </div>
             <div
               className=" hover:bg-[#272727] p-2 rounded-full cursor-pointer flex items-center"
@@ -315,7 +313,6 @@ const Reply=lazy(()=>import("../components/Reply.jsx"));
       <div className={`${openReplies?"block":"hidden"}`}>
       {commentReplies &&
         commentReplies.map((reply) => (
-            <Suspense>
           <div className="  ml-[60px]" key={reply.content}
 >
             <Reply
@@ -331,7 +328,6 @@ const Reply=lazy(()=>import("../components/Reply.jsx"));
               commentId={commentId}
             />
           </div>
-            </Suspense>
         ))}
       </div>
     </>

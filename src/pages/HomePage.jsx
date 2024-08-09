@@ -3,8 +3,8 @@ import { InfinitScroll } from "../components";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllVideos, makeVideosNull } from "../store/Slices/videoSlice";
 import { VideoCard } from "../components";
-import { HomePageSkeleton } from "../skeletons/HomePageSkeleton"
- const HomePage = () => {
+import { HomePageSkeleton } from "../skeletons/HomePageSkeleton";
+ export const HomePage = () => {
   const [page, setPage] = useState(1);
   const [isFetching, setisFetching] = useState(true);
   const dispatch = useDispatch();
@@ -13,6 +13,7 @@ import { HomePageSkeleton } from "../skeletons/HomePageSkeleton"
   const hasNextPage = useSelector((state) => state.video?.videos?.hasNextPage);
 
   useEffect(() => {
+    
     dispatch(getAllVideos({}));
 
     return () => {
@@ -20,18 +21,15 @@ import { HomePageSkeleton } from "../skeletons/HomePageSkeleton"
     };
   }, [dispatch]);
 
-
-
-  const fetchMoreVideos=useCallback(()=>{
-    if(hasNextPage){
+  const fetchMoreVideos = useCallback(() => {
+    if (hasNextPage) {
       setisFetching(true);
-      dispatch(getAllVideos({page:page+1})).then(()=>{
-        setisFetching(false)
+      dispatch(getAllVideos({ page: page + 1 })).then(() => {
+        setisFetching(false);
       });
-      setPage((prev)=>prev+1);
+      setPage((prev) => prev + 1);
     }
-
-  },[page,hasNextPage,dispatch])
+  }, [page, hasNextPage, dispatch]);
 
   useEffect(() => {
     if (!loading && isFetching) {
@@ -42,8 +40,6 @@ import { HomePageSkeleton } from "../skeletons/HomePageSkeleton"
       return () => clearTimeout(timeoutId);
     }
   }, [loading, isFetching]);
-
-
 
   return (
     <>
@@ -78,4 +74,4 @@ import { HomePageSkeleton } from "../skeletons/HomePageSkeleton"
   );
 };
 
-export default HomePage;
+

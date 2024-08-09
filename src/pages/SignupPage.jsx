@@ -1,13 +1,11 @@
-import React, { lazy, Suspense } from 'react'
+import React from 'react'
 
-const SignUp=lazy(()=>import("../components/SignUp"))
+import SignUp from '../components/SignUp'
 
 const SignupPage = () => {
   return (
    
-    <Suspense>
       <SignUp></SignUp>
-    </Suspense>
     
   
   )

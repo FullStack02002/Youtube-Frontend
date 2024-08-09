@@ -1,11 +1,7 @@
 import React, {
   useEffect,
-  useRef,
   useState,
-  useId,
   useCallback,
-  lazy,
-  Suspense,
 } from "react";
 import {
   Navbar,
@@ -15,9 +11,9 @@ import {
   InfinitScroll,
 } from "../components";
 
-const Video = lazy(() => import("../components/Video"));
-const Description = lazy(() => import("../components/Description"));
-const CommentAndReply = lazy(() => import("../components/CommentAndReply"));
+import Video from "../components/Video";
+import Description from "../components/Description";
+import CommentAndReply from "../components/CommentAndReply";
 
 import { useParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -149,7 +145,6 @@ const VideoDetail = () => {
               </h1>
 
               {/* description */}
-             <Suspense>
              <Description
                 channelId={video?.owner?._id}
                 avatar={video?.owner?.avatar}
@@ -164,7 +159,6 @@ const VideoDetail = () => {
                 Description={video?.description}
                 key={video?._id}
               />
-             </Suspense>
 
               {/* comment section */}
               {isCommentSectionOn ? (
@@ -247,7 +241,6 @@ const VideoDetail = () => {
                       <div className="w-full  mt-[20px]  flex flex-col gap-2 ">
                         {commentAddedLoading && <Loader />}
                         {comments.map((comment) => (
-                          <Suspense key={comment?._id}>
                           <CommentAndReply
                             key={comment?._id}
                             avatar={comment?.owner?.avatar}
@@ -261,7 +254,6 @@ const VideoDetail = () => {
                             isLiked={comment?.isLiked}
                             likesCount={comment?.likesCount}
                           />
-                          </Suspense>
                         ))}
                         {(loading || isFetching) && <Loader />}
                       </div>

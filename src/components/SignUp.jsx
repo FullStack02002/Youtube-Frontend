@@ -1,4 +1,4 @@
-import React, { lazy, Suspense, useEffect, useState } from "react";
+import React, {  useEffect, useState } from "react";
 import { Logo } from "./Logo.jsx";
 import { useForm } from "react-hook-form";
 import { GetImagePreview } from "./GetImagePreview.jsx";

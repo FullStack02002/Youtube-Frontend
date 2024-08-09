@@ -11,11 +11,8 @@ export default defineConfig({
       '/api': 'https://youtube-backend-ibez.onrender.com/api/v1'
       // '/api': 'http://localhost:8000/api/v1'
     },
-    port:3000,
-    host: '0.0.0.0'
-  },
-  build: {
-    sourcemap: true
+   
   }
+
 
 })
