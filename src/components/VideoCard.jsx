@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { formatDuration } from "../helpers/formatDuration";
 import { timeAgo } from "../helpers/timeAgo";
 import { useNavigate } from "react-router-dom";
-import { BsThreeDotsVertical } from "../components/icons"
-
+import { BsThreeDotsVertical,MdSaveAlt } from "../components/icons";
+import { useDispatch, useSelector } from "react-redux";
 export const VideoCard = ({
   title,
   thumbnail,
@@ -15,14 +15,25 @@ export const VideoCard = ({
   createdAt,
   ownerId,
 }) => {
-  const navigate=useNavigate();
+  const navigate = useNavigate();
+  const dispatch=useDispatch();
+  const [playlistPopOpen,setplaylistPopOpen]=useState(false);
+
+  const playlists=useSelector((state)=>state.playlist?.playlists);
+  const isAuth=useSelector((state)=>state.auth?.status);
+
+
+
+ 
   return (
     <>
-      <div onClick={(e)=>{
-        e.stopPropagation();
-        navigate(`/watch/${videoId}/${ownerId}`)
-
-      }} className=" relative h-[340px] cursor-pointer basis-[95%] sm:basis-[90%] md:basis-[48%] lg:basis-[32%] ">
+      <div
+        onClick={(e) => {
+          e.stopPropagation();
+          navigate(`/watch/${videoId}/${ownerId}`);
+        }}
+        className=" relative h-[340px] cursor-pointer basis-[95%] sm:basis-[90%] md:basis-[48%] lg:basis-[32%] "
+      >
         <div id="thumbnail-container" className="relative">
           <img
             src={thumbnail}
@@ -55,7 +66,34 @@ export const VideoCard = ({
             </div>
           </div>
         </div>
-     <BsThreeDotsVertical className="text-white absolute bottom-[80px] right-0 cursor-pointer "/>
+        {/* three dots for opening save to playlist */}
+        <BsThreeDotsVertical className={ ` ${isAuth?"block":"hidden"} text-white absolute bottom-[80px] right-0 cursor-pointer `} onClick={(e)=>{
+          e.stopPropagation();
+          setplaylistPopOpen((prev)=>!prev);
+        }} />
+        
+        {/* div opens when three dots gets clicked */}
+        <div className={` ${playlistPopOpen?"block":"hidden"} absolute w-[253px]  z-10 bg-[#272727] rounded-xl bottom-[18px] right-[10px] pt-3 pb-3`}>
+        <div className=" flex flex-row justify-center gap-5 hover:text-purple-500 text-white pt-2 pb-2">
+          <div><MdSaveAlt  size={24}/></div>
+          <p>Save to playlist</p>
+        </div>
+
+        </div>
+
+        {/* div opens when save to playlist gets clicked */}
+        {/* <div className={`border w-[200px] h-[253px] absolute right-[10px] bottom-[18px] z-10 bg-[#272727] rounded-xl  p-5 `}>
+        <h1 className="text-white font-bold">Save video to...</h1>
+        {playlists.map((item)=>{
+          return(
+            <div className="text-white">{item?.name}</div>
+          )
+        })}
+
+        </div> */}
+
+
+
       </div>
     </>
   );

@@ -37,7 +37,7 @@ export const Navbar = () => {
     <>
       <nav
         id="nav-container"
-        className="border-b-2 border-gray-500 flex justify-between h-20 items-center pl-3 pr-3 mx-auto max-w-screen-2xl sticky top-0 bg-[#0F0F0F] z-10"
+        className="border-b-2 border-gray-500 flex justify-between h-20 items-center pl-3 pr-3 mx-auto max-w-screen-2xl sticky top-0 bg-[#0F0F0F] z-20"
       >
         <div id="nav-logo">
           <Logo />

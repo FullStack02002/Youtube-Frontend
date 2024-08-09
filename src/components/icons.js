@@ -29,6 +29,7 @@ import { MdDelete } from "react-icons/md";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import { MdKeyboardArrowUp } from "react-icons/md";
 import { MdOutlineSort } from "react-icons/md";
+import { MdSaveAlt } from "react-icons/md";
 
 
 
@@ -68,5 +69,6 @@ export {
     MdDelete,
     MdKeyboardArrowDown,
     MdKeyboardArrowUp,
-    MdOutlineSort
+    MdOutlineSort,
+    MdSaveAlt
 }

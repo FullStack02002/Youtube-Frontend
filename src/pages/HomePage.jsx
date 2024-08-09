@@ -4,23 +4,30 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAllVideos, makeVideosNull } from "../store/Slices/videoSlice";
 import { VideoCard } from "../components";
 import { HomePageSkeleton } from "../skeletons/HomePageSkeleton";
- export const HomePage = () => {
+import { getUserPlaylist } from "../store/Slices/playlistSlice";
+
+export const HomePage = () => {
   const [page, setPage] = useState(1);
   const [isFetching, setisFetching] = useState(true);
   const dispatch = useDispatch();
   const videos = useSelector((state) => state.video?.videos?.docs);
   const loading = useSelector((state) => state.video?.loading);
   const hasNextPage = useSelector((state) => state.video?.videos?.hasNextPage);
+  const userId = useSelector((state) => state.auth?.userData?._id);
 
   useEffect(() => {
-    
     dispatch(getAllVideos({}));
 
     return () => {
       dispatch(makeVideosNull());
     };
-  }, [dispatch]);
+  }, []);
 
+  useEffect(() => {
+    if (userId) {
+      dispatch(getUserPlaylist({ userId }));
+    }
+  }, [userId]);
   const fetchMoreVideos = useCallback(() => {
     if (hasNextPage) {
       setisFetching(true);
@@ -48,7 +55,7 @@ import { HomePageSkeleton } from "../skeletons/HomePageSkeleton";
           id="video-container"
           className="   flex flex-col gap-2  sm:flex sm:flex-row  flex-wrap  sm:gap-5  lg:gap-4 xl:gap-4 "
         >
-          {loading 
+          {loading
             ? videos.map((_, index) => <HomePageSkeleton key={index} />)
             : videos.map((video) => (
                 <VideoCard
@@ -73,5 +80,3 @@ import { HomePageSkeleton } from "../skeletons/HomePageSkeleton";
     </>
   );
 };
-
-
