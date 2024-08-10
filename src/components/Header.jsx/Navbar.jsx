@@ -12,6 +12,7 @@ import {
   BiLike,
   HiOutlineVideoCamera,
   IoMdLogOut,
+  CgPlayList
 } from "../icons";
 
 export const Navbar = () => {
@@ -135,6 +136,17 @@ export const Navbar = () => {
             >
               <HiOutlineVideoCamera size={25} />
               <span className="text-[16px] ml-4">My Content</span>
+            </NavLink>
+            <NavLink
+              to="/playlists"
+              className={({ isActive }) =>
+                `${
+                  isActive ? "text-purple-500" : ""
+                } flex flex-row items-center border border-slate-600 p-3`
+              }>
+                <CgPlayList size={25} />
+                <span className="text-[16px] ml-4">Playlists</span>
+
             </NavLink>
           </div>
 

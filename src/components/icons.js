@@ -31,6 +31,7 @@ import { MdKeyboardArrowUp } from "react-icons/md";
 import { MdOutlineSort } from "react-icons/md";
 import { MdSaveAlt } from "react-icons/md";
 import { FaPlus } from "react-icons/fa";
+import { CgPlayList } from "react-icons/cg";
 
 
 
@@ -72,5 +73,6 @@ export {
     MdKeyboardArrowUp,
     MdOutlineSort,
     MdSaveAlt,
-    FaPlus
+    FaPlus,
+    CgPlayList
 }

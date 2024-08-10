@@ -20,7 +20,6 @@ import { SearchVideoCard } from "../components";
     dispatch(getAllVideos({ query,sortBy,sortType }));
     return () => {
       dispatch(makeVideosNull());
-      console.log("triggered");
     };
   }, [dispatch, query,searchParms]);
 

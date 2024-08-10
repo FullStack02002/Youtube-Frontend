@@ -143,9 +143,8 @@ const PlaylistMenu = ({ videoId,className }) => {
                   handleChange(item?._id, e.target.checked, item.name);
                 }}
                 className="w-[20px] h-[20px] outline-none cursor-pointer text-[#272727]"
-                id={item?._id}
               />
-              <label htmlFor={item?._id} className="cursor-pointer">
+              <label  className="cursor-pointer">
                 <h1 className="text-white hover:text-purple-500 line-clamp-1">
                   {item.name}
                 </h1>

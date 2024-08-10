@@ -9,6 +9,7 @@ import {
   RiHome6Line,
   TbUserCheck,
   IoMdLogOut,
+  CgPlayList
 } from "../icons";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
@@ -59,6 +60,11 @@ export const Sidebar = () => {
       title: "Subscriptions",
       url: "/*",
     },
+    {
+      icon:<CgPlayList size={25}/>,
+      title:"Playlists",
+      url:"/playlists"
+    }
   ];
 
   const bottomBarItems = [

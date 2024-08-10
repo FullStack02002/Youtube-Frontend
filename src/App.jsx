@@ -12,6 +12,7 @@ import SignupPage from "./pages/SignupPage.jsx";
 import LikedVideos from "./pages/LikedVideos.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
 import AuthLayot from "./components/AuthLayot";
+import Playlists from "./pages/Playlists.jsx";
 
 
 const App = () => {
@@ -51,6 +52,14 @@ const App = () => {
                 <AuthLayot authentication={true}>
                   <LikedVideos />
                 </AuthLayot>
+            }
+          />
+          <Route
+            path="/playlists"
+            element={
+              <AuthLayot authentication={true}>
+                <Playlists />
+              </AuthLayot>
             }
           />
         </Route>
