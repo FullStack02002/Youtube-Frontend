@@ -3,9 +3,9 @@ import { Button } from "../components";
 import { useDispatch } from "react-redux";
 import { toggleSubscriptions } from "../store/Slices/subscriptionsSlice";
 import { timeAgo } from "../helpers/timeAgo";
-import { BsThreeDotsVertical } from "../components/icons";
 
 import Likes from "../components/Likes.jsx";
+import PlaylistMenu from "./PlaylistMenu.jsx";
 
 const Description = ({
   avatar,
@@ -43,7 +43,7 @@ const Description = ({
 
   return (
     <>
-      <div className="w-full flex flex-col gap-4 md:gap-0 md:flex-row justify-between pt-[10px] pb-[10px]  ">
+      <div className="w-full flex flex-col gap-4 md:gap-0 md:flex-row justify-between pt-[10px] pb-[10px] relative ">
         <div className="flex flex-row gap-4   justify-between">
           <div className="flex flex-row  gap-4">
             <div>
@@ -73,7 +73,8 @@ const Description = ({
               videoId={videoId}
             />
           </div>
-          <BsThreeDotsVertical className="text-white" />
+          {/* three dots */}
+          <PlaylistMenu className="text-white" videoId={videoId}/>
         </div>
       </div>
       <div className="w-full mt-2 bg-[#272727] text-white p-3 rounded-xl">

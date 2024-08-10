@@ -20,7 +20,7 @@ const PlayAndLikeVideoList = ({thumbnail,username,views,createdAt,navigates,dura
       {/* index */}
       <div className="text-white hidden sm:block">{index}</div>
       {/* video */}
-      <div className="relative">
+      <div className="relative ">
         <img
           src={thumbnail}
           className="w-[200px] sm:w-[160px] h-[100px] sm:h-[90px] rounded-sm"
@@ -32,7 +32,7 @@ const PlayAndLikeVideoList = ({thumbnail,username,views,createdAt,navigates,dura
 
       {/* information */}
 
-      <div className="flex flex-col gap-2  basis-[80%]  ">
+      <div className="flex flex-col gap-2  basis-[60%] sm:basis-[80%]  ">
         <p className="text-white line-clamp-1 font-semi-bold">
           {title}
         </p>
