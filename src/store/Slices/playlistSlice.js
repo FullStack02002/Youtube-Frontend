@@ -10,7 +10,7 @@ const initialState = {
 
 export const createPlaylist = createAsyncThunk(
   "createPlaylist",
-  async ({ name }) => {
+  async ( name ) => {
     try {
       const response = await axiosInstance.post("/playlist/", {
         name,
@@ -40,12 +40,12 @@ export const deletePlaylist = createAsyncThunk(
 
 export const addVideoToPlaylist = createAsyncThunk(
   "addVideoToPlaylist",
-  async ({ videoId, playlistId }) => {
+  async ({ videoId, playlistId,PlaylistName }) => {
     try {
       const response = await axiosInstance.patch(
         `/playlist/add/${videoId}/${playlistId}`
       );
-      toast.success(response.data.message);
+      toast.success(`Saved To ${PlaylistName}`);
       return response.data.data;
     } catch (error) {
       toast.error(error?.response?.data?.error);
@@ -56,12 +56,12 @@ export const addVideoToPlaylist = createAsyncThunk(
 
 export const deleteVideoFromPlaylist = createAsyncThunk(
   "deleteVideoFromPlaylist",
-  async ({ playlistId, videoId }) => {
+  async ({ playlistId, videoId,PlaylistName }) => {
     try {
       const response = await axiosInstance.patch(
         `/playlist/remove/${videoId}/${playlistId}`
       );
-      toast.success(response.data.message);
+      toast.success(`Removed From ${PlaylistName}`);
       return { videoId };
     } catch (error) {
       toast.error(error?.response?.data?.error);
@@ -128,7 +128,7 @@ const playlistSlice = createSlice({
     builder.addCase(deleteVideoFromPlaylist.pending, (state) => {
       state.loading = true;
     });
-    builder.addCase(deleteVideoFromPlaylist.fulfilled, (state) => {
+    builder.addCase(deleteVideoFromPlaylist.fulfilled, (state,action) => {
       state.loading = false;
       const { videoId } = action.payload;
       state.videos = state.videos.filter((video) => video._id !== videoId);
