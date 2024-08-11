@@ -33,7 +33,8 @@ const LikedVideos = () => {
         fullName={fullName}
         videolength={likedVideosLength}
         Videos={likedVideos}
-        likedVideos={true}
+        likedVideos="true"
+        Text="Liked Videos"
       />
     </>
   );

@@ -21,18 +21,20 @@ const PlaylistMenu = ({ videoId,className }) => {
   const [openList, setopenList] = useState(false);
   const [openInput, setopenInput] = useState(false);
   const inputRef = useRef(null);
-  const playlists = useSelector((state) => state.playlist?.playlists);
+  const playlists = useSelector((state) => state.playlist?.playlists) || [];
   // to check is video is present in particular playlist
   const isVideoPresent = (playlistId) => {
     return checkedPlaylists[playlistId] || false;
   };
   // to check initial checked
   useEffect(() => {
-    if (playlists) {
+    if (playlists.length!==0) {
       const initialCheckedState = {};
+      
       playlists.forEach((playlist) => {
-        initialCheckedState[playlist._id] = playlist.videos.some(
-          (video) => video._id === videoId
+        const videos = playlist.videos || []; // Default to an empty array
+        initialCheckedState[playlist._id] =  videos.some(
+          (video) => video?.video?._id === videoId
         );
       });
       setCheckedPlaylists(initialCheckedState);
@@ -58,6 +60,10 @@ const PlaylistMenu = ({ videoId,className }) => {
     }));
   };
   const handleCreatePlaylist = async () => {
+    setopenList(false);
+    setopenInput(false);
+      setplaylistPopOpen(false);
+      setText("");
     const resultAction = await dispatch(createPlaylist(Text));
     console.log(resultAction);
     if (resultAction.type === "createPlaylist/fulfilled") {
@@ -69,10 +75,7 @@ const PlaylistMenu = ({ videoId,className }) => {
           PlaylistName: newPlaylist.name,
         })
       );
-      setopenList(false);
-      setopenInput(false);
-      setplaylistPopOpen(false);
-      setText("");
+      
       const playlistId = newPlaylist._id;
       setCheckedPlaylists((prev) => ({
         ...prev,

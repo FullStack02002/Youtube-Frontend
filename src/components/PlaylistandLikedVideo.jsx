@@ -1,7 +1,7 @@
 import React from "react";
 import PlayAndLikeVideoList from "./PlayAndLikeVideoList";
 
-const PlaylistandLikedVideo = ({ bgImage, fullName, videolength, Videos,likedVideos }) => {
+const PlaylistandLikedVideo = ({ bgImage, fullName, videolength, Videos,likedVideos,Text,Playlist }) => {
 
   return (
     <>
@@ -26,7 +26,7 @@ const PlaylistandLikedVideo = ({ bgImage, fullName, videolength, Videos,likedVid
           </div>
           <div>
             {/* heading */}
-            <h1 className="text-white font-bold text-[28px]">Liked Videos</h1>
+            <h1 className="text-white font-bold text-[28px]">{Text}</h1>
 
             {/* fullname and videos count */}
 
@@ -56,6 +56,27 @@ const PlaylistandLikedVideo = ({ bgImage, fullName, videolength, Videos,likedVid
                 createdAt={video?.likedVideo?.createdAt}
                 index={index}
                 navigates={`/watch/${video?.likedVideo?._id}/${video?.likedVideo?.ownerDetails?._id}`}
+              />
+            );
+          })}
+        </div>
+        )}
+
+        {/* video list for playlist */}
+        {Playlist && (
+          <div className="flex flex-col  gap-4 p-2 ">
+          {Videos.map((video, index) => {
+            return (
+              <PlayAndLikeVideoList
+                key={index}
+                thumbnail={video?.video?.thumbnail}
+                duration={video?.video?.duration}
+                title={video?.video?.title}
+                username={video?.video?.owner?.username}
+                views={video?.video?.views}
+                createdAt={video?.video?.createdAt}
+                index={index}
+                navigates={`/watch/${video?.video?._id}/${video?.video?.owner?._id}`}
               />
             );
           })}

@@ -26,7 +26,7 @@ const Playlists = () => {
       </h1>
       <div className="flex flex-col gap-1  md:flex md:flex-row flex-wrap  md:gap-20 lg:gap-10">
         {playlists.map((item) => {
-          const thumbnail = item.videos?.[0]?.thumbnail;
+          const thumbnail = item.videos?.[0]?.video?.thumbnail;
 
           return (
             <PlaylistsVIdeoCard
