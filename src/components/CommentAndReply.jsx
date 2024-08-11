@@ -196,7 +196,7 @@ import Reply from "../components/Reply.jsx";
           <div
             className={`${
               open ? "block" : "hidden"
-            } z-10 w-[130px] border bg-[#272727] absolute rounded-xl top-5 -left-[111px]   lg:left-0 flex flex-col gap-2 p-2`}
+            } z-10 w-[130px]  bg-[#272727] absolute rounded-xl top-5 -left-[111px]   lg:left-0 flex flex-col gap-2 p-2`}
           >
             <div
               className={`${
