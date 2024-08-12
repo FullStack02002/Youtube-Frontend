@@ -4,6 +4,7 @@ import { makeVideosEmpty } from '../store/Slices/playlistSlice'
 import { useSelector,useDispatch } from 'react-redux'
 import { getPlaylistById } from '../store/Slices/playlistSlice'
 import PlaylistandLikedVideo from '../components/PlaylistandLikedVideo'
+import PlaylistSkeleton from '../skeletons/PlaylistSkeleton'
 
 const Playlist = () => {
     const dispatch=useDispatch();
@@ -13,6 +14,7 @@ const Playlist = () => {
     const totalVideos=videos && videos.length;
     const PlaylistName=useSelector((state)=>state?.playlist?.PlaylistName)
     const user=useSelector((state)=>state?.auth?.userData);
+    const loading=useSelector((state)=>state?.playlist?.loading);
 
     useEffect(()=>{
         dispatch(getPlaylistById({playlistId}))
@@ -23,6 +25,11 @@ const Playlist = () => {
 
 
     },[])
+
+
+    if(loading){
+      return <PlaylistSkeleton/>
+    }
 
 
 

@@ -56,6 +56,8 @@ const PlaylistandLikedVideo = ({ bgImage, fullName, videolength, Videos,likedVid
                 createdAt={video?.likedVideo?.createdAt}
                 index={index}
                 navigates={`/watch/${video?.likedVideo?._id}/${video?.likedVideo?.ownerDetails?._id}`}
+                likedVideos={likedVideos}
+                videoId={video?.likedVideo?._id}
               />
             );
           })}
@@ -77,6 +79,9 @@ const PlaylistandLikedVideo = ({ bgImage, fullName, videolength, Videos,likedVid
                 createdAt={video?.video?.createdAt}
                 index={index}
                 navigates={`/watch/${video?.video?._id}/${video?.video?.owner?._id}`}
+                Playlist={Playlist}
+                videoId={video?.video?._id}
+
               />
             );
           })}

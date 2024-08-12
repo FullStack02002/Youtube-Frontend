@@ -7,6 +7,8 @@ const initialState = {
   videos: [],
   playlists: [],
   PlaylistName:null,
+  PlaylistId:null,
+
 };
 
 export const createPlaylist = createAsyncThunk(
@@ -104,6 +106,7 @@ const playlistSlice = createSlice({
     makeVideosEmpty:(state)=>{
       state.videos=[];
       state.PlaylistName=null;
+      state.PlaylistId=null;
     }
   },
   extraReducers: (builder) => {
@@ -136,7 +139,7 @@ const playlistSlice = createSlice({
     builder.addCase(deleteVideoFromPlaylist.fulfilled, (state,action) => {
       state.loading = false;
       const { videoId } = action.payload;
-      state.videos = state.videos.filter((video) => video._id !== videoId);
+      state.videos = state.videos.filter((video) => video?.video?._id !== videoId);
     });
     builder.addCase(getPlaylistById.pending, (state) => {
       state.loading = true;
@@ -145,6 +148,7 @@ const playlistSlice = createSlice({
       state.loading = false;
       state.videos = action.payload[0].videos;
       state.PlaylistName=action.payload[0].name;
+      state.PlaylistId=action.payload[0]._id;
     });
     builder.addCase(getUserPlaylist.pending, (state) => {
       state.loading = true;
