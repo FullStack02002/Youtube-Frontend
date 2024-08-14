@@ -4,6 +4,7 @@ import { useSearchParams,useParams } from "react-router-dom";
 import { getAllVideos, makeVideosNull } from "../store/Slices/videoSlice";
 import { FaFilter, IoCloseCircleOutline } from "../components/icons";
 import { SearchVideoCard } from "../components";
+import HistoryandSearchPageSkeleton from "../skeletons/HistoryandSearchPageSkeleton";
 
 
  const SearchPage = () => {
@@ -11,6 +12,7 @@ import { SearchVideoCard } from "../components";
   const { query } = useParams();
   const dispatch = useDispatch();
   const videos = useSelector((state) => state.video.videos?.docs);
+  const loading=useSelector((state)=>state.video?.loading);
   const[searchParms,setSearchParms]=useSearchParams();
 
 
@@ -26,6 +28,11 @@ import { SearchVideoCard } from "../components";
   const handleSortParams=(newSortBy,newSortType="asc")=>{
     setSearchParms({sortBy:newSortBy,sortType:newSortType})
   }
+
+if(loading){
+  return( <HistoryandSearchPageSkeleton search="true"></HistoryandSearchPageSkeleton>)
+}
+
 
   return (
     <>

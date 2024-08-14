@@ -7,7 +7,7 @@ import {
 } from "../store/Slices/userSlice";
 import { SearchVideoCard } from "../components";
 import { MdDelete } from "../components/icons";
-import HistoryPageSkeleton from "../skeletons/HistoryPageSkeleton";
+import HistoryandSearchPageSkeleton from "../skeletons/HistoryandSearchPageSkeleton";
 
 const HistoryPage = () => {
   const dispatch = useDispatch();
@@ -25,7 +25,7 @@ const HistoryPage = () => {
   }, []);
 
   if(loading){
-    return <HistoryPageSkeleton></HistoryPageSkeleton>
+    return <HistoryandSearchPageSkeleton ></HistoryandSearchPageSkeleton>
   }
 
   return (

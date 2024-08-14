@@ -1,15 +1,15 @@
 import React from "react";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 
-const HistoryPageSkeleton = () => {
+const HistoryandSearchPageSkeleton = ({search}) => {
   return (
     <SkeletonTheme baseColor="#202020" highlightColor="#444">
       <div>
-        <div className=" flex flex-row justify-between items-center">
+        <div className={`${search?"hidden":"block"}  flex flex-row justify-between items-center`}>
           <Skeleton className=" w-[134px] md:w-[160px] lg:w-[200px] xl:w-[241px] h-[40px] mt-5 mb-5" />
         </div>
 
-        <div className="flex flex-col gap-5">
+        <div className="flex flex-col gap-5 mt-5">
         <div className="flex flex-col gap-5">
           <div className="w-full  md:h-[280.55px] sm:flex sm:flex-col  md:flex md:flex-row  md:gap-3 cursor-pointer relative">
             <div className="h-[200px] sm:h-[350px] md:basis-[60%] lg:basis-[40%] md:h-full  relative">
@@ -46,4 +46,4 @@ const HistoryPageSkeleton = () => {
   );
 };
 
-export default HistoryPageSkeleton;
+export default HistoryandSearchPageSkeleton;
