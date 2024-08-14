@@ -14,6 +14,7 @@ import LoginPage from "./pages/LoginPage.jsx";
 import AuthLayot from "./components/AuthLayot";
 import Playlists from "./pages/Playlists.jsx";
 import Playlist from "./pages/Playlist.jsx";
+import HistoryPage from "./pages/HistoryPage.jsx";
 
 
 const App = () => {
@@ -68,6 +69,14 @@ const App = () => {
             element={
               <AuthLayot authentication={true}>
                 <Playlist />
+              </AuthLayot>
+            }
+          />
+          <Route 
+            path="/history"
+            element={
+              <AuthLayot authentication={true}>
+                <HistoryPage/>
               </AuthLayot>
             }
           />

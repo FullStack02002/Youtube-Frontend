@@ -2,15 +2,34 @@ import React from "react";
 import { formatDuration } from "../helpers/formatDuration";
 import { timeAgo } from "../helpers/timeAgo";
 import { useNavigate } from "react-router-dom";
+import { ImCross } from "../components/icons";
+import { deleteVideoFromWatchHistory } from "../store/Slices/userSlice";
+import { useDispatch } from "react-redux";
 
-
-export const SearchVideoCard = ({thumbnail,duration,createdAt,avatar,username,videoId,title,views,description,ownerId}) => {
-  const navigate=useNavigate();
+export const SearchVideoCard = ({
+  thumbnail,
+  duration,
+  createdAt,
+  avatar,
+  username,
+  videoId,
+  title,
+  views,
+  description,
+  ownerId,
+  history,
+  _id,
+}) => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   return (
-    <div onClick={(e)=>{
-      e.stopPropagation();
-      navigate(`/watch/${videoId}/${ownerId}`)
-    }} className="w-full  md:h-[280.55px] sm:flex sm:flex-col  md:flex md:flex-row  md:gap-3 cursor-pointer ">
+    <div
+      onClick={(e) => {
+        e.stopPropagation();
+        navigate(`/watch/${videoId}/${ownerId}`);
+      }}
+      className="w-full  md:h-[280.55px] sm:flex sm:flex-col  md:flex md:flex-row  md:gap-3 cursor-pointer relative"
+    >
       <div className="h-[200px] sm:h-[350px] md:basis-[60%] lg:basis-[40%] md:h-full  relative">
         <img src={thumbnail} className="w-full h-full sm:rounded-xl" />
         <span className="text-sm rounded-lg text-white py-1 px-2 bg-black absolute bottom-2 right-2">
@@ -22,9 +41,9 @@ export const SearchVideoCard = ({thumbnail,duration,createdAt,avatar,username,vi
           <h3 className="text-white  break-words md:w[80%] lg:w-[80%]  font-medium sm:text-xl">
             {title}
           </h3>
-          <span className="text-[#AAAAAA] text-[14px]">{`${
-            views
-          } views . ${timeAgo(createdAt)}`}</span>
+          <span className="text-[#AAAAAA] text-[14px]">{`${views} views . ${timeAgo(
+            createdAt
+          )}`}</span>
           <h3 className="text-[#AAAAAA] md:hidden">{username}</h3>
         </div>
         <div className="order-1 md:order-2 flex flex-col  md:flex md:flex-row md:gap-4 items-center">
@@ -32,9 +51,7 @@ export const SearchVideoCard = ({thumbnail,duration,createdAt,avatar,username,vi
             src={avatar}
             className="w-[40px] h-[40px] md:w-[24px] md:h-[24px] rounded-full"
           />
-          <h3 className="text-[#AAAAAA] hidden md:block">
-            {username}
-          </h3>
+          <h3 className="text-[#AAAAAA] hidden md:block">{username}</h3>
         </div>
         <div className="text-[#AAAAAA] hidden md:block order-3">
           <p
@@ -44,9 +61,20 @@ export const SearchVideoCard = ({thumbnail,duration,createdAt,avatar,username,vi
             {description}
           </p>
         </div>
+        
+
+        <div
+          className={`${
+            history ? "block" : "hidden"
+          } absolute   right-[30px]  bottom-[30px] md:right-[0px] md:bottom-[255px] lg:left-[680px] lg:bottom-[255px]  xl:bottom-[255px] xl:left-[760px]`}
+          onClick={(e) => {
+            e.stopPropagation();
+            dispatch(deleteVideoFromWatchHistory({ id: _id }));
+          }}
+        >
+          <ImCross className="text-white hover:text-purple-500" size={25} />
+        </div>
       </div>
     </div>
   );
 };
-
-

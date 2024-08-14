@@ -32,6 +32,7 @@ import { MdOutlineSort } from "react-icons/md";
 import { MdSaveAlt } from "react-icons/md";
 import { FaPlus } from "react-icons/fa";
 import { CgPlayList } from "react-icons/cg";
+import { ImCross } from "react-icons/im";
 
 
 
@@ -74,5 +75,6 @@ export {
     MdOutlineSort,
     MdSaveAlt,
     FaPlus,
-    CgPlayList
+    CgPlayList,
+    ImCross
 }

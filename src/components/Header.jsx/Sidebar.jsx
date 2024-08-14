@@ -43,7 +43,7 @@ export const Sidebar = () => {
     {
       icon: <BiHistory size={25} />,
       title: "History",
-      url: "/*",
+      url: "/history",
     },
     {
       icon: <HiOutlineVideoCamera size={25} />,
@@ -76,7 +76,7 @@ export const Sidebar = () => {
     {
       icon: <BiHistory size={25} />,
       title: "History",
-      url: "/*",
+      url: "/history",
     },
     {
       icon: <IoFolderOutline size={25} />,

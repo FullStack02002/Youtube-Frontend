@@ -41,7 +41,15 @@ export const getVideoById=createAsyncThunk(
   "getVideoById",
   async({videoId})=>{
     try {
+      // fetch video details
       const response=await axiosInstance.get(`/video/v/${videoId}`);
+
+      // increment view count
+       axiosInstance.post(`/video/v/${videoId}`)
+
+      // add video to watch history
+      axiosInstance.post(`/video/v/wh/${videoId}`);
+        
       return response.data.data;
       
     } catch (error) {

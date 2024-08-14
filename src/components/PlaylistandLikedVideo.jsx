@@ -2,6 +2,9 @@ import React from "react";
 import PlayAndLikeVideoList from "./PlayAndLikeVideoList";
 
 const PlaylistandLikedVideo = ({ bgImage, fullName, videolength, Videos,likedVideos,Text,Playlist }) => {
+  if(!bgImage){
+    bgImage="https://i.ytimg.com/img/no_thumbnail.jpg"
+  }
 
   return (
     <>
