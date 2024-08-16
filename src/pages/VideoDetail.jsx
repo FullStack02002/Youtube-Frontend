@@ -164,7 +164,7 @@ const VideoDetail = () => {
               {isCommentSectionOn ? (
                 <>
                   <div
-                    className={`fixed bottom-0  left-0 w-full bg-[#0F0F0F] z-10 transition-transform duration-300 md:p-4  lg:p-0 ${
+                    className={`fixed bottom-0  left-0 w-full bg-[#0F0F0F] z-30 transition-transform duration-300 md:p-4  lg:p-0 ${
                       openMobileComments
                         ? "translate-y-0 h-screen overflow-auto"
                         : "translate-y-full h-0"

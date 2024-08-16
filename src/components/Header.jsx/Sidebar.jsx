@@ -58,7 +58,7 @@ export const Sidebar = () => {
     {
       icon: <TbUserCheck size={25} />,
       title: "Subscriptions",
-      url: "/*",
+      url: "/subscriptions",
     },
     {
       icon:<CgPlayList size={25}/>,
@@ -86,7 +86,7 @@ export const Sidebar = () => {
     {
       icon: <TbUserCheck size={25} />,
       title: "Subscriptions",
-      url: "/*",
+      url: "/subscriptions",
     },
   ];
 
@@ -94,7 +94,7 @@ export const Sidebar = () => {
     <>
       <div
         id="Sidebar-container"
-        className="hidden sm:block border-r border-slate-600 w-[121.7px] xl:w-[228.3px]   fixed h-screen pt-5 pl-3 pr-3 "
+        className="hidden sm:block border-r border-slate-600 w-[121.7px] xl:w-[220px]   fixed h-screen pt-5 pl-3 pr-3 "
       >
         <div id="item-container" className="w-full text-white">
           {sidebarTopItems.map((item) => (

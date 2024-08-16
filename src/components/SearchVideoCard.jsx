@@ -35,6 +35,19 @@ export const SearchVideoCard = ({
         <span className="text-sm rounded-lg text-white py-1 px-2 bg-black absolute bottom-2 right-2">
           {formatDuration(duration)}
         </span>
+
+        {/* cross sign */}
+        <div
+          className={`${
+            history ? "block" : "hidden"
+          } absolute   top-2 right-2`}
+          onClick={(e) => {
+            e.stopPropagation();
+            dispatch(deleteVideoFromWatchHistory({ id: _id }));
+          }}
+        >
+          <ImCross className="text-white hover:text-purple-500" size={25} />
+        </div>
       </div>
       <div className="p-[5px] sm:p-[10px] md:p-[0px]  flex flex-row gap-4  md:basis-[40%] lg:basis-[60%] md:flex md:flex-col md:gap-2">
         <div className="order-2 md:order-1">
@@ -63,17 +76,7 @@ export const SearchVideoCard = ({
         </div>
         
 
-        <div
-          className={`${
-            history ? "block" : "hidden"
-          } absolute   right-[30px]  bottom-[30px] md:right-[0px] md:bottom-[255px] lg:left-[680px] lg:bottom-[255px]  xl:bottom-[255px] xl:left-[760px]`}
-          onClick={(e) => {
-            e.stopPropagation();
-            dispatch(deleteVideoFromWatchHistory({ id: _id }));
-          }}
-        >
-          <ImCross className="text-white hover:text-purple-500" size={25} />
-        </div>
+        
       </div>
     </div>
   );

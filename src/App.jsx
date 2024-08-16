@@ -1,10 +1,10 @@
-import React, {  useEffect } from "react";
+import React, { useEffect } from "react";
 import { Toaster } from "react-hot-toast";
 import { Route, Routes } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { getCurrentUser } from "./store/Slices/authSlice";
 import Layout from "./components/Layout.jsx";
-import {HomePage} from "./pages/HomePage.jsx";
+import { HomePage } from "./pages/HomePage.jsx";
 
 import VideoDetail from "./pages/VideoDetail.jsx";
 import SearchPage from "./pages/SearchPage.jsx";
@@ -15,7 +15,8 @@ import AuthLayot from "./components/AuthLayot";
 import Playlists from "./pages/Playlists.jsx";
 import Playlist from "./pages/Playlist.jsx";
 import HistoryPage from "./pages/HistoryPage.jsx";
-
+import Subscriptions from "./pages/Subscriptions.jsx";
+import ManageSubs from "./pages/ManageSubs.jsx";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -26,34 +27,29 @@ const App = () => {
   return (
     <>
       <Routes>
-        <Route
-          path="/"
-          element={
-              <Layout />
-          }
-        >
+        <Route path="/" element={<Layout />}>
           <Route
             path=""
             element={
               <AuthLayot authentication={false}>
-                <HomePage/>
+                <HomePage />
               </AuthLayot>
             }
           />
           <Route
             path="/search/:query"
             element={
-                <AuthLayot authentication={false}>
-                  <SearchPage />
-                </AuthLayot>
+              <AuthLayot authentication={false}>
+                <SearchPage />
+              </AuthLayot>
             }
           />
           <Route
             path="/liked-videos"
             element={
-                <AuthLayot authentication={true}>
-                  <LikedVideos />
-                </AuthLayot>
+              <AuthLayot authentication={true}>
+                <LikedVideos />
+              </AuthLayot>
             }
           />
           <Route
@@ -72,11 +68,27 @@ const App = () => {
               </AuthLayot>
             }
           />
-          <Route 
+          <Route
             path="/history"
             element={
               <AuthLayot authentication={true}>
-                <HistoryPage/>
+                <HistoryPage />
+              </AuthLayot>
+            }
+          />
+          <Route
+            path="/subscriptions"
+            element={
+              <AuthLayot authentication={true}>
+                <Subscriptions />
+              </AuthLayot>
+            }
+          />
+          <Route
+            path="/subscriptions/manage"
+            element={
+              <AuthLayot authentication={true}>
+                <ManageSubs />
               </AuthLayot>
             }
           />
@@ -84,24 +96,14 @@ const App = () => {
         <Route
           path="/watch/:videoId/:ownerId"
           element={
-              <AuthLayot authentication={true}>
-                <VideoDetail />
-              </AuthLayot>
+            <AuthLayot authentication={true}>
+              <VideoDetail />
+            </AuthLayot>
           }
         />
 
-        <Route
-          path="/signup"
-          element={
-              <SignupPage />
-          }
-        />
-        <Route
-          path="/login"
-          element={
-              <LoginPage />
-          }
-        />
+        <Route path="/signup" element={<SignupPage />} />
+        <Route path="/login" element={<LoginPage />} />
       </Routes>
 
       <Toaster

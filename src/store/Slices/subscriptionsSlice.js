@@ -40,9 +40,9 @@ export const getUserChannelSubscribers=createAsyncThunk(
 
 export const getSubscribedChannels=createAsyncThunk(
     "getSubscribedChannels",
-    async(subscriberId)=>{
+    async()=>{
         try{
-            const response=await axiosInstance.get(`subscriptions/u/${subscriberId}`);
+            const response=await axiosInstance.get(`subscriptions/u/`);
             return response.data.data
 
         }
@@ -56,7 +56,8 @@ export const getSubscribedChannels=createAsyncThunk(
 const subscriptionSlice=createSlice({
     name:"subscription",
     initialState,
-    reducers:{},
+    reducers:{
+    },
     extraReducers:(builder)=>{
         builder.addCase(toggleSubscriptions.pending,(state,action)=>{
             state.loading=true;
@@ -77,9 +78,11 @@ const subscriptionSlice=createSlice({
         })
         builder.addCase(getSubscribedChannels.fulfilled,(state,action)=>{
             state.loading=false;
-            state.subscribedChannels=action.payload;
+            state.mySubscriptions=action.payload;
         })
 
     }
 })
+
+
 export default subscriptionSlice.reducer;

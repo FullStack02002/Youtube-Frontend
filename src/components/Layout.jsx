@@ -8,7 +8,7 @@ import { Outlet } from "react-router-dom";
      <div className="max-w-screen-2xl mx-auto">
      <Navbar />
       <Sidebar />
-      <div className="w-full sm:w-[85%]  sm:ml-[123px] xl:ml-[226px] md:pl-[10px]  mb-[80px]">
+      <div className="w-full  sm:w-[80%] lg:w-[88%] xl:w-[83%] 3xl:w-[85%] sm:ml-[123px] xl:ml-[212px] md:pl-[10px]  mb-[80px] ">
         <Outlet />
       </div>
      </div>

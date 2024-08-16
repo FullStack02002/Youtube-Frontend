@@ -53,7 +53,7 @@ export const HomePage = () => {
       <InfinitScroll fetchMore={fetchMoreVideos} hasNextPage={hasNextPage}>
         <div
           id="video-container"
-          className="   flex flex-col gap-2  sm:flex sm:flex-row  flex-wrap  sm:gap-5  lg:gap-4 xl:gap-4 "
+          className="   flex flex-col gap-2  sm:flex sm:flex-row  flex-wrap  sm:gap-5  lg:gap-4 xl:gap-4"
         >
           {loading
             ? videos.map((_, index) => <HomePageSkeleton key={index} />)

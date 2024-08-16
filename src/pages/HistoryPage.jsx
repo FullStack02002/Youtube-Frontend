@@ -32,17 +32,17 @@ const HistoryPage = () => {
     <>
       <div>
         <div className=" flex flex-row justify-between items-center">
-          <h1 className="text-white text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold mt-5 mb-5">
+          <h1 className="text-white text-[16px] md:text-2xl lg:text-3xl xl:text-4xl font-bold mt-5 mb-5">
             Watch History
           </h1>
           {/* clear watch history */}
-          <div className="flex flex-row gap-2 mr-[50px] lg:mr-96 text-white hover:text-purple-500 cursor-pointer" onClick={(e)=>{
+          <div className="flex flex-row gap-2 mr-[10px] md:mr-0 text-white hover:text-purple-500 cursor-pointer" onClick={(e)=>{
             e.stopPropagation();
             setOpen(true);
 
           }}>
             <MdDelete size={24} />
-            <span>Clear all watch history</span>
+            <span className="text-[16px]">Clear all watch history</span>
           </div>
 
           {/* dive open when clear watch history gets clicked */}
@@ -80,7 +80,8 @@ const HistoryPage = () => {
                   duration={item.video.duration}
                   views={item.video.views}
                   title={item.video.title}
-                  createdAt={item.createdAt}
+                  watchedAt={item.createdAt}
+                  createdAt={item?.video?.createdAt}
                   username={item.video.owner.username}
                   avatar={item.video.owner.avatar}
                   ownerId={item.video.owner._id}
