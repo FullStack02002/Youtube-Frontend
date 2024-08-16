@@ -5,15 +5,28 @@ import {
   getSubscribedChannels,
 } from "../store/Slices/subscriptionsSlice";
 import { VideoCard } from "../components";
+import SubscriptionsSkeleton from "../skeletons/SubscriptionsSkeleton";
 
 const Subscriptions = () => {
   const dispatch = useDispatch();
   const subscriptions =
     useSelector((state) => state.subscription.mySubscriptions) || [];
 
+    const loading=useSelector((state)=>state.subscription?.loading);
+
   useEffect(() => {
     dispatch(getSubscribedChannels());
   }, []);
+
+
+  if(loading){
+    return <SubscriptionsSkeleton></SubscriptionsSkeleton>
+  }
+
+
+
+
+
 
   return (
     <>

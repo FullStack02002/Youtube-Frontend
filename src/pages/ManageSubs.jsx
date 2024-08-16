@@ -1,9 +1,28 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import ManageSubscriberCard from "../components/ManageSubscriberCard";
+import ManageSubsSkeleton from "../skeletons/ManageSubsSkeleton";
 const ManageSubs = () => {
   const subscription =
     useSelector((state) => state.subscription.mySubscriptions) || [];
+
+  const [loading, setLoading] = useState(false);
+
+  
+
+  useEffect(() => {
+    setLoading(true);
+    const id = setTimeout(() => {
+      setLoading(false);
+    }, 1000);
+
+    return () => {
+      clearTimeout(id);
+    };
+  }, []);
+  if (loading) {
+    return <ManageSubsSkeleton />;
+  }
 
   return (
     <>
