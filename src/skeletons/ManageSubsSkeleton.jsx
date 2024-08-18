@@ -10,8 +10,8 @@ const ManageSubsSkeleton = () => {
           </div>
           <div className=" w-[30%] md:w-[40%] ml-3 flex items-center ">
             <div className="flex flex-col gap-3">
-              <Skeleton className="w-[150px] h-[27px]" />
-              <Skeleton className="w-[150px] h-[27px]" />
+              <Skeleton className="w-[100px]  sm:w-[150px] h-[27px]" />
+              <Skeleton className="w-[100px]  sm:w-[150px] h-[27px]" />
             </div>
           </div>
 
@@ -25,8 +25,8 @@ const ManageSubsSkeleton = () => {
           </div>
           <div className=" w-[30%] md:w-[40%] ml-3 flex items-center ">
             <div className="flex flex-col gap-3">
-              <Skeleton className="w-[150px] h-[27px]" />
-              <Skeleton className="w-[150px] h-[27px]" />
+              <Skeleton className="w-[100px]  sm:w-[150px] h-[27px]" />
+              <Skeleton className="w-[100px]  sm:w-[150px] h-[27px]" />
             </div>
           </div>
 
@@ -40,8 +40,8 @@ const ManageSubsSkeleton = () => {
           </div>
           <div className=" w-[30%] md:w-[40%] ml-3 flex items-center ">
             <div className="flex flex-col gap-3">
-              <Skeleton className="w-[150px] h-[27px]" />
-              <Skeleton className="w-[150px] h-[27px]" />
+              <Skeleton className="w-[100px]  sm:w-[150px] h-[27px]" />
+              <Skeleton className="w-[100px]  sm:w-[150px] h-[27px]" />
             </div>
           </div>
 
@@ -55,8 +55,8 @@ const ManageSubsSkeleton = () => {
           </div>
           <div className=" w-[30%] md:w-[40%] ml-3 flex items-center ">
             <div className="flex flex-col gap-3">
-              <Skeleton className="w-[150px] h-[27px]" />
-              <Skeleton className="w-[150px] h-[27px]" />
+              <Skeleton className="w-[100px]  sm:w-[150px] h-[27px]" />
+              <Skeleton className="w-[100px]  sm:w-[150px] h-[27px]" />
             </div>
           </div>
 
@@ -64,7 +64,6 @@ const ManageSubsSkeleton = () => {
             <Skeleton className="h-[36px] w-[80px] sm:w-[120px] rounded-full sm:p-0 p-1" />
           </div>
         </div>
-       
       </div>
     </SkeletonTheme>
   );

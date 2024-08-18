@@ -7,6 +7,7 @@ import subscriptionsSliceReducer from "./Slices/subscriptionsSlice.js";
 import replySliceReducer from "./Slices/replySlice.js";
 import playlistSliceReducer from "./Slices/playlistSlice.js"
 import userSliceReducer from "./Slices/userSlice.js";
+import dashboardSliceReducer from "./Slices/dashboardSlice.js";
 
 const store=configureStore({
     reducer:{
@@ -17,7 +18,9 @@ const store=configureStore({
         subscription:subscriptionsSliceReducer,
         reply:replySliceReducer,
         playlist:playlistSliceReducer,
-        user:userSliceReducer
+        user:userSliceReducer,
+        dashboard:dashboardSliceReducer
+        
 
     }
 })

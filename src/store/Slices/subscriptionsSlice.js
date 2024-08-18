@@ -1,6 +1,7 @@
 import {createAsyncThunk,createSlice} from "@reduxjs/toolkit"
 import axiosInstance from "../../helpers/axiosinstance";
 import toast from "react-hot-toast";
+import playlistSlice from "./playlistSlice";
 
 const initialState={
     loading:false,
@@ -57,6 +58,9 @@ const subscriptionSlice=createSlice({
     name:"subscription",
     initialState,
     reducers:{
+        makemySubscriptionsEmpty:(state)=>{
+            state.mySubscriptions=[];
+        }
     },
     extraReducers:(builder)=>{
         builder.addCase(toggleSubscriptions.pending,(state,action)=>{
@@ -83,6 +87,8 @@ const subscriptionSlice=createSlice({
 
     }
 })
+
+export const {makemySubscriptionsEmpty}=subscriptionSlice.actions;
 
 
 export default subscriptionSlice.reducer;

@@ -41,8 +41,9 @@ export const getVideoById=createAsyncThunk(
   "getVideoById",
   async({videoId})=>{
     try {
-      // fetch video details
+      // // fetch video details
       const response=await axiosInstance.get(`/video/v/${videoId}`);
+    
 
       // increment view count
        axiosInstance.post(`/video/v/${videoId}`)
@@ -58,6 +59,8 @@ export const getVideoById=createAsyncThunk(
     }
   }
 )
+
+
 
 
 
@@ -89,6 +92,7 @@ const videoSlice = createSlice({
     state.loading=false;
     state.video=action.payload;
    })
+   
   }
 });
 

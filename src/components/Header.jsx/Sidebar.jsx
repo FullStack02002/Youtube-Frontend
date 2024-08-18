@@ -53,7 +53,7 @@ export const Sidebar = () => {
     {
       icon: <IoFolderOutline size={25} />,
       title: "Collections",
-      url: "/*",
+      url: "/collections",
     },
     {
       icon: <TbUserCheck size={25} />,
@@ -81,7 +81,7 @@ export const Sidebar = () => {
     {
       icon: <IoFolderOutline size={25} />,
       title: "Collections",
-      url: "/*",
+      url: "/collections",
     },
     {
       icon: <TbUserCheck size={25} />,

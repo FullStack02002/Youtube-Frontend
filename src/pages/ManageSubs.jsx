@@ -1,25 +1,31 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import ManageSubscriberCard from "../components/ManageSubscriberCard";
 import ManageSubsSkeleton from "../skeletons/ManageSubsSkeleton";
+import {
+  getSubscribedChannels,
+  makemySubscriptionsEmpty,
+} from "../store/Slices/subscriptionsSlice";
 const ManageSubs = () => {
+  const dispatch = useDispatch();
   const subscription =
     useSelector((state) => state.subscription.mySubscriptions) || [];
 
   const [loading, setLoading] = useState(false);
-
-  
 
   useEffect(() => {
     setLoading(true);
     const id = setTimeout(() => {
       setLoading(false);
     }, 1000);
+    dispatch(getSubscribedChannels());
 
     return () => {
       clearTimeout(id);
+      dispatch(makemySubscriptionsEmpty());
     };
   }, []);
+  
   if (loading) {
     return <ManageSubsSkeleton />;
   }

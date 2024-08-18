@@ -1,8 +1,4 @@
-import React, {
-  useEffect,
-  useState,
-  useCallback,
-} from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import {
   Navbar,
   TextArea,
@@ -44,7 +40,6 @@ const VideoDetail = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { videoId, ownerId } = useParams();
-  const userId = ownerId;
 
   const video = useSelector((state) => state.video?.video);
   const videos = useSelector((state) => state.video?.videos.docs);
@@ -61,16 +56,18 @@ const VideoDetail = () => {
 
   const isCommentPresent = totalComments > 0;
 
-  //initial
+  // initial
   useEffect(() => {
     setloader(true);
     const timeoutId = setTimeout(() => {
       setloader(false);
     }, 2000);
     window.scrollTo(0, 0);
+
     dispatch(getVideoById({ videoId }));
+
     dispatch(getVideoComments({ videoId }));
-    dispatch(getAllVideos({ userId }));
+    dispatch(getAllVideos({ userId: ownerId }));
     return () => {
       dispatch(makeVideoNull());
       dispatch(makeVideosNull());
@@ -78,7 +75,10 @@ const VideoDetail = () => {
       dispatch(makeRepliesEmpty());
       clearTimeout(timeoutId);
     };
-  }, [dispatch, videoId, userId]);
+  }, [dispatch, videoId, ownerId,]);
+
+
+
 
   // infinite scroll
   const fetchMoreComments = useCallback(() => {
@@ -145,7 +145,7 @@ const VideoDetail = () => {
               </h1>
 
               {/* description */}
-             <Description
+              <Description
                 channelId={video?.owner?._id}
                 avatar={video?.owner?.avatar}
                 username={video?.owner?.username}
