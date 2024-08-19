@@ -26,5 +26,6 @@ export {
   Loader,
   BigLoader,
   InfinitScroll,
-  SearchVideoCard
+  SearchVideoCard,
+  
 };

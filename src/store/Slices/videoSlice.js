@@ -75,10 +75,43 @@ export const togglePublishStatus = createAsyncThunk(
 
 export const toggleCommentSection = createAsyncThunk(
   "toggleCommentSection",
-  async ({videoId}) => {
+  async ({ videoId }) => {
     try {
-      const response=await axiosInstance.patch(`/video/toggle/comment/${videoId}`);
+      const response = await axiosInstance.patch(
+        `/video/toggle/comment/${videoId}`
+      );
       toast.success(response.data.message);
+      return response.data.data;
+    } catch (error) {
+      toast.error(error?.response?.data?.error);
+      throw error;
+    }
+  }
+);
+
+export const publishVideo = createAsyncThunk("publishVideo", async (data) => {
+  const formData = new FormData();
+  formData.append("title", data.title);
+  formData.append("description", data.description);
+  formData.append("videoFile", data.videoFile[0]);
+  formData.append("thumbnail", data.thumbnail[0]);
+
+  try {
+    const response = await axiosInstance.post("/video", formData);
+    toast.success(response?.data?.message);
+    return response.data.data;
+  } catch (error) {
+    toast.error(error?.response?.data?.error);
+    throw error;
+  }
+});
+
+export const deleteAvideo = createAsyncThunk(
+  "deleteAvideo",
+  async ({ videoId }) => {
+    try {
+      const response = await axiosInstance.delete(`/video/v/${videoId}`);
+      toast.success(response?.data?.message);
       return response.data.data;
     } catch (error) {
       toast.error(error?.response?.data?.error);
@@ -97,6 +130,10 @@ const videoSlice = createSlice({
     makeVideoNull: (state) => {
       state.video = null;
     },
+    updateUploadState: (state) => {
+      state.uploading = false;
+      state.uploaded = false;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(getAllVideos.pending, (state) => {
@@ -114,10 +151,23 @@ const videoSlice = createSlice({
       state.loading = false;
       state.video = action.payload;
     });
-  
+    builder.addCase(publishVideo.pending, (state) => {
+      state.uploading = true;
+    });
+    builder.addCase(publishVideo.fulfilled, (state) => {
+      state.uploading = false;
+      state.uploaded = true;
+    });
+    builder.addCase(deleteAvideo.pending,(state)=>{
+      state.loading=true;
+    })
+    builder.addCase(deleteAvideo.fulfilled,(state)=>{
+      state.loading=false;
+    })
   },
 });
 
-export const { makeVideosNull, makeVideoNull } = videoSlice.actions;
+export const { makeVideosNull, makeVideoNull, updateUploadState } =
+  videoSlice.actions;
 
 export default videoSlice.reducer;

@@ -8,7 +8,7 @@ import React from 'react'
                 autoPlay
                 controls
                 playsInline
-                className="  sm:h-[250px] md:h-[460px] w-full object-cover lg:rounded-xl"
+                className="  sm:h-[250px] md:h-[460px] w-full object-contain lg:rounded-xl"
             ></video>
   )
 }

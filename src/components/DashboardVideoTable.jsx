@@ -8,7 +8,9 @@ const DashboardVideoTable = ({
   isPublished,
   createdAt,
   title,
-  commentSection
+  commentSection,
+  setPopUp,
+  setVideoId
 }) => {
   const dispatch = useDispatch();
 
@@ -71,7 +73,15 @@ const DashboardVideoTable = ({
       </td>
       <td className="py-2 border-b border-slate-500 text-white">
         <span className="flex gap-3 justify-start">
-          <ImBin size={20} className="cursor-pointer hover:text-purple-500" />
+          <ImBin size={20} className="cursor-pointer hover:text-purple-500"  onClick={(e)=>{
+            e.preventDefault();
+            setPopUp((prev)=>({
+              ...prev,
+              deleteVideo:!prev.deleteVideo
+            }))
+            setVideoId(videoId)
+            
+          }}/>
           <GrEdit size={20} className="cursor-pointer hover:text-purple-500" />
         </span>
       </td>

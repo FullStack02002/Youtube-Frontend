@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { Navbar, Button } from "../components/";
+import React, { useEffect, useState } from "react";
+import { Navbar, Button, BigLoader,Loader } from "../components/";
 import { useSelector, useDispatch } from "react-redux";
 import {
   getChannelStats,
@@ -12,28 +12,124 @@ import {
   FaRegEye,
   RxAvatar,
   FaRegHeart,
+  ImBin,
 } from "../components/icons";
 import DashboardVideoTable from "../components/DashboardVideoTable";
-
+import UploadVideo from "../components/UploadVideo";
+import { deleteAvideo } from "../store/Slices/videoSlice";
 const Collections = () => {
   const username = useSelector((state) => state?.auth?.userData?.username);
   const dispatch = useDispatch();
   const dashboard = useSelector((state) => state.dashboard?.channelStats);
   const videos = useSelector((state) => state?.dashboard?.channelVideos);
+  const uploaded = useSelector((state) => state.video.uploaded);
+  const deleting=useSelector((state)=>state.video.loading);
+  const [Loading, setLoading] = useState(false);
+  const [popUp, setPopUp] = useState({
+    uploadVideo: false,
+    editVideo: false,
+    deleteVideo: false,
+  });
+  const [videoId, setVideoId] = useState("");
 
   useEffect(() => {
-    dispatch(getChannelStats());
     dispatch(getChannelVideos());
 
     return () => {
       dispatch(makeChannelVideosEmpty());
     };
+  }, [dispatch, uploaded,deleting]);
+
+  useEffect(() => {
+    setLoading(true);
+    const id = setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+
+    return () => {
+      clearTimeout(id);
+    };
+  }, []);
+
+  useEffect(() => {
+    dispatch(getChannelStats());
   }, [dispatch]);
+
+  const handleDeleteVideo = () => {
+    dispatch(deleteAvideo({ videoId }));
+    setPopUp((prev) => ({
+      ...prev,
+      deleteVideo: !prev.deleteVideo,
+    }));
+  };
+
+  if (Loading) {
+    return <BigLoader />;
+  }
+
   return (
     <>
       <Navbar />
 
       <div id="container" className="  sm:px-2 pt-4">
+        {/* uploadVideoPopup */}
+        {popUp.uploadVideo && <UploadVideo setUploadVideoPopup={setPopUp} />}
+
+        {/* deleteVideoPopup */}
+        {popUp.deleteVideo && (
+          <div className="w-full fixed top-52 flex justify-center z-20">
+            <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-70 z-50">
+              <div className="fixed inset-0 flex items-center justify-center z-50">
+                <div className="text-center sm:p-5 p-3 bg-black border-slate-700 border rounded-xl">
+                  <div className="flex justify-center items-start p-3 flex-wrap gap-2 ">
+                    <ImBin color="red" size={25} />
+                    <div className="flex flex-col flex-wrap items-start">
+                      <h1 className="text-bold text-xl mb-1 text-white">
+                        Delete Video
+                      </h1>
+                      <p className="text-xs text-start text-semibold w-60 text-white">
+                        <span>Are you sure you want to delete this Video</span>{" "}
+                        <span>
+                          Once its deleted, you will not be able to recover it.
+                        </span>
+                      </p>
+                    </div>
+                  </div>
+                  <div className="font-normal flex gap-2 justify-center">
+                    <button
+                      onClick={() =>
+                        setPopUp((prev) => ({
+                          ...prev,
+                          deleteVideo: !prev.deleteVideo,
+                        }))
+                      }
+                      className="bg-[#222222] py-1 px-3  rounded-lg sm:text-lg text-sm hover:bg-black cursor-pointer text-white"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      onClick={handleDeleteVideo}
+                      className="bg-red-500 py-1 px-3 rounded-lg sm:text-lg text-sm hover:opacity-70 cursor-pointer"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* pop up when video deleting is in process */}
+        {deleting && (
+          <div className="w-full fixed top-20 flex justify-center z-20">
+            <div className="w-52 border border-slate-600 bg-black flex gap-2 p-3">
+              <Loader/>
+              <span className="text-md font-bold">Deleting video...</span>
+            </div>
+          </div>
+        )}
+
         {/* dashboard header */}
         <div className=" flex flex-col gap-2 sm:flex-row sm:justify-between sm:items-center">
           {/* username */}
@@ -44,7 +140,14 @@ const Collections = () => {
             </p>
           </div>
 
-          <div>
+          <div
+            onClick={() =>
+              setPopUp((prev) => ({
+                ...prev,
+                uploadVideo: !prev.uploadVideo,
+              }))
+            }
+          >
             <Button
               className="bg-purple-500 p-1 sm:p-2 font-semibold text-black hover:scale-110 duration-100 ease-in"
               type="button"
@@ -122,6 +225,8 @@ const Collections = () => {
                   commentSection={video?.commentSection}
                   createdAt={video?.createdAt}
                   title={video?.title}
+                  setPopUp={setPopUp}
+                  setVideoId={setVideoId}
                 />
               ))}
             </tbody>
