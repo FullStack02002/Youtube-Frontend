@@ -12,7 +12,6 @@ const initialState = {
     hasNextPage: false,
   },
   video: null,
-  publishToggled: false,
 };
 
 export const getAllVideos = createAsyncThunk(
@@ -28,78 +27,97 @@ export const getAllVideos = createAsyncThunk(
         url.searchParams.set("sortBy", sortBy);
         url.searchParams.set("sortType", sortType);
       }
-      const response=await axiosInstance.get(url);
+      const response = await axiosInstance.get(url);
       return response.data.data;
-    } catch (error) {
-        toast.error(error?.response?.data?.error);
-        throw error;
-    }
-  }
-);
-
-export const getVideoById=createAsyncThunk(
-  "getVideoById",
-  async({videoId})=>{
-    try {
-      // // fetch video details
-      const response=await axiosInstance.get(`/video/v/${videoId}`);
-    
-
-      // increment view count
-       axiosInstance.post(`/video/v/${videoId}`)
-
-      // add video to watch history
-      axiosInstance.post(`/video/v/wh/${videoId}`);
-        
-      return response.data.data;
-      
     } catch (error) {
       toast.error(error?.response?.data?.error);
       throw error;
     }
   }
-)
+);
 
+export const getVideoById = createAsyncThunk(
+  "getVideoById",
+  async ({ videoId }) => {
+    try {
+      // // fetch video details
+      const response = await axiosInstance.get(`/video/v/${videoId}`);
 
+      // increment view count
+      axiosInstance.post(`/video/v/${videoId}`);
 
+      // add video to watch history
+      axiosInstance.post(`/video/v/wh/${videoId}`);
 
+      return response.data.data;
+    } catch (error) {
+      toast.error(error?.response?.data?.error);
+      throw error;
+    }
+  }
+);
+
+export const togglePublishStatus = createAsyncThunk(
+  "togglePublishStatus",
+  async ({ videoId }) => {
+    try {
+      const response = await axiosInstance.patch(
+        `/video/toggle/publish/${videoId}`
+      );
+      toast.success(response.data.message);
+      return response.data.data.isPublished;
+    } catch (error) {
+      toast.error(error?.response?.data?.error);
+      throw error;
+    }
+  }
+);
+
+export const toggleCommentSection = createAsyncThunk(
+  "toggleCommentSection",
+  async ({videoId}) => {
+    try {
+      const response=await axiosInstance.patch(`/video/toggle/comment/${videoId}`);
+      toast.success(response.data.message);
+      return response.data.data;
+    } catch (error) {
+      toast.error(error?.response?.data?.error);
+      throw error;
+    }
+  }
+);
 
 const videoSlice = createSlice({
   name: "video",
   initialState,
   reducers: {
-    makeVideosNull:(state)=>{
-        state.videos.docs=[];
+    makeVideosNull: (state) => {
+      state.videos.docs = [];
     },
-    makeVideoNull:(state)=>{
-      state.video=null;
-    }
-
+    makeVideoNull: (state) => {
+      state.video = null;
+    },
   },
-  extraReducers:(builder)=>{
-   builder.addCase(getAllVideos.pending,(state)=>{
-    state.loading=true;
-   })
-   builder.addCase(getAllVideos.fulfilled,(state,action)=>{
-    state.loading=false;
-    state.videos.docs=[...state.videos.docs,...action.payload.docs];
-    state.videos.hasNextPage=action.payload.hasNextPage;
-   })
-   builder.addCase(getVideoById.pending,(state)=>{
-    state.loading=true;
-   })
-   builder.addCase(getVideoById.fulfilled,(state,action)=>{
-    state.loading=false;
-    state.video=action.payload;
-   })
-   
-  }
+  extraReducers: (builder) => {
+    builder.addCase(getAllVideos.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(getAllVideos.fulfilled, (state, action) => {
+      state.loading = false;
+      state.videos.docs = [...state.videos.docs, ...action.payload.docs];
+      state.videos.hasNextPage = action.payload.hasNextPage;
+    });
+    builder.addCase(getVideoById.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(getVideoById.fulfilled, (state, action) => {
+      state.loading = false;
+      state.video = action.payload;
+    });
+  
+  },
 });
 
-
-
-export const {makeVideosNull,makeVideoNull}=videoSlice.actions;
-
-
+export const { makeVideosNull, makeVideoNull } = videoSlice.actions;
 
 export default videoSlice.reducer;

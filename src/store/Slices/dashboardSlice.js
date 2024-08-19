@@ -34,7 +34,11 @@ export const getChannelVideos = createAsyncThunk(
 const dashboardSlice = createSlice({
   name: "dashboard",
   initialState,
-  reducers: {},
+  reducers: {
+    makeChannelVideosEmpty:(state)=>{
+        state.channelVideos = []
+    }
+  },
   extraReducers: (builder) => {
     builder.addCase(getChannelStats.pending, (state) => {
       state.loading = true;
@@ -52,5 +56,7 @@ const dashboardSlice = createSlice({
     });
   },
 });
+
+export const {makeChannelVideosEmpty}=dashboardSlice.actions;
 
 export default dashboardSlice.reducer;
