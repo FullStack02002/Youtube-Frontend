@@ -10,7 +10,8 @@ const DashboardVideoTable = ({
   title,
   commentSection,
   setPopUp,
-  setVideoId
+  setvideoDetails,
+  video
 }) => {
   const dispatch = useDispatch();
 
@@ -79,10 +80,21 @@ const DashboardVideoTable = ({
               ...prev,
               deleteVideo:!prev.deleteVideo
             }))
-            setVideoId(videoId)
+            setvideoDetails(video);
             
           }}/>
-          <GrEdit size={20} className="cursor-pointer hover:text-purple-500" />
+          <GrEdit size={20} className="cursor-pointer hover:text-purple-500" 
+          onClick={(e)=>{
+            e.preventDefault();
+            setPopUp((prev)=>(
+              {
+                ...prev,
+                editVideo:!prev.editVideo
+              }
+            ))
+            setvideoDetails(video)
+          }}
+           />
         </span>
       </td>
     </tr>

@@ -20,10 +20,11 @@ function UploadVideo({ setUploadVideoPopup }) {
     const dispatch = useDispatch();
     const uploading = useSelector((state) => state.video.uploading);
     const uploaded = useSelector((state) => state.video.uploaded);
+    const show=useSelector((state)=>state.video.show);
 
-    const publishAVideo = (data) => {
+    const publishAVideo = async(data) => {
         setVideoSize(Math.floor(data.videoFile[0].size / (1024 * 1024)));
-         dispatch(publishVideo(data));
+        dispatch(publishVideo(data));
     };
 
 
@@ -40,7 +41,7 @@ function UploadVideo({ setUploadVideoPopup }) {
         );
     }
 
-    if (uploaded) {
+    if (show &&  uploaded ) {
         return (
             <>
                 <UploadingVideo

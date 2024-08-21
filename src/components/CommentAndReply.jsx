@@ -24,7 +24,8 @@ import Reply from "../components/Reply.jsx";
   videoOwner,
   isLiked,
   likesCount,
-  videoOwneravatar
+  videoOwneravatar,
+  videoId
 }) => {
   const user = useSelector((state) => state.auth?.userData);
   const replies = useSelector((state) => state.reply?.replies);
@@ -138,6 +139,7 @@ import Reply from "../components/Reply.jsx";
                 size={20}
                 isLiked={isLiked}
                 likesCount={likesCount}
+                videoId={videoId}
               />
             </div>
             <div
@@ -161,6 +163,7 @@ import Reply from "../components/Reply.jsx";
               reply={true}
               ButtonText="Reply"
               commentId={commentId}
+              videoId={videoId}
             />
           </div>
 
@@ -326,6 +329,7 @@ import Reply from "../components/Reply.jsx";
               replyId={reply?._id}
               createdAt={reply?.createdAt}
               commentId={commentId}
+              videoId={videoId}
             />
           </div>
         ))}

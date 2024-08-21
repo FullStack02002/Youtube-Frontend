@@ -8,6 +8,7 @@ import {
 } from "../store/Slices/likeSlice";
 import { useDispatch } from "react-redux";
  const Likes = ({
+  video,
   videoId,
   tweetId,
   commentId,
@@ -33,17 +34,17 @@ import { useDispatch } from "react-redux";
       setlocalLikesCount((prev) => prev + 1);
     }
     setLocalisLiked(!localisLiked);
-    if (videoId) {
+    if (video) {
       dispatch(toggleVideoLike({ videoId }));
     }
     if (tweetId) {
       dispatch(toggleTweetLike({ tweetId }));
     }
     if (commentId) {
-      dispatch(toggleCommentLike({ commentId }));
+      dispatch(toggleCommentLike({ commentId,videoId }));
     }
     if (replyId) {
-      dispatch(toggleReplyLike({ replyId }));
+      dispatch(toggleReplyLike({ replyId,videoId }));
     }
   };
 

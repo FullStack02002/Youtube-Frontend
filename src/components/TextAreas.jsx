@@ -63,7 +63,7 @@ export const TextArea = ({
       setOpen(false)
     }
     if(reply){
-      dispatch(createAReply({content:text,commentId,avatar:user.avatar,username:user.username,_id:user._id}))
+      dispatch(createAReply({content:text,commentId,avatar:user.avatar,username:user.username,_id:user._id,videoId}))
       setopenReply(false);
     }
 

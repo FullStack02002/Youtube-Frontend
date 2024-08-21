@@ -21,6 +21,7 @@ const Likes=lazy(()=>import("../components/Likes"));
   isLiked,
   likesCount,
   commentId,
+  videoId
 }) => {
   const [text, setText] = useState(content);
   const [textAreaOpen, setTextAreaOpen] = useState(false);
@@ -99,6 +100,7 @@ const Likes=lazy(()=>import("../components/Likes"));
                 size={20}
                 isLiked={isLiked}
                 likesCount={likesCount}
+                videoId={videoId}
               />
              </Suspense>
             </div>

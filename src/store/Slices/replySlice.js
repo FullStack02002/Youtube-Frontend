@@ -9,9 +9,9 @@ const initialState = {
 
 export const createAReply = createAsyncThunk(
   "reply/createAReply",
-  async ({ commentId, content, _id, avatar, username }) => {
+  async ({ commentId, content, _id, avatar, username,videoId }) => {
     try {
-      const response = await axiosInstance.post(`reply/${commentId}`, {
+      const response = await axiosInstance.post(`reply/${commentId}/${videoId}`, {
         content,
       });
       toast.success(response.data?.message);

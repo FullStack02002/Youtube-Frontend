@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Navbar, Button, BigLoader,Loader } from "../components/";
+import { Navbar, Button, BigLoader, Loader } from "../components/";
 import { useSelector, useDispatch } from "react-redux";
 import {
   getChannelStats,
@@ -17,20 +17,22 @@ import {
 import DashboardVideoTable from "../components/DashboardVideoTable";
 import UploadVideo from "../components/UploadVideo";
 import { deleteAvideo } from "../store/Slices/videoSlice";
+import EditVideo from "../components/EditVideo";
 const Collections = () => {
   const username = useSelector((state) => state?.auth?.userData?.username);
   const dispatch = useDispatch();
   const dashboard = useSelector((state) => state.dashboard?.channelStats);
   const videos = useSelector((state) => state?.dashboard?.channelVideos);
   const uploaded = useSelector((state) => state.video.uploaded);
-  const deleting=useSelector((state)=>state.video.loading);
+  const deleting = useSelector((state) => state.video.loading);
+  const deleted = useSelector((state) => state.video.deleted);
   const [Loading, setLoading] = useState(false);
   const [popUp, setPopUp] = useState({
     uploadVideo: false,
     editVideo: false,
     deleteVideo: false,
   });
-  const [videoId, setVideoId] = useState("");
+  const [videoDetails, setvideoDetails] = useState(null);
 
   useEffect(() => {
     dispatch(getChannelVideos());
@@ -38,7 +40,7 @@ const Collections = () => {
     return () => {
       dispatch(makeChannelVideosEmpty());
     };
-  }, [dispatch, uploaded,deleting]);
+  }, [dispatch, uploaded, deleted]);
 
   useEffect(() => {
     setLoading(true);
@@ -56,7 +58,7 @@ const Collections = () => {
   }, [dispatch]);
 
   const handleDeleteVideo = () => {
-    dispatch(deleteAvideo({ videoId }));
+    dispatch(deleteAvideo({ videoId: videoDetails?._id }));
     setPopUp((prev) => ({
       ...prev,
       deleteVideo: !prev.deleteVideo,
@@ -74,6 +76,18 @@ const Collections = () => {
       <div id="container" className="  sm:px-2 pt-4">
         {/* uploadVideoPopup */}
         {popUp.uploadVideo && <UploadVideo setUploadVideoPopup={setPopUp} />}
+
+        {/* editVideoPopup */}
+        {popUp.editVideo && (
+          <div className="w-full flex justify-center top-24 fixed z-20">
+            <EditVideo
+              setEditVideoPopup={setPopUp}
+              title={videoDetails?.title}
+              description={videoDetails?.description}
+              videoId={videoDetails?._id}
+            />
+          </div>
+        )}
 
         {/* deleteVideoPopup */}
         {popUp.deleteVideo && (
@@ -123,9 +137,11 @@ const Collections = () => {
         {/* pop up when video deleting is in process */}
         {deleting && (
           <div className="w-full fixed top-20 flex justify-center z-20">
-            <div className="w-52 border border-slate-600 bg-black flex gap-2 p-3">
-              <Loader/>
-              <span className="text-md font-bold">Deleting video...</span>
+            <div className="w-52 border border-slate-600 bg-black  gap-2 p-3 flex flex-row items-center">
+              <Loader />
+              <span className="text-md font-bold text-white">
+                Deleting video...
+              </span>
             </div>
           </div>
         )}
@@ -226,7 +242,8 @@ const Collections = () => {
                   createdAt={video?.createdAt}
                   title={video?.title}
                   setPopUp={setPopUp}
-                  setVideoId={setVideoId}
+                  setvideoDetails={setvideoDetails}
+                  video={video}
                 />
               ))}
             </tbody>

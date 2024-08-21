@@ -71,6 +71,7 @@ const Description = ({
               isLiked={isLiked}
               likesCount={likesCount}
               videoId={videoId}
+              video="true"
             />
           </div>
           {/* three dots */}

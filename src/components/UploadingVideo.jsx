@@ -3,7 +3,7 @@ import { PiFilmReelFill } from "react-icons/pi";
 import { Button } from "./index";
 import { IoCloseCircleOutline, TiTick } from "./icons";
 import { useDispatch } from "react-redux";
-import { updateUploadState } from "../store/Slices/videoSlice";
+import { updateUploadState,updateShow } from "../store/Slices/videoSlice";
 import { Loader } from "./index";
 const UploadingVideo = ({
   videoFileName,
@@ -18,7 +18,10 @@ const UploadingVideo = ({
       ...prev,
       uploadVideo: false,
     }));
-    dispatch(updateUploadState());
+    dispatch(updateShow());
+    if (!uploaded) {
+      dispatch(updateUploadState());
+    }
   };
 
   return (
@@ -67,19 +70,17 @@ const UploadingVideo = ({
             </div>
           </div>
           <div className="flex gap-2">
-            <Button
-              className="border flex-1 p-2"
-              onClick={handleCancelAndFinish}
-            >
-              Cancel
-            </Button>
-            <Button
-              className="flex-1 bg-purple-500 p-2"
-              textColor="text-black"
-              onClick={handleCancelAndFinish}
-            >
-              Finish
-            </Button>
+            <div onClick={handleCancelAndFinish}>
+              <Button className="border flex-1 p-2">Cancel</Button>
+            </div>
+            <div onClick={handleCancelAndFinish}>
+              <Button
+                className="flex-1 bg-purple-500 p-2"
+                textColor="text-black"
+              >
+                Finish
+              </Button>
+            </div>
           </div>
         </div>
       </div>

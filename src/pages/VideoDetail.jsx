@@ -253,6 +253,7 @@ const VideoDetail = () => {
                             videoOwneravatar={video?.owner?.avatar}
                             isLiked={comment?.isLiked}
                             likesCount={comment?.likesCount}
+                            videoId={video?._id}
                           />
                         ))}
                         {(loading || isFetching) && <Loader />}
