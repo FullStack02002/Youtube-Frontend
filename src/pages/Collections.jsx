@@ -26,6 +26,7 @@ const Collections = () => {
   const uploaded = useSelector((state) => state.video.uploaded);
   const deleting = useSelector((state) => state.video.loading);
   const deleted = useSelector((state) => state.video.deleted);
+  const updating=useSelector((state)=>state.video.updating);
   const [Loading, setLoading] = useState(false);
   const [popUp, setPopUp] = useState({
     uploadVideo: false,
@@ -141,6 +142,18 @@ const Collections = () => {
               <Loader />
               <span className="text-md font-bold text-white">
                 Deleting video...
+              </span>
+            </div>
+          </div>
+        )}
+        {/* pop up when video updating is in process */}
+
+        {updating && (
+          <div className="w-full fixed top-20 flex justify-center z-20">
+            <div className="w-52 border border-slate-600 bg-black  gap-2 p-3 flex flex-row items-center">
+              <Loader />
+              <span className="text-md font-bold text-white">
+                Updating  video...
               </span>
             </div>
           </div>

@@ -14,6 +14,7 @@ const initialState = {
   video: null,
   deleted: false,
   show: false,
+  updating:false,
 };
 
 export const getAllVideos = createAsyncThunk(
@@ -194,11 +195,11 @@ const videoSlice = createSlice({
       state.deleted = true;
     });
     builder.addCase(updateAVideo.pending, (state) => {
-      state.uploading = true;
+      state.updating = true;
     });
     builder.addCase(updateAVideo.fulfilled, (state) => {
-      state.uploading = false;
-      state.uploaded = true;
+      state.updating=false;
+      
     });
   },
 });

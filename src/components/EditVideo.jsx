@@ -5,7 +5,6 @@ import { Button } from "./Button";
 import { IoCloseCircleOutline } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
 import { updateAVideo, updateUploadState } from "../store/Slices/videoSlice";
-import { Loader } from "./Loader";
 import { GetImagePreview } from "./GetImagePreview";
 const EditVideo = ({
   videoId,
@@ -22,7 +21,6 @@ const EditVideo = ({
     setValue,
   } = useForm();
   const dispatch = useDispatch();
-  const uploading = useSelector((state) => state.video.uploading);
 
   const handleClosePopUp = () => {
     setEditVideoPopup((prev) => ({
@@ -39,7 +37,7 @@ const EditVideo = ({
       uploadVideo: false,
       editVideo: false,
     }));
-    dispatch(updateUploadState());
+
   };
 
   useEffect(() => {
@@ -47,16 +45,7 @@ const EditVideo = ({
     setValue("description", description);
   }, [title, description, setValue]);
 
-  if (uploading) {
-    return (
-      <>
-        <div className="w-52 border border-slate-600 bg-black flex gap-2 p-3 text-white items-center">
-          <Loader />
-          <span className="text-md font-bold text-white">Updating video...</span>
-        </div>
-      </>
-    );
-  }
+
 
   return (
     <>
