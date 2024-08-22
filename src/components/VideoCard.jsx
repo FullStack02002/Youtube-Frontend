@@ -19,6 +19,7 @@ export const VideoCard = ({
   const navigate = useNavigate();
 
   const isAuth = useSelector((state) => state.auth?.status);
+  const username=channel;
 
   return (
     <>
@@ -43,7 +44,10 @@ export const VideoCard = ({
           id="content-container"
           className="mt-3 flex flex-row gap-4 items-center "
         >
-          <div id="avatar">
+          <div id="avatar" onClick={(e)=>{
+            e.stopPropagation();
+            navigate(`/channel/${username}`)
+          }}>
             <img
               src={avatar}
               className="w-[50px] h-[50px] rounded-full mb-7 sm:mb-0"

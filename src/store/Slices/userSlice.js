@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 const initialState = {
   loading: false,
   history: [],
+  profileData: null,
 };
 
 export const getUserWatchHistory = createAsyncThunk(
@@ -24,8 +25,8 @@ export const deleteVideoFromWatchHistory = createAsyncThunk(
   "deleteVideoFromWatchHistory",
   async ({ id }) => {
     try {
-      const response=await axiosInstance.delete(`video/v/wh/${id}`);
-      return {id};
+      const response = await axiosInstance.delete(`video/v/wh/${id}`);
+      return { id };
     } catch (error) {
       toast.error(error?.response?.data?.error);
       throw error;
@@ -33,20 +34,31 @@ export const deleteVideoFromWatchHistory = createAsyncThunk(
   }
 );
 
-export const deleteWatchHistory=createAsyncThunk(
+export const deleteWatchHistory = createAsyncThunk(
   "deleteWatchHistory",
-  async()=>{
+  async () => {
     try {
-      const response=await axiosInstance.delete("users/history");
+      const response = await axiosInstance.delete("users/history");
       return response.data.data;
-      
     } catch (error) {
       toast.error(error?.response?.data?.error);
       throw error;
-      
     }
   }
-)
+);
+
+export const getUserChannelProfile = createAsyncThunk(
+  "getUserChannelProfile",
+  async ({username}) => {
+    try {
+      const response=await axiosInstance.get(`users/c/${username}`);
+      return response.data.data;
+    } catch (error) {
+      toast.error(error?.response?.data?.error);
+      throw error;
+    }
+  }
+);
 
 const userSlice = createSlice({
   name: "user",
@@ -55,6 +67,9 @@ const userSlice = createSlice({
     makeHistoryEmpty: (state) => {
       state.history = [];
     },
+    makeProfileDataNull:(state)=>{
+      state.profileData=null;
+    }
   },
   extraReducers: (builder) => {
     builder.addCase(getUserWatchHistory.pending, (state) => {
@@ -64,24 +79,33 @@ const userSlice = createSlice({
       state.loading = false;
       state.history = action.payload;
     });
-    builder.addCase(deleteVideoFromWatchHistory.pending,(state)=>{
+    builder.addCase(deleteVideoFromWatchHistory.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(deleteVideoFromWatchHistory.fulfilled, (state, action) => {
+      state.loading = false;
+      state.history = state.history.filter(
+        (item) => item._id !== action.payload.id
+      );
+    });
+    builder.addCase(deleteWatchHistory.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(deleteWatchHistory.fulfilled, (state) => {
+      state.loading = false;
+      state.history = [];
+    });
+    builder.addCase(getUserChannelProfile.pending,(state)=>{
       state.loading=true;
-    })
-    builder.addCase(deleteVideoFromWatchHistory.fulfilled,(state,action)=>{
+    });
+    builder.addCase(getUserChannelProfile.fulfilled,(state,action)=>{
       state.loading=false;
-      state.history=state.history.filter((item)=>item._id!==action.payload.id);
-    })
-    builder.addCase(deleteWatchHistory.pending,(state)=>{
-      state.loading=true;
-    })
-    builder.addCase(deleteWatchHistory.fulfilled,(state)=>{
-      state.loading=false;
-      state.history=[];
+      state.profileData=action.payload;
     })
 
   },
 });
 
-export const { makeHistoryEmpty } = userSlice.actions;
+export const { makeHistoryEmpty,makeProfileDataNull } = userSlice.actions;
 
 export default userSlice.reducer;

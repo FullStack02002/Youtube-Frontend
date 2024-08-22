@@ -176,10 +176,10 @@ const PlaylistMenu = ({ videoId,className }) => {
           }}
           className={` ${
             openInput ? "hidden" : "block"
-          }  mt-4 flex flex-row gap-4  items-center`}
+          }  mt-4 flex flex-row gap-4  items-center `}
         >
           <FaPlus className="text-white hover:text-purple-500" size={20} />
-          <span className="text-white hover:text-purple-500 text-[14px] font-semibold">
+          <span className="text-white hover:text-purple-500 text-[14px] ">
             Create new playlist
           </span>
         </div>

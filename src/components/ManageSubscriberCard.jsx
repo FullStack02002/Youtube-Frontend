@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { toggleSubscriptions } from "../store/Slices/subscriptionsSlice";
 import { Button } from "../components";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const ManageSubscriberCard = ({
   avatar,
@@ -12,6 +13,7 @@ const ManageSubscriberCard = ({
 }) => {
   const [localIsSubscribed, setlocalIsSubscribed] = useState(true);
   const dispatch = useDispatch();
+  const navigate=useNavigate();
   return (
     <>
       <div className="flex flex-row gap-4 sm:gap-0">
@@ -19,7 +21,12 @@ const ManageSubscriberCard = ({
         <div className="flex flex-row w-[30%] md:w-[40%]  justify-center ">
           <img
             src={avatar}
-            className="w-[100px] h-[100px]   md:w-[136px] md:h-[136px] rounded-full"
+            className="w-[100px] h-[100px]   md:w-[136px] md:h-[136px] rounded-full cursor-pointer"
+            onClick={(e)=>{
+              e.stopPropagation();
+              navigate(`/channel/${username}`)
+            
+            }}
           />
         </div>
         {/* channel info container */}

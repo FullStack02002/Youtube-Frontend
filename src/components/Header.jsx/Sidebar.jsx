@@ -19,6 +19,7 @@ export const Sidebar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const authStatus = useSelector((state) => state.auth?.status);
+  const username=useSelector((state)=>state.auth.userData?.username)
 
   const logout = async (e) => {
     e.stopPropagation();
@@ -48,7 +49,7 @@ export const Sidebar = () => {
     {
       icon: <HiOutlineVideoCamera size={25} />,
       title: "My Content",
-      url: "/*",
+      url: `/channel/${username}`,
     },
     {
       icon: <IoFolderOutline size={25} />,

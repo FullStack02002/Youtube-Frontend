@@ -3,6 +3,7 @@ import { timeAgo } from "../helpers/timeAgo";
 import { BsThreeDotsVertical, MdDelete, MdEdit,MdKeyboardArrowDown,MdKeyboardArrowUp } from "./icons";
 import { useSelector, useDispatch } from "react-redux";
 import { deleteAComment,editAComment } from "../store/Slices/commentSlice";
+import { useNavigate } from "react-router-dom";
 import { BsEmojiGrin } from "./icons";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
@@ -35,6 +36,7 @@ import Reply from "../components/Reply.jsx";
   );
   const commentReplies = specificComment?.replies || [];
   const isReplyEmpty = commentReplies.length === 0;
+  const navigate=useNavigate();
 
   
 
@@ -116,7 +118,10 @@ import Reply from "../components/Reply.jsx";
           openEdit ? "hidden" : "block"
         }  flex flex-row w-full  gap-4 p-[10px]`}
       >
-        <div>
+        <div className=" w-[40px] h-[40px] rounded-full cursor-pointer" onClick={(e)=>{
+          e.stopPropagation();
+          navigate(`/channel/${username}`)
+        }}>
           <img src={avatar} className="w-[40px] h-[40px] rounded-full" />
         </div>
         <div className="basis-[94%]">

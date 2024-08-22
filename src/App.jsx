@@ -18,6 +18,7 @@ import HistoryPage from "./pages/HistoryPage.jsx";
 import Subscriptions from "./pages/Subscriptions.jsx";
 import ManageSubs from "./pages/ManageSubs.jsx";
 import Collections from "./pages/Collections.jsx";
+import Channel from "./pages/Channel/Channel.jsx";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -93,6 +94,14 @@ const App = () => {
               </AuthLayot>
             }
           />
+          <Route
+          path="/channel/:username"
+            element={
+              <AuthLayot authentication={true}>
+                <Channel />
+              </AuthLayot>
+            }
+          />
         </Route>
         <Route
           path="/watch/:videoId/:ownerId"
@@ -102,11 +111,14 @@ const App = () => {
             </AuthLayot>
           }
         />
-        <Route path="/collections" element={
-          <AuthLayot authentication={true}>
-            <Collections/>
-          </AuthLayot>
-        } />
+        <Route
+          path="/collections"
+          element={
+            <AuthLayot authentication={true}>
+              <Collections />
+            </AuthLayot>
+          }
+        />
 
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/login" element={<LoginPage />} />

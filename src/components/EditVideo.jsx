@@ -3,8 +3,8 @@ import Input2 from "./Input2";
 import { useForm } from "react-hook-form";
 import { Button } from "./Button";
 import { IoCloseCircleOutline } from "react-icons/io5";
-import { useDispatch, useSelector } from "react-redux";
-import { updateAVideo, updateUploadState } from "../store/Slices/videoSlice";
+import { useDispatch} from "react-redux";
+import { updateAVideo, } from "../store/Slices/videoSlice";
 import { GetImagePreview } from "./GetImagePreview";
 const EditVideo = ({
   videoId,

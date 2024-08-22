@@ -7,6 +7,7 @@ import {  Button } from "../components";
 import { BsEmojiGrin } from "./icons";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
+import { useNavigate } from "react-router-dom";
 
 const Likes=lazy(()=>import("../components/Likes"));
 
@@ -29,6 +30,7 @@ const Likes=lazy(()=>import("../components/Likes"));
   const [open, setopen] = useState(false);
   const [openEdit, setopenEdit] = useState(false);
   const textareaRef = useRef(null);
+  const navigate=useNavigate();
 
   const user = useSelector((state) => state.auth?.userData);
   const dispatch = useDispatch();
@@ -76,7 +78,10 @@ const Likes=lazy(()=>import("../components/Likes"));
           openEdit ? "hidden" : "block"
         }  flex flex-row w-full  gap-4 p-[10px]`}
       >
-        <div>
+        <div className="w-[40px] h-[40px] rounded-full cursor-pointer" onClick={(e)=>{
+          e.stopPropagation();
+          navigate(`/channel/${username}`)
+        }}>
           <img src={avatar} className="w-[40px] h-[40px] rounded-full" />
         </div>
         <div className="basis-[94%]">

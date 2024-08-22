@@ -20,6 +20,7 @@ export const Navbar = () => {
   const navigate=useNavigate();
   const authStatus = useSelector((state) => state.auth?.status);
   const userAvatar = useSelector((state) => state.auth?.userData?.avatar);
+  const username=useSelector((state)=>state.auth?.userData?.username);
   const [ToggleMenu, setToggleMenu] = useState(false);
   const [ToggleSearch, SetToggleSearch] = useState(false);
 
@@ -55,13 +56,15 @@ export const Navbar = () => {
 
         {/* login and signup butons for larger screens */}
         {authStatus ? (
-          <div className="rounded-full sm:block hidden">
+         <NavLink to={`/channel/${username}`}>
+         <div className="rounded-full sm:block hidden">
             <img
               src={userAvatar}
               alt="Avatar"
               className="rounded-full h-10 w-10 object-cover"
             />
           </div>
+         </NavLink>
         ) : (
           <div id="button-containers" className="text-white  hidden sm:block ">
             <div className="w-full flex flex-row gap-2 ">
@@ -127,7 +130,7 @@ export const Navbar = () => {
               <span className="text-[16px] ml-4">Liked Videos</span>
             </NavLink>
             <NavLink
-              to="/*"
+              to={`/channel/${username}`}
               className={({ isActive }) =>
                 `${
                   isActive ? "text-purple-500" : ""

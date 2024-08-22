@@ -3,6 +3,7 @@ import { Button } from "../components";
 import { useDispatch } from "react-redux";
 import { toggleSubscriptions } from "../store/Slices/subscriptionsSlice";
 import { timeAgo } from "../helpers/timeAgo";
+import { useNavigate } from "react-router-dom";
 
 import Likes from "../components/Likes.jsx";
 import PlaylistMenu from "./PlaylistMenu.jsx";
@@ -24,6 +25,7 @@ const Description = ({
   const [localSubscribersCount, setLocalSubscribersCount] =
     useState(subscribersCount);
   const dispatch = useDispatch();
+  const navigate=useNavigate();
 
   useEffect(() => {
     setLocalIsSubscribed(isSubscribed);
@@ -46,7 +48,10 @@ const Description = ({
       <div className="w-full flex flex-col gap-4 md:gap-0 md:flex-row justify-between pt-[10px] pb-[10px] relative ">
         <div className="flex flex-row gap-4   justify-between">
           <div className="flex flex-row  gap-4">
-            <div>
+            <div className=" cursor-pointer" onClick={(e)=>{
+              e.stopPropagation();
+              navigate(`/channel/${username}`)
+            }}>
               <img
                 src={avatar}
                 className="w-[40px] h-[40px] rounded-full"

@@ -63,6 +63,10 @@ export const SearchVideoCard = ({
           <img
             src={avatar}
             className="w-[40px] h-[40px] md:w-[24px] md:h-[24px] rounded-full"
+            onClick={(e)=>{
+              e.stopPropagation();
+              navigate(`/channel/${username}`)
+            }}
           />
           <h3 className="text-[#AAAAAA] hidden md:block">{username}</h3>
         </div>

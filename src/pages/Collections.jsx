@@ -18,6 +18,7 @@ import DashboardVideoTable from "../components/DashboardVideoTable";
 import UploadVideo from "../components/UploadVideo";
 import { deleteAvideo } from "../store/Slices/videoSlice";
 import EditVideo from "../components/EditVideo";
+import { useSearchParams } from "react-router-dom";
 const Collections = () => {
   const username = useSelector((state) => state?.auth?.userData?.username);
   const dispatch = useDispatch();
@@ -27,6 +28,7 @@ const Collections = () => {
   const deleting = useSelector((state) => state.video.loading);
   const deleted = useSelector((state) => state.video.deleted);
   const updating=useSelector((state)=>state.video.updating);
+  const updated=useSelector((state)=>state.video.updated);
   const [Loading, setLoading] = useState(false);
   const [popUp, setPopUp] = useState({
     uploadVideo: false,
@@ -41,7 +43,7 @@ const Collections = () => {
     return () => {
       dispatch(makeChannelVideosEmpty());
     };
-  }, [dispatch, uploaded, deleted]);
+  }, [dispatch, uploaded, deleted,updated]);
 
   useEffect(() => {
     setLoading(true);
