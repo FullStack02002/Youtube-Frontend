@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { getUserPlaylist } from "../store/Slices/playlistSlice";
 import PlaylistPageSkeleton from "../skeletons/PlaylistPageSkeleton";
 import PlaylistsVIdeoCard from "../components/PlaylistsVIdeoCard";
+import NoVideosFound from "../components/NoVideosFound";
 const Playlists = () => {
   const dispatch = useDispatch();
   const userId = useSelector((state) => state.auth?.userData?._id);
@@ -19,8 +20,12 @@ const Playlists = () => {
     return <PlaylistPageSkeleton></PlaylistPageSkeleton>;
   }
 
+  if(playlists && playlists.length===0){
+    return (<NoVideosFound text="No Playlist Found"/>)
+  }
+
   return (
-    <div className=" text-white pt-5 sm:p-5">
+    <div className=" text-white pt-5 sm:p-5 ">
       <h1 className="text-3xl font-bold mb-4 sm:text-start ml-0 sm:ml-4 text-center">
         Playlists
       </h1>

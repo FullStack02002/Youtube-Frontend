@@ -5,6 +5,7 @@ import { getAllVideos, makeVideosNull } from "../store/Slices/videoSlice";
 import { FaFilter, IoCloseCircleOutline } from "../components/icons";
 import { SearchVideoCard } from "../components";
 import HistoryandSearchPageSkeleton from "../skeletons/HistoryandSearchPageSkeleton";
+import NoVideosFound from "../components/NoVideosFound";
 
 
  const SearchPage = () => {
@@ -31,6 +32,10 @@ import HistoryandSearchPageSkeleton from "../skeletons/HistoryandSearchPageSkele
 
 if(loading){
   return( <HistoryandSearchPageSkeleton search="true"></HistoryandSearchPageSkeleton>)
+}
+
+if(videos && videos.length===0){
+  return (<NoVideosFound text="Try searching something else" />)
 }
 
 

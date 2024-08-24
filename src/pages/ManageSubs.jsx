@@ -41,7 +41,7 @@ const ManageSubs = () => {
               fullName={item.subscribedChannel?.fullName}
               username={item?.subscribedChannel.username}
               SubscriptionCount={
-                item?.subscribedChannel?.LatestVideo?.subscriptionsCount
+                item?.subscribedChannel?.subscriptionsCount
               }
               channelId={item?.subscribedChannel?._id}
             />

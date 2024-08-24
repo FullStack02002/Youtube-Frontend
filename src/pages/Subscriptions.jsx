@@ -4,11 +4,14 @@ import { NavLink } from "react-router-dom";
 import { getSubscribedChannels,makemySubscriptionsEmpty } from "../store/Slices/subscriptionsSlice";
 import { VideoCard } from "../components";
 import SubscriptionsSkeleton from "../skeletons/SubscriptionsSkeleton";
+import NoVideosFound from "../components/NoVideosFound";
 
 const Subscriptions = () => {
   const dispatch = useDispatch();
   const subscriptions =
     useSelector((state) => state.subscription.mySubscriptions) || [];
+
+  const filterSubscriptions=subscriptions.filter((channel)=>channel.subscribedChannel.LatestVideo!==null);
 
   const loading = useSelector((state) => state.subscription?.loading);
 
@@ -26,6 +29,10 @@ const Subscriptions = () => {
     return <SubscriptionsSkeleton></SubscriptionsSkeleton>;
   }
 
+  if(subscriptions && subscriptions.length===0){
+    return (<NoVideosFound text="No Subscriptions Found"/>)
+  }
+
   return (
     <>
       <div className="mt-5 mb-5 flex flex-row justify-between items-center   w-[95%]">
@@ -37,7 +44,7 @@ const Subscriptions = () => {
         </NavLink>
       </div>
       <div className="   flex flex-col gap-2  sm:flex sm:flex-row  flex-wrap  sm:gap-5  lg:gap-4 xl:gap-4 ">
-        {subscriptions.map((item) => {
+        {filterSubscriptions.map((item) => {
           return (
             <VideoCard
               key={item.subscribedChannel?._id}

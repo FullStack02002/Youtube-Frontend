@@ -6,6 +6,7 @@ import {
 } from "../store/Slices/likeSlice";
 import PlaylistSkeleton from "../skeletons/PlaylistSkeleton";
 import PlaylistandLikedVideo from "../components/PlaylistandLikedVideo";
+import NoVideosFound from "../components/NoVideosFound";
 
 const LikedVideos = () => {
   const dispatch = useDispatch();
@@ -25,6 +26,10 @@ const LikedVideos = () => {
 
   if (loading) {
     return <PlaylistSkeleton></PlaylistSkeleton>;
+  }
+
+  if(likedVideos && likedVideos.length===0){
+    return (<NoVideosFound text="There are no videos available here."/>)
   }
   return (
     <>

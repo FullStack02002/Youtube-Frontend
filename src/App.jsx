@@ -19,6 +19,8 @@ import Subscriptions from "./pages/Subscriptions.jsx";
 import ManageSubs from "./pages/ManageSubs.jsx";
 import Collections from "./pages/Collections.jsx";
 import Channel from "./pages/Channel/Channel.jsx";
+import ChannelVideos from "./pages/Channel/ChannelVideos.jsx";
+import ChannelSubscribers from "./pages/Channel/ChannelSubscribers.jsx";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -95,13 +97,32 @@ const App = () => {
             }
           />
           <Route
-          path="/channel/:username"
+            path="/channel/:username"
             element={
               <AuthLayot authentication={true}>
                 <Channel />
               </AuthLayot>
             }
-          />
+          >
+            <Route
+              path="videos"
+              element={
+                <AuthLayot authentication={true}>
+                  <ChannelVideos />
+                </AuthLayot>
+              }
+            />
+            <Route
+            path="subscribers"
+            element={
+              <AuthLayot authentication={true}>
+              <ChannelSubscribers/>
+
+              </AuthLayot>
+            }
+
+            />
+          </Route>
         </Route>
         <Route
           path="/watch/:videoId/:ownerId"

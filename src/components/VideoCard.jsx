@@ -15,6 +15,8 @@ export const VideoCard = ({
   views,
   createdAt,
   ownerId,
+  dashboard
+  
 }) => {
   const navigate = useNavigate();
 
@@ -44,7 +46,7 @@ export const VideoCard = ({
           id="content-container"
           className="mt-3 flex flex-row gap-4 items-center "
         >
-          <div id="avatar" onClick={(e)=>{
+          <div id="avatar" className={`${dashboard ?"hidden":"block"}`} onClick={(e)=>{
             e.stopPropagation();
             navigate(`/channel/${username}`)
           }}>

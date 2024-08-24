@@ -10,8 +10,10 @@ const ManageSubscriberCard = ({
   username,
   SubscriptionCount,
   channelId,
+  isSubscribed="true"
 }) => {
-  const [localIsSubscribed, setlocalIsSubscribed] = useState(true);
+  const [localIsSubscribed, setlocalIsSubscribed] = useState(isSubscribed);
+  const [localSubscriptionsCount,setlocalSubscriptionsCount]=useState(SubscriptionCount);
   const dispatch = useDispatch();
   const navigate=useNavigate();
   return (
@@ -38,8 +40,8 @@ const ManageSubscriberCard = ({
            
             <div className="flex flex-col sm:flex-row text-[#AAAAAA] mt-2 text-[12px] gap-2">
               <span>{`@${username}`}</span>
-              <span>{`${SubscriptionCount} ${
-                SubscriptionCount > 1 ? "subscribers" : "subscriber"
+              <span>{`${localSubscriptionsCount} ${
+                localSubscriptionsCount > 1 ? "subscribers" : "subscriber"
               }`}</span>
             </div>
           </div>
@@ -51,6 +53,12 @@ const ManageSubscriberCard = ({
             e.stopPropagation();
             setlocalIsSubscribed((prev) => !prev);
             dispatch(toggleSubscriptions({ channelId }));
+            if(localIsSubscribed){
+              setlocalSubscriptionsCount((prev)=>prev-1);
+            }
+            else{
+              setlocalSubscriptionsCount((prev)=>prev+1);
+            }
           }}
         >
           <Button className="text-white font-bold text-[14px] bg-purple-500 border-none outline-none h-[36px]  sm:w-[120px] rounded-full sm:p-0 p-1">

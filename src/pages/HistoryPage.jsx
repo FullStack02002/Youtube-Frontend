@@ -8,6 +8,7 @@ import {
 import { SearchVideoCard } from "../components";
 import { MdDelete } from "../components/icons";
 import HistoryandSearchPageSkeleton from "../skeletons/HistoryandSearchPageSkeleton";
+import NoVideosFound from "../components/NoVideosFound";
 
 const HistoryPage = () => {
   const dispatch = useDispatch();
@@ -26,6 +27,10 @@ const HistoryPage = () => {
 
   if(loading){
     return <HistoryandSearchPageSkeleton ></HistoryandSearchPageSkeleton>
+  }
+
+  if(history && history.length===0){
+    return (<NoVideosFound text="Watch history is empty"/>)
   }
 
   return (

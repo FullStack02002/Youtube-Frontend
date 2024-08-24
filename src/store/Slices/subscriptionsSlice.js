@@ -25,7 +25,7 @@ export const toggleSubscriptions=createAsyncThunk(
 )
 export const getUserChannelSubscribers=createAsyncThunk(
     "getUserChannelSubscribers",
-    async(channelId)=>{
+    async({channelId})=>{
         try {
             const response=await axiosInstance.get(
                 `subscriptions/c/${channelId}`
@@ -60,6 +60,9 @@ const subscriptionSlice=createSlice({
     reducers:{
         makemySubscriptionsEmpty:(state)=>{
             state.mySubscriptions=[];
+        },
+        makeChannelSubscribersEmpty:(state)=>{
+            state.channelSubscribers=[];
         }
     },
     extraReducers:(builder)=>{
@@ -88,7 +91,7 @@ const subscriptionSlice=createSlice({
     }
 })
 
-export const {makemySubscriptionsEmpty}=subscriptionSlice.actions;
+export const {makemySubscriptionsEmpty,makeChannelSubscribersEmpty}=subscriptionSlice.actions;
 
 
 export default subscriptionSlice.reducer;
