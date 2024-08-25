@@ -9,13 +9,15 @@ const initialState = {
 
 export const createTweet = createAsyncThunk(
   "createTweet",
-  async ({ content }) => {
+  async ({ content,owner,likesCount }) => {
     try {
       const response = await axiosInstance.post("tweet/", {
         content,
       });
       toast.success(response.data?.message);
-      return response.data.data;
+      const createdAt=response.data.data.createdAt;
+      const _id=response.data.data._id;
+      return {content,owner,likesCount,createdAt,_id};
     } catch (error) {
       toast.error(error?.response?.data?.error);
       throw error;
@@ -40,7 +42,7 @@ export const deleteTweet = createAsyncThunk(
   "deleteTweet",
   async ({ tweetId }) => {
     try {
-      await axiosInstance.delete(`tweet/${tweetId}`);
+     const response= await axiosInstance.delete(`tweet/${tweetId}`);
       toast.success(response.data?.message);
       return { tweetId };
     } catch (error) {
@@ -52,9 +54,11 @@ export const deleteTweet = createAsyncThunk(
 
 export const updateTweet = createAsyncThunk(
   "updateTweet",
-  async ({ tweetId }) => {
+  async ({ tweetId,content }) => {
     try {
-      const response = await axiosInstance.patch(`tweet/${tweetId}`);
+      const response = await axiosInstance.patch(`tweet/${tweetId}`,{
+        content
+      });
       toast.success(response.data?.message);
       return response.data.data;
     } catch (error) {
@@ -83,16 +87,10 @@ const tweetSlice = createSlice({
       state.loading = false;
       state.tweets = action.payload;
     });
-    builder.addCase(deleteTweet.pending, (state) => {
-      state.loading = true;
-    });
     builder.addCase(deleteTweet.fulfilled, (state, action) => {
       const { tweetId } = action.payload;
       state.loading = false;
       state.tweets = state.tweets.filter((tweet) => tweet._id !== tweetId);
-    });
-    builder.addCase(updateTweet.pending, (state) => {
-      state.loading = true;
     });
     builder.addCase(updateTweet.fulfilled, (state, action) => {
       state.loading = false;

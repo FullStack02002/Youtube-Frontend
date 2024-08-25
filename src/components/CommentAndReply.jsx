@@ -1,21 +1,26 @@
 import React, { useState, useEffect, useRef } from "react";
 import { timeAgo } from "../helpers/timeAgo";
-import { BsThreeDotsVertical, MdDelete, MdEdit,MdKeyboardArrowDown,MdKeyboardArrowUp } from "./icons";
+import {
+  BsThreeDotsVertical,
+  MdDelete,
+  MdEdit,
+  MdKeyboardArrowDown,
+  MdKeyboardArrowUp,
+} from "./icons";
 import { useSelector, useDispatch } from "react-redux";
-import { deleteAComment,editAComment } from "../store/Slices/commentSlice";
+import { deleteAComment, editAComment } from "../store/Slices/commentSlice";
 import { useNavigate } from "react-router-dom";
 import { BsEmojiGrin } from "./icons";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
-import {  TextArea, Button,Loader } from "../components";
-import {
-  getAllRepliesOfComment,
-} from "../store/Slices/replySlice";
+import { TextArea, Button, Loader } from "../components";
+import { getAllRepliesOfComment } from "../store/Slices/replySlice";
+import { deleteTweet,updateTweet } from "../store/Slices/tweetSlice.js";
 
 import Likes from "../components/Likes.jsx";
 import Reply from "../components/Reply.jsx";
 
- const CommentAndReply = ({
+const CommentAndReply = ({
   avatar,
   username,
   createdAt,
@@ -26,22 +31,21 @@ import Reply from "../components/Reply.jsx";
   isLiked,
   likesCount,
   videoOwneravatar,
-  videoId
+  videoId,
+  tweet,
+  tweetId,
 }) => {
   const user = useSelector((state) => state.auth?.userData);
   const replies = useSelector((state) => state.reply?.replies);
-  const loading=useSelector((state)=>state.comment.commentDeleteandEditLoading[commentId])
+  const loading = useSelector(
+    (state) => state.comment.commentDeleteandEditLoading[commentId]
+  );
   const specificComment = replies.find(
     (comment) => comment.commentId === commentId
   );
   const commentReplies = specificComment?.replies || [];
   const isReplyEmpty = commentReplies.length === 0;
-  const navigate=useNavigate();
-
-  
-
-  
-
+  const navigate = useNavigate();
 
   const [text, setText] = useState(content);
   const [openPicker, setopenPicker] = useState(false);
@@ -49,7 +53,7 @@ import Reply from "../components/Reply.jsx";
   const [openEdit, setopenEdit] = useState(false);
   const [textAreaOpen, setTextAreaOpen] = useState(false);
   const [openReply, setopenReply] = useState(false);
-  const [openReplies,setopenReplies]=useState(false);
+  const [openReplies, setopenReplies] = useState(false);
 
   const dispatch = useDispatch();
   const isOwner = user?._id === ownersId;
@@ -59,7 +63,9 @@ import Reply from "../components/Reply.jsx";
   const isCommentButtonActive =
     text.trim().length > 0 && text.trim() !== content;
 
-   const isVideoOwnerReplied= commentReplies && commentReplies.some((reply)=>reply.owner._id === videoOwner);
+  const isVideoOwnerReplied =
+    commentReplies &&
+    commentReplies.some((reply) => reply.owner._id === videoOwner);
 
   useEffect(() => {
     const textarea = textareaRef.current;
@@ -82,33 +88,44 @@ import Reply from "../components/Reply.jsx";
   }, [text]);
 
   useEffect(() => {
-    dispatch(getAllRepliesOfComment({ commentId }));
+    if (!tweet) {
+      dispatch(getAllRepliesOfComment({ commentId }));
+    }
   }, [dispatch, commentId]);
-
-
 
   const handleChange = (e) => {
     setText(e.target.value);
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(
-      editAComment({
-        content: text,
-        commentId,
-        avatar,
-        username,
-        _id: ownersId,
-        createdAt,
-        likesCount,
-        isLiked,
-      })
-    );
-    setopenEdit(false)
+
+    if(commentId){
+      dispatch(
+        editAComment({
+          content: text,
+          commentId,
+          avatar,
+          username,
+          _id: ownersId,
+          createdAt,
+          likesCount,
+          isLiked,
+        })
+      );
+    }
+
+    if(tweetId){
+      dispatch(updateTweet({tweetId,content:text}))
+
+    }
+
+    setopen(false);
+    
+    setopenEdit(false);
   };
 
-  if(loading){
-    return(<Loader></Loader>)
+  if (loading) {
+    return <Loader></Loader>;
   }
   return (
     <>
@@ -118,10 +135,13 @@ import Reply from "../components/Reply.jsx";
           openEdit ? "hidden" : "block"
         }  flex flex-row w-full  gap-4 p-[10px]`}
       >
-        <div className=" w-[40px] h-[40px] rounded-full cursor-pointer" onClick={(e)=>{
-          e.stopPropagation();
-          navigate(`/channel/${username}`)
-        }}>
+        <div
+          className=" w-[40px] h-[40px] rounded-full cursor-pointer"
+          onClick={(e) => {
+            e.stopPropagation();
+            navigate(`/channel/${username}`);
+          }}
+        >
           <img src={avatar} className="w-[40px] h-[40px] rounded-full" />
         </div>
         <div className="basis-[94%]">
@@ -138,24 +158,43 @@ import Reply from "../components/Reply.jsx";
 
           {/* likes and reply button */}
           <div className="flex flex-row  gap-5  items-center h-[50px] ">
-            <div className="flex flex-row  w-[10%]  justify-center  ">
-            <Likes
-                commentId={commentId}
-                size={20}
-                isLiked={isLiked}
-                likesCount={likesCount}
-                videoId={videoId}
-              />
-            </div>
-            <div
-              className=" hover:bg-[#272727] p-2 rounded-full cursor-pointer flex items-center"
-              onClick={(e) => {
-                e.stopPropagation();
-                setopenReply((prev) => !prev);
-              }}
-            >
-              <Button className="text-[14px]">Reply</Button>
-            </div>
+            {/* like button for comments */}
+            {!tweet && (
+              <div className="flex flex-row  w-[10%]  justify-center  ">
+                <Likes
+                  commentId={commentId}
+                  size={20}
+                  isLiked={isLiked}
+                  likesCount={likesCount}
+                  videoId={videoId}
+                />
+              </div>
+            )}
+
+            {/* like button for tweets */}
+
+            {tweet && (
+              <div className="flex flex-row  w-[10%]  justify-center  ">
+                <Likes
+                  tweetId={tweetId}
+                  size={20}
+                  isLiked={isLiked}
+                  likesCount={likesCount}
+                />
+              </div>
+            )}
+
+            {!tweet && (
+              <div
+                className=" hover:bg-[#272727] p-2 rounded-full cursor-pointer flex items-center"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setopenReply((prev) => !prev);
+                }}
+              >
+                {!tweet && <Button className="text-[14px]">Reply</Button>}
+              </div>
+            )}
           </div>
 
           {/* text area opens when reply button is clicked */}
@@ -174,17 +213,37 @@ import Reply from "../components/Reply.jsx";
 
           {/* view reply div */}
           {!isReplyEmpty && (
-            <div onClick={(e)=>{
-            e.stopPropagation();
-            setopenReplies((prev)=>!prev);
-          }} className={`font-bold cursor-pointer items-center flex flex-row gap-2 w-auto ${isVideoOwnerReplied?"  sm:w-[26%] md:w-[21%] lg:w-[17%]":" sm:w-[20%] md:w-[17%] lg:w-[14%]"} rounded-full py-[6px] px-[10px] text-[#3ea6ff] sm:hover:bg-blue-200`}>
-            <MdKeyboardArrowDown size={24} className={`${openReplies?"hidden":"block"}`}/>
-            <MdKeyboardArrowUp size={24} className={`${openReplies?"block":"hidden"}`}/>
-            <img src={videoOwneravatar} className={`${isVideoOwnerReplied?"block":"hidden"} w-[24px] h-[24px] rounded-full`}/>
-            <span>{commentReplies.length} { commentReplies.length > 1 ? "replies" : "reply"}</span>
-          </div>
+            <div
+              onClick={(e) => {
+                e.stopPropagation();
+                setopenReplies((prev) => !prev);
+              }}
+              className={`font-bold cursor-pointer items-center flex flex-row gap-2 w-auto ${
+                isVideoOwnerReplied
+                  ? "  sm:w-[26%] md:w-[21%] lg:w-[17%]"
+                  : " sm:w-[20%] md:w-[17%] lg:w-[14%]"
+              } rounded-full py-[6px] px-[10px] text-[#3ea6ff] sm:hover:bg-blue-200`}
+            >
+              <MdKeyboardArrowDown
+                size={24}
+                className={`${openReplies ? "hidden" : "block"}`}
+              />
+              <MdKeyboardArrowUp
+                size={24}
+                className={`${openReplies ? "block" : "hidden"}`}
+              />
+              <img
+                src={videoOwneravatar}
+                className={`${
+                  isVideoOwnerReplied ? "block" : "hidden"
+                } w-[24px] h-[24px] rounded-full`}
+              />
+              <span>
+                {commentReplies.length}{" "}
+                {commentReplies.length > 1 ? "replies" : "reply"}
+              </span>
+            </div>
           )}
-          
         </div>
 
         {/* three dots for edit and delete comment */}
@@ -222,8 +281,13 @@ import Reply from "../components/Reply.jsx";
               className="flex items-center gap-2 text-white hover:text-purple-500"
               onClick={(e) => {
                 e.stopPropagation();
-                console.log("Clicked")
-                dispatch(deleteAComment({commentId}))
+                if(commentId){
+                  dispatch(deleteAComment({ commentId }));
+                }
+                if(tweetId){
+                  dispatch(deleteTweet({ tweetId }));
+
+                }
               }}
             >
               <MdDelete className="w-[24px] h-[24px]" />
@@ -318,30 +382,28 @@ import Reply from "../components/Reply.jsx";
       </div>
 
       {/* replies  opens when view reply is clicked*/}
-      <div className={`${openReplies?"block":"hidden"}`}>
-      {commentReplies &&
-        commentReplies.map((reply) => (
-          <div className="  ml-[60px]" key={reply.content}
->
-            <Reply
-              avatar={reply?.owner?.avatar}
-              username={reply?.owner.username}
-              ownersId={reply?.owner?._id}
-              videoOwner={videoOwner}
-              content={reply?.content}
-              isLiked={reply?.isLiked}
-              likesCount={reply?.likesCount}
-              replyId={reply?._id}
-              createdAt={reply?.createdAt}
-              commentId={commentId}
-              videoId={videoId}
-            />
-          </div>
-        ))}
+      <div className={`${openReplies ? "block" : "hidden"}`}>
+        {commentReplies &&
+          commentReplies.map((reply) => (
+            <div className="  ml-[60px]" key={reply.content}>
+              <Reply
+                avatar={reply?.owner?.avatar}
+                username={reply?.owner.username}
+                ownersId={reply?.owner?._id}
+                videoOwner={videoOwner}
+                content={reply?.content}
+                isLiked={reply?.isLiked}
+                likesCount={reply?.likesCount}
+                replyId={reply?._id}
+                createdAt={reply?.createdAt}
+                commentId={commentId}
+                videoId={videoId}
+              />
+            </div>
+          ))}
       </div>
     </>
-  )
-
+  );
 };
 
 export default CommentAndReply;

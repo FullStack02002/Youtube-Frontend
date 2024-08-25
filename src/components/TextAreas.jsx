@@ -2,6 +2,7 @@ import React, { useRef, useEffect, useState } from "react";
 import { useSelector,useDispatch } from "react-redux";
 import { createAComment } from "../store/Slices/commentSlice";
 import { createAReply } from "../store/Slices/replySlice";
+import { createTweet } from "../store/Slices/tweetSlice";
 import { BsEmojiGrin } from "./icons";
 import { Button } from "./Button";
 import data from '@emoji-mart/data'
@@ -65,6 +66,10 @@ export const TextArea = ({
     if(reply){
       dispatch(createAReply({content:text,commentId,avatar:user.avatar,username:user.username,_id:user._id,videoId}))
       setopenReply(false);
+    }
+
+    if(tweet){
+      dispatch(createTweet({content:text,owner:{_id:user._id,username:user.username,avatar:user.avatar},likesCount:0}));
     }
 
     setText("");

@@ -21,6 +21,7 @@ import Collections from "./pages/Collections.jsx";
 import Channel from "./pages/Channel/Channel.jsx";
 import ChannelVideos from "./pages/Channel/ChannelVideos.jsx";
 import ChannelSubscribers from "./pages/Channel/ChannelSubscribers.jsx";
+import ChannelTweets from "./pages/Channel/ChannelTweets.jsx";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -121,6 +122,14 @@ const App = () => {
               </AuthLayot>
             }
 
+            />
+            <Route
+              path="tweets"
+              element={
+                <AuthLayot authentication={true}>
+                  <ChannelTweets />
+                </AuthLayot>
+              }
             />
           </Route>
         </Route>

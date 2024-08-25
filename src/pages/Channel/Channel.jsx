@@ -14,6 +14,7 @@ const Channel = () => {
   const { username } = useParams();
   const channel = useSelector((state) => state.user?.profileData);
   const [loading, setLoading] = useState(false);
+  const location=useLocation();
 
   useEffect(() => {
 
@@ -22,7 +23,7 @@ const Channel = () => {
     return () => {
       dispatch(makeProfileDataNull());
     };
-  }, []);
+  }, [location.pathname]);
 
   useEffect(() => {
     setLoading(true);
