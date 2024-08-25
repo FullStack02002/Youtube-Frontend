@@ -8,6 +8,7 @@ import replySliceReducer from "./Slices/replySlice.js";
 import playlistSliceReducer from "./Slices/playlistSlice.js"
 import userSliceReducer from "./Slices/userSlice.js";
 import dashboardSliceReducer from "./Slices/dashboardSlice.js";
+import tweetSliceReducer from "./Slices/tweetSlice.js";
 
 const store=configureStore({
     reducer:{
@@ -19,7 +20,8 @@ const store=configureStore({
         reply:replySliceReducer,
         playlist:playlistSliceReducer,
         user:userSliceReducer,
-        dashboard:dashboardSliceReducer
+        dashboard:dashboardSliceReducer,
+        tweet:tweetSliceReducer
         
 
     }

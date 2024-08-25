@@ -14,7 +14,7 @@ const ChannelSubscribers = () => {
   const channelSubscribers = useSelector(
     (state) => state.subscription?.channelSubscribers
   );
-  const loading = useSelector((state) => state.subscription?.loading);
+  const loading = useSelector((state) => state.subscription.loading);
   useEffect(() => {
     if (channelId) {
       dispatch(getUserChannelSubscribers({ channelId }));
@@ -23,6 +23,11 @@ const ChannelSubscribers = () => {
       dispatch(makeChannelSubscribersEmpty());
     };
   }, [channelId]);
+
+
+  if(loading){
+    return (<ManageSubsSkeleton/>)
+  }
 
 
 
