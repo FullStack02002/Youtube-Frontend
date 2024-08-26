@@ -29,7 +29,7 @@ const ChannelHeader = ({
   }, [subscribersCount, isSubscribed]);
 
   const handleSubscribe = () => {
-    dispatch(toggleSubscriptions({channelId}));
+    dispatch(toggleSubscriptions({ channelId }));
     setLocalIsSubscribed((prev) => !prev);
     if (localIsSubscribed) {
       setLocalSubscribersCount((prev) => prev - 1);
@@ -51,7 +51,7 @@ const ChannelHeader = ({
               />
               {edit && (
                 <div className="absolute inset-0 flex justify-center items-center">
-                  <EditAvatar cover={true} preImage={coverImage} />
+                  <EditAvatar cover="true" preImage={coverImage} />
                 </div>
               )}
             </div>
@@ -78,14 +78,18 @@ const ChannelHeader = ({
             <div>
               <h1 className="text-xl font-bold">{fullName}</h1>
               <h3 className="text-sm text-slate-400">@{username}</h3>
-              <div className="flex gap-1">
-                <p className="text-xs text-slate-400">
-                  {localSubscribersCount && localSubscribersCount} Subscribers
-                </p>
-                <p className="text-xs text-slate-400">
-                {totalVideos > 1 ? `${totalVideos} Videos` : `${totalVideos} Video`}
-                </p>
-              </div>
+              {!edit && (
+                <div className="flex gap-1">
+                  <p className="text-xs text-slate-400">
+                    {localSubscribersCount && localSubscribersCount} Subscribers
+                  </p>
+                  <p className="text-xs text-slate-400">
+                    {totalVideos > 1
+                      ? `${totalVideos} Videos`
+                      : `${totalVideos} Video`}
+                  </p>
+                </div>
+              )}
             </div>
             {user == userProfile && !edit && (
               <Link to={"/edit"}>
@@ -96,11 +100,9 @@ const ChannelHeader = ({
             )}
             {user != userProfile && !edit && (
               <div onClick={handleSubscribe}>
-              <Button
-                className="border-slate-500 hover:scale-110 transition-all text-black font-bold px-4 py-1 bg-purple-500"
-              >
-                {localIsSubscribed ? "Subscribed" : "Subscribe"}
-              </Button>
+                <Button className="border-slate-500 hover:scale-110 transition-all text-black font-bold px-4 py-1 bg-purple-500">
+                  {localIsSubscribed ? "Subscribed" : "Subscribe"}
+                </Button>
               </div>
             )}
             {edit && (

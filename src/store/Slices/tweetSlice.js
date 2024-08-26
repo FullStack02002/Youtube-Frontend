@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 const initialState = {
   loading: false,
   tweets: [],
+  tweetAddLoading:false,
 };
 
 export const createTweet = createAsyncThunk(
@@ -71,13 +72,17 @@ export const updateTweet = createAsyncThunk(
 const tweetSlice = createSlice({
   name: "tweet",
   initialState,
-  reducers: {},
+  reducers: {
+    makeTweetsEmpty:(state)=>{
+      state.tweets=[]
+    }
+  },
   extraReducers: (builder) => {
     builder.addCase(createTweet.pending, (state) => {
-      state.loading = true;
+      state.tweetAddLoading = true;
     });
     builder.addCase(createTweet.fulfilled, (state, action) => {
-      state.loading = false;
+      state.tweetAddLoading = false;
       state.tweets.unshift(action.payload);
     });
     builder.addCase(getUserTweet.pending, (state) => {
@@ -103,5 +108,9 @@ const tweetSlice = createSlice({
     });
   },
 });
+
+export const {makeTweetsEmpty}=tweetSlice.actions;
+
+
 
 export default tweetSlice.reducer;

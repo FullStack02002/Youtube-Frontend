@@ -13,8 +13,7 @@ const Channel = () => {
   const dispatch = useDispatch();
   const { username } = useParams();
   const channel = useSelector((state) => state.user?.profileData);
-  const [loading, setLoading] = useState(false);
-  const location=useLocation();
+  const loading=useSelector((state)=>state.user?.profileLoading);
 
   useEffect(() => {
 
@@ -23,18 +22,9 @@ const Channel = () => {
     return () => {
       dispatch(makeProfileDataNull());
     };
-  }, [location.pathname]);
+  }, [username]);
 
-  useEffect(() => {
-    setLoading(true);
-    const id = setTimeout(() => {
-      setLoading(false);
-    }, 1000);
-
-    return () => {
-      clearTimeout(id);
-    };
-  }, []);
+  
 
   if (loading) {
     return <ChannelSkeleton />;

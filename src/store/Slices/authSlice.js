@@ -29,10 +29,10 @@ export const createAccount = createAsyncThunk("register", async (data) => {
 export const userLogin = createAsyncThunk("login", async (data) => {
   try {
     const response = await axiosInstance.post("/users/login", data);
-    toast.success(response.data?.message)
+    toast.success(response.data?.message);
     return response.data.data.user;
   } catch (error) {
-    toast.error(error?.response?.data?.error)
+    toast.error(error?.response?.data?.error);
     throw error;
   }
 });
@@ -61,11 +61,42 @@ export const refreshAccessToken = createAsyncThunk(
   }
 );
 
-export const getCurrentUser=createAsyncThunk("getCurrentUser",async()=>{
-  const response=await axiosInstance.get('/users/current-user')
+export const getCurrentUser = createAsyncThunk("getCurrentUser", async () => {
+  const response = await axiosInstance.get("/users/current-user");
   return response.data.data;
-})
+});
 
+export const updateUserAvatar = createAsyncThunk(
+  "updateUserAvatar",
+  async (avatar) => {
+    try {
+      const response = await axiosInstance.patch("/users/avatar", avatar);
+      toast.success(response.data.message);
+      return response.data.data;
+    } catch (error) {
+      toast.error(error?.response?.data?.message);
+      throw error;
+    }
+  }
+);
+
+export const updateCoverImage = createAsyncThunk(
+  "updateCoverImage",
+  async (coverImage) => {
+    try {
+      const response = await axiosInstance.patch(
+        "/users/cover-image",
+        coverImage
+      );
+      toast.success(response.data.message);
+      return response.data.data;
+    } catch (error) {
+      console.log(error);
+      toast.error(error?.response?.data?.message);
+      throw error;
+    }
+  }
+);
 
 const authSlice = createSlice({
   name: "auth",
@@ -94,18 +125,32 @@ const authSlice = createSlice({
       state.status = false;
       state.userData = null;
     });
-    builder.addCase(getCurrentUser.pending,(state)=>{
+    builder.addCase(getCurrentUser.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(getCurrentUser.fulfilled, (state, action) => {
+      state.loading = false;
+      state.status = true;
+      state.userData = action.payload;
+    });
+    builder.addCase(getCurrentUser.rejected, (state) => {
+      state.loading = false;
+      state.status = false;
+      state.userData = null;
+    });
+    builder.addCase(updateUserAvatar.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(updateUserAvatar.fulfilled, (state, action) => {
+      state.loading = false;
+      state.userData = action.payload;
+    });
+    builder.addCase(updateCoverImage.pending,(state)=>{
       state.loading=true;
     })
-    builder.addCase(getCurrentUser.fulfilled,(state,action)=>{
+    builder.addCase(updateCoverImage.fulfilled,(state,action)=>{
       state.loading=false;
-      state.status=true;
       state.userData=action.payload;
-    })
-    builder.addCase(getCurrentUser.rejected,(state)=>{
-      state.loading=false;
-      state.status=false;
-      state.userData=null;
     })
   },
 });

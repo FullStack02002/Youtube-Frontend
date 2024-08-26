@@ -124,7 +124,7 @@ const CommentAndReply = ({
     setopenEdit(false);
   };
 
-  if (loading) {
+  if (loading && !tweet) {
     return <Loader></Loader>;
   }
   return (

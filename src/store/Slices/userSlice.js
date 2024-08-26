@@ -6,6 +6,7 @@ const initialState = {
   loading: false,
   history: [],
   profileData: null,
+  profileLoading:false,
 };
 
 export const getUserWatchHistory = createAsyncThunk(
@@ -96,10 +97,10 @@ const userSlice = createSlice({
       state.history = [];
     });
     builder.addCase(getUserChannelProfile.pending,(state)=>{
-      state.loading=true;
+      state.profileLoading=true;
     });
     builder.addCase(getUserChannelProfile.fulfilled,(state,action)=>{
-      state.loading=false;
+      state.profileLoading=false;
       state.profileData=action.payload;
     })
 

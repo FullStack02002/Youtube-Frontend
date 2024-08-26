@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { createTweet, getUserTweet } from "../../store/Slices/tweetSlice";
-import { TextArea } from "../../components";
+import { getUserTweet,makeTweetsEmpty } from "../../store/Slices/tweetSlice";
+import { BigLoader, TextArea } from "../../components";
 import CommentAndReply from "../../components/CommentAndReply";
 import { Loader } from "../../components";
 
@@ -12,7 +12,8 @@ const ChannelTweets = () => {
   const user=useSelector((state)=>state.user?.profileData);
   const authId = useSelector((state) => state.auth?.userData?._id);
   const Tweets = useSelector((state) => state.tweet?.tweets) || [];
-  const loading=useSelector((state)=>state.tweet?.loading);
+  const tweetAddLoading=useSelector((state)=>state.tweet?.tweetAddLoading);
+  const loading=useSelector((state)=>state.tweet?.loading)
   const totalTweets = Tweets.length;
   const isOwner = userId === authId;
 
@@ -20,7 +21,18 @@ const ChannelTweets = () => {
     if (userId) {
       dispatch(getUserTweet({ userId }));
     }
+
+    return()=>{
+        dispatch(makeTweetsEmpty());
+    }
   }, [dispatch, userId]);
+
+  if(loading){
+    return <BigLoader tweet="true"/>
+  }
+
+
+
   return (
     <>
       <div className="w-full  flex flex-row justify-center  pt-5">
@@ -45,7 +57,7 @@ const ChannelTweets = () => {
 
           {/* tweets list */}
           <div className="w-full  mt-[20px]  flex flex-col gap-2 ">
-          {loading && <Loader/>}
+          {tweetAddLoading && <Loader/>}
           {Tweets.map((tweet)=>{
             return(
 

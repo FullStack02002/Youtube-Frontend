@@ -22,6 +22,7 @@ import Channel from "./pages/Channel/Channel.jsx";
 import ChannelVideos from "./pages/Channel/ChannelVideos.jsx";
 import ChannelSubscribers from "./pages/Channel/ChannelSubscribers.jsx";
 import ChannelTweets from "./pages/Channel/ChannelTweets.jsx";
+import EditChannel from "./pages/EditChannel.jsx";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -132,6 +133,12 @@ const App = () => {
               }
             />
           </Route>
+          <Route
+            path="/edit"
+            element={
+              <EditChannel/>
+            }
+          />
         </Route>
         <Route
           path="/watch/:videoId/:ownerId"

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { MdClose, MdOutlineCloudUpload } from "react-icons/md";
 import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
-// import { updateAvatar, updateCoverImg } from "../store/Slices/authSlice";
+import { updateUserAvatar,updateCoverImage } from "../store/Slices/authSlice";
 import {GetImagePreview} from "./GetImagePreview";
 
 const EditAvatar = ({ cover, preImage }) => {
@@ -12,6 +12,7 @@ const EditAvatar = ({ cover, preImage }) => {
         handleSubmit,
         control,
         formState: { errors },
+        register
     } = useForm();
 
     const upload = (data) => {
@@ -21,9 +22,9 @@ const EditAvatar = ({ cover, preImage }) => {
 
         if (data) {
             if (cover) {
-                // dispatch(updateCoverImg(formData));
+                dispatch(updateCoverImage(formData));
             } else {
-                // dispatch(updateAvatar(formData));
+                dispatch(updateUserAvatar(formData));
             }
         }
     };
@@ -75,7 +76,7 @@ const EditAvatar = ({ cover, preImage }) => {
                             </div>
                             {errors.avatar && (
                                 <span className="text-red-500">
-                                    {errors.avatar.message}
+                                {errors.avatar.message}
                                 </span>
                             )}
                         </div>
