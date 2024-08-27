@@ -1,4 +1,4 @@
-import React, {  useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Logo } from "./Logo.jsx";
 import { useForm } from "react-hook-form";
 import { GetImagePreview } from "./GetImagePreview.jsx";
@@ -7,7 +7,7 @@ import { Button } from "./Button.jsx";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { createAccount, userLogin } from "../store/Slices/authSlice.js";
-import {SignupSkeleton} from "../skeletons"
+import { SignupSkeleton } from "../skeletons";
 const SignUp = () => {
   const [load, setLoad] = useState(true);
 
@@ -29,21 +29,21 @@ const SignUp = () => {
   const navigate = useNavigate();
   const loading = useSelector((state) => state.auth?.loading);
 
-  const submit = async (data) => {
-    const response = await dispatch(createAccount(data));
+  const submit = (data) => {
+    const response = dispatch(createAccount(data));
     if (response?.payload?.success) {
       const username = data?.username;
       const password = data?.password;
-      const loginResult = await dispatch(userLogin({ username, password }));
+      const loginResult = dispatch(userLogin({ username, password }));
       if (loginResult?.type === "login/fulfilled") {
-        navigate("/");
+        navigate("/terms&conditions");
       } else {
         navigate("/login");
       }
     }
   };
   if (loading || load) {
-    return <SignupSkeleton></SignupSkeleton>
+    return <SignupSkeleton></SignupSkeleton>;
   }
   return (
     <div className="className='w-full  text-white p-3 flex justify-center items-start'">

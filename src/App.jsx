@@ -25,6 +25,7 @@ import ChannelTweets from "./pages/Channel/ChannelTweets.jsx";
 import EditChannel from "./pages/EditChannel.jsx";
 import EditPersonalInfo from "./pages/EditPersonalInfo.jsx";
 import ChangePassword from "./pages/ChangePassword.jsx";
+import TermsandCondition from "./pages/TermsandCondition.jsx";
 const App = () => {
   const dispatch = useDispatch();
 
@@ -170,6 +171,14 @@ const App = () => {
 
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route
+          path="/terms&conditions"
+          element={
+            <AuthLayot authentication={true}>
+              <TermsandCondition />
+            </AuthLayot>
+          }
+        />
       </Routes>
 
       <Toaster
