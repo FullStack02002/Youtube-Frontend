@@ -23,7 +23,8 @@ import ChannelVideos from "./pages/Channel/ChannelVideos.jsx";
 import ChannelSubscribers from "./pages/Channel/ChannelSubscribers.jsx";
 import ChannelTweets from "./pages/Channel/ChannelTweets.jsx";
 import EditChannel from "./pages/EditChannel.jsx";
-
+import EditPersonalInfo from "./pages/EditPersonalInfo.jsx";
+import ChangePassword from "./pages/ChangePassword.jsx";
 const App = () => {
   const dispatch = useDispatch();
 
@@ -115,14 +116,12 @@ const App = () => {
               }
             />
             <Route
-            path="subscribers"
-            element={
-              <AuthLayot authentication={true}>
-              <ChannelSubscribers/>
-
-              </AuthLayot>
-            }
-
+              path="subscribers"
+              element={
+                <AuthLayot authentication={true}>
+                  <ChannelSubscribers />
+                </AuthLayot>
+              }
             />
             <Route
               path="tweets"
@@ -133,12 +132,24 @@ const App = () => {
               }
             />
           </Route>
-          <Route
-            path="/edit"
-            element={
-              <EditChannel/>
-            }
-          />
+          <Route path="/edit" element={<EditChannel />}>
+            <Route
+              path="personalInfo"
+              element={
+                <AuthLayot authentication={true}>
+                  <EditPersonalInfo />
+                </AuthLayot>
+              }
+            />
+            <Route
+              path="password"
+              element={
+                <AuthLayot authentication={true}>
+                  <ChangePassword />
+                </AuthLayot>
+              }
+            />
+          </Route>
         </Route>
         <Route
           path="/watch/:videoId/:ownerId"

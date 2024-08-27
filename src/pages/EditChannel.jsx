@@ -2,10 +2,12 @@ import React from "react";
 import ChannelHeader from "../components/Channel/ChannelHeader";
 import { useSelector } from "react-redux";
 import { Loader } from "../components";
+import ChannelNavigate from "../components/Channel/ChannelNavigate";
+import { Outlet } from "react-router-dom";
 
 const EditChannel = () => {
   const channel = useSelector((state) => state?.auth?.userData);
-  const loading = useSelector((state) => state?.auth?.loading);
+  const loading = useSelector((state) => state?.auth?.updating);
   return (
     <>
       {loading && (
@@ -23,6 +25,10 @@ const EditChannel = () => {
         fullName={channel?.fullName}
         edit={true}
       />
+      <ChannelNavigate edit={true} />
+      <div className="overflow-y-scroll h-[32rem] sm:h-96 mb-20 sm:mb-0">
+        <Outlet />
+      </div>
     </>
   );
 };

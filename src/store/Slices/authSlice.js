@@ -6,6 +6,7 @@ const initialState = {
   loading: false,
   status: false,
   userData: null,
+  updating:false,
 };
 
 export const createAccount = createAsyncThunk("register", async (data) => {
@@ -91,8 +92,36 @@ export const updateCoverImage = createAsyncThunk(
       toast.success(response.data.message);
       return response.data.data;
     } catch (error) {
-      console.log(error);
       toast.error(error?.response?.data?.message);
+      throw error;
+    }
+  }
+);
+
+export const changePassword = createAsyncThunk(
+  "changePassword",
+  async (data) => {
+    console.log(data);
+    try {
+      const response = await axiosInstance.post("/users/change-password", data);
+      toast.success(response.data.message);
+      return response.data.data;
+    } catch (error) {
+      toast.error(error?.response?.data?.error);
+      throw error;
+    }
+  }
+);
+
+export const updateAccountDetails = createAsyncThunk(
+  "updateAccountDetails",
+  async (data) => {
+    try {
+      const response = await axiosInstance.patch("/users/update-account", data);
+      toast.success(response.data.message);
+      return response.data.data;
+    } catch (error) {
+      toast.error(error?.response?.data?.error);
       throw error;
     }
   }
@@ -139,19 +168,29 @@ const authSlice = createSlice({
       state.userData = null;
     });
     builder.addCase(updateUserAvatar.pending, (state) => {
-      state.loading = true;
+      state.updating = true;
     });
     builder.addCase(updateUserAvatar.fulfilled, (state, action) => {
-      state.loading = false;
+      state.updating = false;
       state.userData = action.payload;
     });
-    builder.addCase(updateCoverImage.pending,(state)=>{
-      state.loading=true;
-    })
-    builder.addCase(updateCoverImage.fulfilled,(state,action)=>{
-      state.loading=false;
-      state.userData=action.payload;
-    })
+    builder.addCase(updateCoverImage.pending, (state) => {
+      state.updating = true;
+    });
+    builder.addCase(updateCoverImage.fulfilled, (state, action) => {
+      state.updating = false;
+      state.userData = action.payload;
+    });
+    builder.addCase(updateAccountDetails.pending, (state, action) => {
+      state.updating = true;
+    });
+    builder.addCase(updateAccountDetails.fulfilled, (state, action) => {
+      state.updating = false;
+      state.userData = action.payload;
+    });
+    builder.addCase(updateAccountDetails.rejected, (state) => {
+      state.updating = false;
+    });
   },
 });
 
