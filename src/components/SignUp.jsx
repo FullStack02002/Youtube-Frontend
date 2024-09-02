@@ -29,12 +29,14 @@ const SignUp = () => {
   const navigate = useNavigate();
   const loading = useSelector((state) => state.auth?.loading);
 
-  const submit = (data) => {
-    const response = dispatch(createAccount(data));
+  const submit = async(data) => {
+    const response = await dispatch(createAccount(data));
+    console.log(response)
     if (response?.payload?.success) {
       const username = data?.username;
       const password = data?.password;
-      const loginResult = dispatch(userLogin({ username, password }));
+      const loginResult = await dispatch(userLogin({ username, password }));
+      console.log(loginResult)
       if (loginResult?.type === "login/fulfilled") {
         navigate("/terms&conditions");
       } else {

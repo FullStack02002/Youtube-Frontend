@@ -15,8 +15,8 @@ const ChangePassword = () => {
     } = useForm();
     const dispatch = useDispatch();
 
-    const onSubmit = (data) => {
-        dispatch(
+    const onSubmit = async (data) => {
+       await dispatch(
             changePassword({
                 oldPassword: data?.oldPassword,
                 newPassword: data?.newPassword,

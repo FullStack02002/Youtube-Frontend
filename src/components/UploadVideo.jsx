@@ -24,7 +24,7 @@ function UploadVideo({ setUploadVideoPopup }) {
 
     const publishAVideo = async(data) => {
         setVideoSize(Math.floor(data.videoFile[0].size / (1024 * 1024)));
-        dispatch(publishVideo(data));
+       await  dispatch(publishVideo(data));
     };
 
 
