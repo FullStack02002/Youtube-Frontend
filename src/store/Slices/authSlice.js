@@ -138,6 +138,9 @@ const authSlice = createSlice({
     builder.addCase(createAccount.fulfilled, (state) => {
       state.loading = false;
     });
+    builder.addCase(createAccount.rejected,(state)=>{
+      state.loading = false;
+    })
     builder.addCase(userLogin.pending, (state) => {
       state.loading = true;
     });
@@ -146,6 +149,11 @@ const authSlice = createSlice({
       state.status = true;
       state.userData = action.payload;
     });
+    builder.addCase(userLogin.rejected,(state,action)=>{
+      state.loading=false;
+      state.status=false;
+      state.userData=null;
+    })
     builder.addCase(userLogout.pending, (state) => {
       state.loading = true;
     });
@@ -174,6 +182,9 @@ const authSlice = createSlice({
       state.updating = false;
       state.userData = action.payload;
     });
+    builder.addCase(updateUserAvatar.rejected,(state)=>{
+      state.updating=false;
+    })
     builder.addCase(updateCoverImage.pending, (state) => {
       state.updating = true;
     });
@@ -181,6 +192,9 @@ const authSlice = createSlice({
       state.updating = false;
       state.userData = action.payload;
     });
+    builder.addCase(updateCoverImage.fulfilled,(state)=>{
+      state.updating=false;
+    })
     builder.addCase(updateAccountDetails.pending, (state, action) => {
       state.updating = true;
     });

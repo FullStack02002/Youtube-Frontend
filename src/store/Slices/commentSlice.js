@@ -5,8 +5,8 @@ import { BASE_URL } from "../../constant";
 
 const initialState = {
   loading: false,
-  commentAddedLoading:false,
-  commentDeleteandEditLoading:{},
+  commentAddedLoading: false,
+  commentDeleteandEditLoading: {},
   comments: [],
   totalComments: 0,
   hasNextPage: false,
@@ -52,7 +52,7 @@ export const editAComment = createAsyncThunk(
       const response = await axiosInstance.patch(`/comment/c/${commentId}`, {
         content,
       });
-      toast.success(response.data?.message)
+      toast.success(response.data?.message);
 
       return {
         _id: commentId,
@@ -71,7 +71,7 @@ export const editAComment = createAsyncThunk(
 );
 export const deleteAComment = createAsyncThunk(
   "deleteAComment",
-  async ({ commentId}) => {
+  async ({ commentId }) => {
     try {
       console.log("runs");
       const response = await axiosInstance.delete(`/comment/c/${commentId}`);
@@ -88,7 +88,7 @@ export const getVideoComments = createAsyncThunk(
   async ({ videoId, sortBy, sortType, page = 1 }) => {
     try {
       const url = new URL(`${BASE_URL}/comment/${videoId}`);
-      
+
       if (page) {
         url.searchParams.set("page", page);
       }
@@ -114,48 +114,56 @@ const commentSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(createAComment.pending,(state,action)=>{
+    builder.addCase(createAComment.pending, (state, action) => {
       state.commentAddedLoading = true;
-    })
+    });
     builder.addCase(createAComment.fulfilled, (state, action) => {
-      state.commentAddedLoading=false;
+      state.commentAddedLoading = false;
       state.comments.unshift(action.payload);
       state.totalComments++;
     }),
-    builder.addCase(deleteAComment.pending,(state,action)=>{
-      const {commentId}=action.meta.arg;
-      state.commentDeleteandEditLoading[commentId]=true;
-    })
-      builder.addCase(deleteAComment.fulfilled, (state, action) => {
-        const {commentId}=action.payload;
-        state.commentDeleteandEditLoading[commentId]=false;
-        state.comments = state.comments.filter(
-          (comment) => comment._id !== action.payload.commentId
-        );
-        state.totalComments--;
+      builder.addCase(createAComment.rejected, (state, action) => {
+        state.commentAddedLoading = false;
       }),
-      builder.addCase(editAComment.pending,(state,action)=>{
-        const {commentId}=action.meta.arg;
-        state.commentDeleteandEditLoading[commentId]=true;
-
-      })
-      builder.addCase(editAComment.fulfilled, (state, action) => {
-        const { _id } = action.payload;
-        state.commentDeleteandEditLoading[_id]=false;
-        const index = state.comments.findIndex(
-          (comment) => comment._id === _id
-        );
-        state.comments.splice(index, 1, action.payload);
-        console.log(action.payload);
+      builder.addCase(deleteAComment.pending, (state, action) => {
+        const { commentId } = action.meta.arg;
+        state.commentDeleteandEditLoading[commentId] = true;
       });
+    builder.addCase(deleteAComment.fulfilled, (state, action) => {
+      const { commentId } = action.payload;
+      state.commentDeleteandEditLoading[commentId] = false;
+      state.comments = state.comments.filter(
+        (comment) => comment._id !== action.payload.commentId
+      );
+      state.totalComments--;
+    }),
+      builder.addCase(deleteAComment.rejected, (state, action) => {
+        const { commentId } = action.meta.arg;
+        state.commentDeleteandEditLoading[commentId] = false;
+      });
+    builder.addCase(editAComment.pending, (state, action) => {
+      const { commentId } = action.meta.arg;
+      state.commentDeleteandEditLoading[commentId] = true;
+    });
+    builder.addCase(editAComment.fulfilled, (state, action) => {
+      const { _id } = action.payload;
+      state.commentDeleteandEditLoading[_id] = false;
+      const index = state.comments.findIndex((comment) => comment._id === _id);
+      state.comments.splice(index, 1, action.payload);
+      console.log(action.payload);
+    });
+    builder.addCase(editAComment.rejected, (state, action) => {
+      const { commentId } = action.meta.arg;
+      state.commentDeleteandEditLoading[commentId] = false;
+    });
     builder.addCase(getVideoComments.pending, (state) => {
-      state.loading=true;
+      state.loading = true;
     });
     builder.addCase(getVideoComments.fulfilled, (state, action) => {
       state.loading = false;
       state.totalComments = action.payload.totalDocs;
       state.hasNextPage = action.payload.hasNextPage;
-      state.comments=[...state.comments,...action.payload.docs];
+      state.comments = [...state.comments, ...action.payload.docs];
     });
   },
 });
