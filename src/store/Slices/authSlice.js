@@ -192,7 +192,7 @@ const authSlice = createSlice({
       state.updating = false;
       state.userData = action.payload;
     });
-    builder.addCase(updateCoverImage.fulfilled,(state)=>{
+    builder.addCase(updateCoverImage.rejected,(state)=>{
       state.updating=false;
     })
     builder.addCase(updateAccountDetails.pending, (state, action) => {
